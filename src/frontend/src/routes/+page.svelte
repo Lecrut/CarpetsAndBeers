@@ -2,6 +2,24 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	let data = '';
+
+      async function sendMessage() {
+        const response = await fetch('api/message/getMessage', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+			  'mode': 'no-cors',
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        data = await response.text();
+        console.log(data);
+      }
 </script>
 
 <svelte:head>
@@ -24,6 +42,10 @@
 	<h2>
 		try editing <strong>src/routes/+page.svelte</strong>
 	</h2>
+
+	<button on:click={sendMessage}>Get Message</button>
+
+	<h2>{data}</h2>
 
 	<Counter />
 </section>
