@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <Button variant="outlined">Test</Button>
-      <h1 className="text-3xl font-bold underline">
+      <h1 className="text-3xl font-bold">
         Beers & carpets
       </h1>
     </>
