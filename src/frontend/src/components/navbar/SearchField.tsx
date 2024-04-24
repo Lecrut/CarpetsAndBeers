@@ -38,7 +38,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '100%',
     },
   },
 }))
@@ -57,6 +57,7 @@ export default function TypeSearch({ sx = [] }: { sx?: SxProps<Theme> }) {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
+        sx={{ width: '100%' }}
         placeholder="Wyszukaj…"
         inputProps={{ 'aria-label': 'search' }}
       />

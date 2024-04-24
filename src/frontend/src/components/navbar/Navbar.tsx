@@ -46,7 +46,10 @@ export default function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Desktop */}
-          <SportsBarIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <SportsBarIcon
+            color="secondary"
+            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -58,7 +61,6 @@ export default function ResponsiveAppBar() {
               fontFamily: 'inherit',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
               textDecoration: 'none',
               paddingRight: '120px',
             }}
@@ -110,21 +112,13 @@ export default function ResponsiveAppBar() {
               </Box>
             </Grid>
           </Grid>
-          {/* <Box sx={{ flexGrow: 1, display: 'flex' }}>
-                {pages.map((page) => (
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page}
-                  </Button>
-                ))}
-              </Box> */}
 
           {/* Mobile */}
 
-          <SportsBarIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <SportsBarIcon
+            color="secondary"
+            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+          />
           {/* <Typography
             variant="h5"
             noWrap
