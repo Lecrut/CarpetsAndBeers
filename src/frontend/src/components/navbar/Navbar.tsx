@@ -41,7 +41,6 @@ export default function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-
           {/* Desktop */}
           <SportsBarIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
@@ -62,9 +61,10 @@ export default function ResponsiveAppBar() {
             Beers & carpets
           </Typography>
 
-          <SearchField sx={() => ({
-            display: { xs: 'none', md: 'flex' },
-          })}
+          <SearchField
+            sx={() => ({
+              display: { xs: 'none', md: 'flex' },
+            })}
           />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -96,7 +96,7 @@ export default function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map(page => (
+              {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -106,8 +106,8 @@ export default function ResponsiveAppBar() {
 
           {/* Mobile */}
 
-          {/* <SportsBarIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
+          <SportsBarIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          {/* <Typography
             variant="h5"
             noWrap
             component="a"
@@ -126,12 +126,13 @@ export default function ResponsiveAppBar() {
             Beers & carpets
           </Typography> */}
 
-          <SearchField sx={() => ({
-            display: { xs: 'flex', md: 'none' },
-          })}
+          <SearchField
+            sx={() => ({
+              display: { xs: 'flex', md: 'none' },
+            })}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map(page => (
+            {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -164,7 +165,7 @@ export default function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(setting => (
+              {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
