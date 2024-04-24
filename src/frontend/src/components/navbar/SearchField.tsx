@@ -45,7 +45,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function TypeSearch({ sx = [] }: { sx?: SxProps<Theme> }) {
   return (
-    <Search sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+    <Search
+      sx={[
+        {
+          marginTop: '10px',
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
+    >
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

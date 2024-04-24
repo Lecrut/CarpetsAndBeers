@@ -8,14 +8,18 @@ import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import SportsBarIcon from '@mui/icons-material/SportsBar'
 import { useState } from 'react'
 import SearchField from './SearchField'
+import { Grid } from '@mui/material'
+import Badge from '@mui/material/Badge'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import PhoneIcon from '@mui/icons-material/Phone'
+import { FaBasketShopping } from 'react-icons/fa6'
 
-const pages = ['Kontakt', 'Listy zakupowe', 'Koszyk']
+const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
 
 export default function ResponsiveAppBar() {
@@ -56,53 +60,67 @@ export default function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              paddingRight: '120px',
             }}
           >
             Beers & carpets
           </Typography>
 
-          <SearchField
+          <Grid
+            container
+            spacing={2}
             sx={() => ({
               display: { xs: 'none', md: 'flex' },
             })}
-          />
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          >
+            <Grid item xs={10}>
+              <SearchField />
+            </Grid>
+            <Grid item xs={1}>
+              <Box
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                }}
+              >
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <PhoneIcon fontSize="large" />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
+                  <Badge badgeContent={2} color="error">
+                    <FavoriteIcon fontSize="large" />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
+                  <Badge badgeContent={4} color="error">
+                    <FaBasketShopping size={31} />
+                  </Badge>
+                </IconButton>
+              </Box>
+            </Grid>
+          </Grid>
+          {/* <Box sx={{ flexGrow: 1, display: 'flex' }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box> */}
 
           {/* Mobile */}
 
@@ -126,24 +144,63 @@ export default function ResponsiveAppBar() {
             Beers & carpets
           </Typography> */}
 
-          <SearchField
+          <Grid
+            container
+            spacing={2}
             sx={() => ({
               display: { xs: 'flex', md: 'none' },
             })}
-          />
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          >
+            <Grid item xs={11}>
+              <SearchField
+                sx={() => ({
+                  marginTop: '6px',
+                })}
+              />
+            </Grid>
 
-          <Box sx={{ flexGrow: 0 }}>
+            <Grid item xs={1}>
+              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  {pages.map((page) => (
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {/* Menu */}
+          <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
