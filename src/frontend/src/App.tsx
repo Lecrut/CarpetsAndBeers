@@ -1,4 +1,4 @@
-import { ThemeProvider, Typography, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material'
 import './App.css'
 import LandingPage from './pages/LandingPage'
 
@@ -28,9 +28,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <LandingPage />
-      <Typography variant="body1" align="center" color="textSecondary">
-        © 2024 Beers & Carpets
-      </Typography>
     </ThemeProvider>
   )
 }
