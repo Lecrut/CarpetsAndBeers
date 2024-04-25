@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material'
 import Carousel from 'react-material-ui-carousel'
 
-export default function CarouselComponent(props) {
+export default function CarouselComponent() {
   const items = [
     {
       name: 'Random Name #1',
@@ -17,7 +17,7 @@ export default function CarouselComponent(props) {
 
   return (
     <>
-      <Carousel interval={10000}>
+      <Carousel interval={5000}>
         {items.map((item, i) => (
           <Item key={i} item={item} />
         ))}
@@ -35,22 +35,22 @@ export default function CarouselComponent(props) {
           transform: 'translateX(-50%)',
         }}
       >
-        {/*           bottom: '200px',
-          left: '50%',
-          transform: 'translateX(-50%)', */}
         Check it out!
       </Button>
     </>
   )
 }
 
-function Item(props) {
+interface ItemProps {
+  item: {
+    name: string
+    description: string
+    url: string
+  }
+}
+
+function Item(props: ItemProps) {
   return (
-    // <Box position={'relative'}>
-    //   <img src={props.item.url} alt="banner" />
-    //   {/* <h2>{props.item.name}</h2> */}
-    //   {/* <p>{props.item.description}</p> */}
-    // </Box>
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <Box
         component="img"
@@ -60,20 +60,6 @@ function Item(props) {
         alt="Banner"
         src={props.item.url}
       />
-      {/* <Button
-        variant="contained"
-        color="secondary"
-        sx={{ color: 'white' }}
-        className="rounded-r-md"
-        // sx={{
-        //   postion: 'absolute',
-        //   bottom: '200px',
-        //   left: '50%',
-        //   transform: 'translateX(-50%)',
-        // }}
-      >
-        Check it out!
-      </Button> */}
     </Box>
   )
 }
