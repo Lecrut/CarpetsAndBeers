@@ -26,10 +26,11 @@ export default function CarouselComponent() {
         variant="contained"
         color="secondary"
         className="rounded-r-md"
+        size="large"
         sx={{
           postion: 'absolute',
-          bottom: '50%',
-          left: '50%',
+          bottom: '62%',
+          left: '65%',
           color: 'white',
           zIndex: 1000,
           transform: 'translateX(-50%)',

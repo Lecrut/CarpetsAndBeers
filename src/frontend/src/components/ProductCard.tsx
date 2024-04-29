@@ -29,7 +29,9 @@ export default function ProductCard({ name, url, price }: ProductCardProps) {
           <FavoriteIcon />
         </IconButton>
       </div>
+
       <p>{price} zł</p>
+
       <IconButton>
         <AddShoppingCartIcon />
       </IconButton>
@@ -37,11 +39,9 @@ export default function ProductCard({ name, url, price }: ProductCardProps) {
       <Box
         component="img"
         sx={{
-          height: 233,
-          width: 350,
-          maxHeight: { xs: 233, md: 167 },
-          maxWidth: { xs: 350, md: 250 },
+          height: '60%',
         }}
+        margin="auto"
         alt={name}
         src={url}
       />

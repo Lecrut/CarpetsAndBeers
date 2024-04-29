@@ -35,10 +35,22 @@ function LandingPage() {
 
       <h1 className="text-center text-3xl font-bold">Polecane produkty</h1>
 
-      <Grid container justifyContent="center" className="mt-6 gap-20">
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        className="mt-6 gap-20"
+      >
         {recommendedItems.map((item, i) => {
           return (
-            <Grid item xs={12} sm={4} md={2}>
+            <Grid
+              item
+              xs={12}
+              sm={4}
+              md={2}
+              display="flex"
+              justifyContent="center"
+            >
               <ProductCard
                 key={i}
                 name={item.name}
