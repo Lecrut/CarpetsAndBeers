@@ -18,6 +18,7 @@ import Badge from '@mui/material/Badge'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PhoneIcon from '@mui/icons-material/Phone'
 import { FaBasketShopping } from 'react-icons/fa6'
+import { Link, NavLink } from 'react-router-dom'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
@@ -50,23 +51,26 @@ export default function ResponsiveAppBar() {
             color="secondary"
             sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
           />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'inherit',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              textDecoration: 'none',
-              paddingRight: '120px',
-            }}
-          >
-            Beers & carpets
-          </Typography>
+
+          <Link to="/">
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'inherit',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                textDecoration: 'none',
+                paddingRight: '120px',
+              }}
+            >
+              Beers & carpets
+            </Typography>
+          </Link>
 
           <Grid
             container
@@ -84,14 +88,19 @@ export default function ResponsiveAppBar() {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
+                <NavLink to="/contact">
+                  <IconButton
+                    disableRipple={true}
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                  >
+                    <PhoneIcon fontSize="large" />
+                  </IconButton>
+                </NavLink>
+
                 <IconButton
-                  size="large"
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                >
-                  <PhoneIcon fontSize="large" />
-                </IconButton>
-                <IconButton
+                  disableRipple={true}
                   size="large"
                   aria-label="show 4 new mails"
                   color="inherit"
@@ -101,6 +110,7 @@ export default function ResponsiveAppBar() {
                   </Badge>
                 </IconButton>
                 <IconButton
+                  disableRipple={true}
                   size="large"
                   aria-label="show 4 new mails"
                   color="inherit"

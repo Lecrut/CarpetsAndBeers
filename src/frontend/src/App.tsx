@@ -1,6 +1,8 @@
 import { ThemeProvider, createTheme } from '@mui/material'
 import './App.css'
 import LandingPage from './pages/LandingPage'
+import { Route, Routes } from 'react-router-dom'
+import ContactPage from './pages/ContactPage'
 
 const theme = createTheme({
   palette: {
@@ -27,7 +29,10 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <LandingPage />
+      <Routes>
+        <Route path="/" element={<LandingPage />}></Route>
+        <Route path="/contact" element={<ContactPage />}></Route>
+      </Routes>
     </ThemeProvider>
   )
 }
