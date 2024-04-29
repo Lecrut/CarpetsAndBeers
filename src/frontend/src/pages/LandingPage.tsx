@@ -47,16 +47,13 @@ function LandingPage() {
               item
               xs={12}
               sm={4}
-              md={2}
+              md={3}
+              lg={2}
+              key={i}
               display="flex"
               justifyContent="center"
             >
-              <ProductCard
-                key={i}
-                name={item.name}
-                price={item.price}
-                url={item.url}
-              />
+              <ProductCard name={item.name} price={item.price} url={item.url} />
             </Grid>
           )
         })}
