@@ -3,6 +3,7 @@ import './App.css'
 import LandingPage from './pages/LandingPage'
 import { Route, Routes } from 'react-router-dom'
 import ContactPage from './pages/ContactPage'
+import ProfilePage from './pages/ProfilePage'
 
 const theme = createTheme({
   palette: {
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/contact" element={<ContactPage />}></Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
       </Routes>
     </ThemeProvider>
   )
