@@ -21,7 +21,7 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
-const settings = ['Profil', 'Ustawienia', 'Wyloguj']
+const settings = ['profile', 'Ustawienia', 'Wyloguj']
 
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
