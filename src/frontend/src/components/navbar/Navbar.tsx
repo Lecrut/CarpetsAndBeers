@@ -13,19 +13,26 @@ import MenuItem from '@mui/material/MenuItem'
 import SportsBarIcon from '@mui/icons-material/SportsBar'
 import { useState } from 'react'
 import SearchField from './SearchField'
-import { Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import Badge from '@mui/material/Badge'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PhoneIcon from '@mui/icons-material/Phone'
 import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
+import { useUserStore } from '../../stores/UserStore'
+import { useNavigate } from 'react-router-dom'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
-const settings = ['profile', 'Ustawienia', 'Wyloguj']
+const settings = ['Profil', 'Ustawienia', 'Wyloguj']
 
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+
+  const user = useUserStore((state) => state.user)
+  const setUser = useUserStore((state) => state.setUser)
+
+  const navigate = useNavigate()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -38,8 +45,42 @@ export default function ResponsiveAppBar() {
     setAnchorElNav(null)
   }
 
+  const handleMobileLinkCLick = (pageName: string) => {
+    setAnchorElNav(null)
+    console.log('link click', pageName)
+
+    switch (pageName) {
+      case 'Kontakt':
+        navigate('/contact')
+        break
+      case 'Lista życzeń':
+        console.log('Ustawienia')
+        break
+      case 'Koszyk':
+        setUser(null)
+        break
+    }
+  }
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
+  }
+
+  const handleProfileSettings = (setting: string) => {
+    setAnchorElUser(null)
+
+    switch (setting) {
+      case 'Profil':
+        navigate('/profile')
+        break
+      case 'Ustawienia':
+        console.log('Ustawienia')
+        break
+      case 'Wyloguj':
+        setUser(null)
+        navigate('/')
+        break
+    }
   }
 
   return (
@@ -48,6 +89,7 @@ export default function ResponsiveAppBar() {
         <Toolbar disableGutters>
           {/* Desktop */}
           <SportsBarIcon
+            to="/"
             color="secondary"
             sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
           />
@@ -125,10 +167,12 @@ export default function ResponsiveAppBar() {
 
           {/* Mobile */}
 
-          <SportsBarIcon
-            color="secondary"
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-          />
+          <NavLink to="/">
+            <SportsBarIcon
+              color="secondary"
+              sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+            />
+          </NavLink>
           {/* <Typography
             variant="h5"
             noWrap
@@ -194,7 +238,10 @@ export default function ResponsiveAppBar() {
                   }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                    <MenuItem
+                      key={page}
+                      onClick={() => handleMobileLinkCLick(page)}
+                    >
                       <Typography textAlign="center">{page}</Typography>
                     </MenuItem>
                   ))}
@@ -204,37 +251,64 @@ export default function ResponsiveAppBar() {
           </Grid>
 
           {/* Menu */}
-          <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link to={`/${setting}`}>
+          {user ? (
+            <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleProfileSettings(setting)}
+                  >
                     <Typography textAlign="center">{setting}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
+            <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
+              {/* <Link to="/login">
+                <Typography variant="button" color="secondary">
+                  Zaloguj
+                </Typography>
+              </Link> */}
+              <Button
+                color="secondary"
+                variant="contained"
+                disableElevation
+                onClick={() =>
+                  setUser({
+                    email: 'test@gmail.com',
+                    id: 1,
+                    name: 'test',
+                    role: 'customer',
+                  })
+                }
+                sx={{ color: 'white' }}
+              >
+                Zaloguj
+              </Button>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
