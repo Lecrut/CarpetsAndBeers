@@ -3,12 +3,15 @@ import User from '../models/User'
 import zukeeper from 'zukeeper'
 
 type UserStore = {
-  User: User | null
+  user: User | null
+  setUser: (user: User | null) => void
 }
 
 export const useUserStore = create<UserStore>(
   zukeeper((set) => ({
-    User: null,
-    setUser: (user: User) => set({ User: user }),
+    user: null,
+    setUser: (user: User | null) => set({ user }),
   })),
 )
+
+window.store = useUserStore
