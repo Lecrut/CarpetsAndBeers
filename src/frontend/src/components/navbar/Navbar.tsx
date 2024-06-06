@@ -71,13 +71,14 @@ export default function ResponsiveAppBar() {
 
     switch (setting) {
       case 'Profil':
-        console.log('Profil')
+        navigate('/profile')
         break
       case 'Ustawienia':
         console.log('Ustawienia')
         break
       case 'Wyloguj':
         setUser(null)
+        navigate('/')
         break
     }
   }
