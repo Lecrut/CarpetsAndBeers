@@ -1,10 +1,10 @@
-package com.beersAndCarpets
+package shop.carpetandbeer
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class BeersAndCarpetsApplicationTests {
+class CarpetAndBeerApplicationTests {
 
 	@Test
 	fun contextLoads() {

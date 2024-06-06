@@ -1,15 +1,15 @@
-package com.beersAndCarpets.controller
+package shop.carpetandbeer.controller
 
-import com.beersAndCarpets.model.Item
-import com.beersAndCarpets.model.ItemRequest
-import com.beersAndCarpets.repository.ItemRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import shop.carpetandbeer.model.Item
+import shop.carpetandbeer.model.ItemRequest
+import shop.carpetandbeer.repository.ItemRepository
 
 @RestController
-@RequestMapping("/item")
+@RequestMapping("/itemapi")
 class ItemController(private val repository: ItemRepository) {
-    @GetMapping("/")
+    @GetMapping("/getAllItems")
     fun getAllItems() : ResponseEntity<List<Item>> {
         return ResponseEntity.ok(repository.findAll())
     }
@@ -19,7 +19,7 @@ class ItemController(private val repository: ItemRepository) {
         return ResponseEntity.ok(repository.findById(id).get())
     }
 
-    @PostMapping("/")
+    @PostMapping("/add")
     fun createItem(@RequestBody item: ItemRequest) : ResponseEntity<Item> {
         val itemReq = Item(null, item.name, item.price, item.description, item.category)
         return ResponseEntity.ok(repository.save(itemReq))
