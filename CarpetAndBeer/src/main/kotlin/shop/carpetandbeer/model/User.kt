@@ -16,7 +16,9 @@ class User(@Id var id: String?,
            @NotNull
            var email: String?,
            @NotNull
-           var password: String?
+           var password: String?,
+           @NotNull
+           var salt: String?
 )
 
 class UserRequest {

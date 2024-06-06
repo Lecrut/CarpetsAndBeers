@@ -2,6 +2,8 @@ package shop.carpetandbeer.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.crypto.bcrypt.BCrypt.hashpw
 import org.springframework.web.bind.annotation.*
 import shop.carpetandbeer.model.User
 import shop.carpetandbeer.model.UserLogin
@@ -32,7 +34,10 @@ class UserController( private val repository: UserRepository) {
     fun getUserById(@RequestBody user: UserLogin): ResponseEntity<User> {
         repository.findAll().let { users ->
             users.forEach {
-                if (it.email == user.email && it.password == user.password)
+                if (
+                    it.email == user.email
+                    && it.password == hashpw(user.password, it.salt)
+                )
                     return ResponseEntity.ok(it)
             }
         }
@@ -44,8 +49,10 @@ class UserController( private val repository: UserRepository) {
         if(user.email?.let { getUserByEmail(it) } != null) {
             return ResponseEntity.badRequest().body("{\"message\": \"User already exists\"}")
         }
+        val salt = BCrypt.gensalt()
+        val hash = hashpw(user.password, salt)
 
-        val newUser = User(null, user.name, user.email, user.password)
+        val newUser = User(null, user.name, user.email, hash, salt)
         return ResponseEntity.ok(repository.save(newUser))
     }
 
