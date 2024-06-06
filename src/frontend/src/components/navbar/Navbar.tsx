@@ -21,7 +21,7 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
-const settings = ['Profil', 'Ustawienia', 'Wyloguj']
+const settings = ['profile', 'Ustawienia', 'Wyloguj']
 
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -228,7 +228,9 @@ export default function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Link to={`/${setting}`}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
