@@ -24,7 +24,9 @@
     "react-icons": "^5.1.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-responsive-carousel": "^3.2.23",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "zukeeper": "^1.0.2",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.13.3",
