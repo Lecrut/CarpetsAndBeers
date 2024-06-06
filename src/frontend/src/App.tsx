@@ -4,6 +4,8 @@ import LandingPage from './pages/LandingPage'
 import { Route, Routes } from 'react-router-dom'
 import ContactPage from './pages/ContactPage'
 import ProfilePage from './pages/ProfilePage'
+import RegisterPage from './pages/RegisterPage'
+import LoginForm from './pages/LoginPage'
 
 const theme = createTheme({
   palette: {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/contact" element={<ContactPage />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
+        <Route path="/login" element={<LoginForm />}></Route>
       </Routes>
     </ThemeProvider>
   )
