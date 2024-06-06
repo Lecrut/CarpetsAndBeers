@@ -17,7 +17,7 @@ const RegistrationForm = () => {
       password: password,
     }
 
-    const response = await fetch('/register', {
+    const response = await fetch('userapi/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
