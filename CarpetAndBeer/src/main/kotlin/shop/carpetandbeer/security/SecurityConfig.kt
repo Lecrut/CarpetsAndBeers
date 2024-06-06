@@ -14,10 +14,10 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/userapi/*", "/itemapi/*").permitAll()  // Allow public access to register and login
+                    .requestMatchers("/userapi/*", "/itemapi/*").permitAll()
                     .anyRequest().authenticated()
             }
-            .csrf{ csrf -> csrf.disable()}  // Disable CSRF protection for simplicity in development (not recommended for production)
+            .csrf{ csrf -> csrf.disable()}
         return http.build()
     }
 }
