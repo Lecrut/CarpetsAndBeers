@@ -286,27 +286,16 @@ export default function ResponsiveAppBar() {
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
-              {/* <Link to="/login">
-                <Typography variant="button" color="secondary">
+              <Link to="/login">
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  sx={{ color: 'white' }}
+                >
                   Zaloguj
-                </Typography>
-              </Link> */}
-              <Button
-                color="secondary"
-                variant="contained"
-                disableElevation
-                onClick={() =>
-                  setUser({
-                    email: 'test@gmail.com',
-                    id: 1,
-                    name: 'test',
-                    role: 'customer',
-                  })
-                }
-                sx={{ color: 'white' }}
-              >
-                Zaloguj
-              </Button>
+                </Button>
+              </Link>
             </Box>
           )}
         </Toolbar>
