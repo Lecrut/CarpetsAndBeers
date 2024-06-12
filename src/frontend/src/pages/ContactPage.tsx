@@ -7,7 +7,7 @@ export default function ContactPage() {
     <>
       <Navbar />
 
-      <Grid container marginTop={3} paddingX={2} justifyContent="center">
+      <Grid container marginTop={5} paddingX={2} justifyContent="center">
         <Grid item xs={12} md={12} lg={6} position={'relative'}>
           <Card>
             <CardContent>
@@ -28,7 +28,7 @@ export default function ContactPage() {
         </Grid>
       </Grid>
 
-      <Footer />
+      {/*<Footer />*/}
     </>
   )
 }
