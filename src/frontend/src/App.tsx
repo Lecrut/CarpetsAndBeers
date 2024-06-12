@@ -6,6 +6,8 @@ import ContactPage from './pages/ContactPage'
 import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginForm from './pages/LoginPage'
+import WishListPage from './pages/WishListPage.tsx'
+import ShoppingCartPage from './pages/ShoppingCartPage.tsx'
 
 const theme = createTheme({
   palette: {
@@ -38,6 +40,8 @@ function App() {
         <Route path="/profile" element={<ProfilePage />}></Route>
         <Route path="/register" element={<RegisterPage />}></Route>
         <Route path="/login" element={<LoginForm />}></Route>
+        <Route path="/wish-list" element={<WishListPage />}></Route>
+        <Route path="/shopping-cart" element={<ShoppingCartPage />}></Route>
       </Routes>
     </ThemeProvider>
   )

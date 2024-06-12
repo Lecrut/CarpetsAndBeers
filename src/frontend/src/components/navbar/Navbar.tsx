@@ -54,10 +54,12 @@ export default function ResponsiveAppBar() {
         navigate('/contact')
         break
       case 'Lista życzeń':
-        console.log('Ustawienia')
+        navigate('/wish-list')
+        // console.log('Ustawienia')
         break
       case 'Koszyk':
         setUser(null)
+        navigate('/shopping-cart')
         break
     }
   }
@@ -141,26 +143,32 @@ export default function ResponsiveAppBar() {
                   </IconButton>
                 </NavLink>
 
-                <IconButton
-                  disableRipple={true}
-                  size="large"
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                >
-                  <Badge badgeContent={2} color="error">
-                    <FavoriteIcon fontSize="large" />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  disableRipple={true}
-                  size="large"
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                >
-                  <Badge badgeContent={4} color="error">
-                    <FaBasketShopping size={31} />
-                  </Badge>
-                </IconButton>
+                <NavLink to='/wish-list'>
+                  <IconButton
+                    disableRipple={true}
+                    size="large"
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                  >
+                    <Badge badgeContent={2} color="error">
+                      <FavoriteIcon fontSize="large" />
+                    </Badge>
+                  </IconButton>
+                </NavLink>
+
+                <NavLink to='/shopping-cart'>
+                  <IconButton
+                    disableRipple={true}
+                    size="large"
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                  >
+                    <Badge badgeContent={4} color="error">
+                      <FaBasketShopping size={31} />
+                    </Badge>
+                  </IconButton>
+                </NavLink>
+
               </Box>
             </Grid>
           </Grid>
