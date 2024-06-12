@@ -1,14 +1,11 @@
 import { Box, IconButton, Paper } from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import Item from '../models/Item.ts'
 
-interface ProductCardProps {
-  name: string
-  url: string
-  price: number
-}
 
-export default function ProductCard({ name, url, price }: ProductCardProps) {
+
+export default function ProductCard({name, price, url}: Item) {
   return (
     <Paper
       elevation={3}
