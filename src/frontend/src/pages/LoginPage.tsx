@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, TextField, Container, Grid, Box, Avatar } from '@mui/material'
-import { AccountCircle } from '@mui/icons-material'
+// import { AccountCircle } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/navbar/Navbar'
 import { useUserStore } from '../stores/UserStore'
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const setUser = useUserStore((state) => state.setUser) // initialize setUser
+  const setUser = useUserStore((state) => state.setUser) 
   const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
@@ -30,8 +30,8 @@ const LoginForm = () => {
     })
 
     if (response.ok) {
-      const userData = await response.json() // get user data from response
-      setUser(userData) // set user data in store
+      const userData = await response.json() 
+      setUser(userData) 
       console.log('User logged in successfully')
       navigate('/')
     } else {

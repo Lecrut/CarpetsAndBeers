@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, TextField, Container, Grid, Box, Avatar } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import Navbar from '../components/navbar/Navbar'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const RegistrationForm = () => {
   const [name, setName] = useState('')
@@ -28,7 +28,7 @@ const RegistrationForm = () => {
 
     if (response.ok) {
       console.log('User registered successfully')
-      Navigate('/')
+      // Navigate('/')
     } else {
       console.log('Failed to register user')
     }
