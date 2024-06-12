@@ -1,5 +1,5 @@
 import Navbar from '../components/navbar/Navbar'
-import Footer from '../components/Footer.tsx'
+// import Footer from '../components/Footer.tsx'
 import { Card, CardContent, Grid, Typography } from '@mui/material'
 
 export default function ContactPage() {
