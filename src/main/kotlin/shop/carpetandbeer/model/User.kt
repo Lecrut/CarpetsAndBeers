@@ -18,8 +18,15 @@ class User(@Id var id: String?,
            @NotNull
            var password: String?,
            @NotNull
-           var salt: String?
+           var salt: String?,
+           @NotNull
+           var role: UserType?
+
 )
+
+enum class UserType {
+    ADMIN, USER
+}
 
 class UserRequest {
     var name: String? = null
