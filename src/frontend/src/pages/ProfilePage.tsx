@@ -3,16 +3,19 @@ import React from 'react';
 import { Avatar, Typography, Card, CardContent, Box, Grid } from '@mui/material';
 import PurchaseCard from '../components/PurchaseCard';
 import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { useUserStore } from '../stores/UserStore'
 
 const ProfilePage = () => {
-  const user = {
+  const user = useUserStore((state) => state.user)
+
+  const userConst = {
     name: "Piotr",
     email: "1234@gmail.com",
     avatar: "./public/temp_products/corona.png"
   }
   const handleEdit = () => {
-    //logout
+    
   };
 
   const purchases = [
@@ -32,9 +35,11 @@ const ProfilePage = () => {
             <Card sx={{ mt: 3, bgcolor: "grey.200"}}>
               <CardContent>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar src={user.avatar} />
-                  <Typography variant="h4">{user.name}</Typography>
-                  <Typography variant="subtitle1">{user.email}</Typography>
+                  <Avatar style={{ backgroundColor: '#F5980E'}}>
+                    {user?.name[0]}
+                  </Avatar>
+                  <Typography variant="h4">{user?.name}</Typography>
+                  <Typography variant="subtitle1">{user?.email}</Typography>
                   <button onClick={handleEdit}>Zmień hasło</button>
                 </Box>
               </CardContent>

@@ -263,7 +263,8 @@ export default function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                  <Avatar style={{backgroundColor: '#F5980E'}}> {user.name[0]}</Avatar> 
                 </IconButton>
               </Tooltip>
               <Menu
@@ -294,27 +295,16 @@ export default function ResponsiveAppBar() {
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0, marginLeft: { xs: '40px', md: '130px' } }}>
-              {/* <Link to="/login">
-                <Typography variant="button" color="secondary">
+              <Link to="/login">
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  sx={{ color: 'white' }}
+                >
                   Zaloguj
-                </Typography>
-              </Link> */}
-              <Button
-                color="secondary"
-                variant="contained"
-                disableElevation
-                onClick={() =>
-                  setUser({
-                    email: 'test@gmail.com',
-                    id: 1,
-                    name: 'test',
-                    role: 'customer',
-                  })
-                }
-                sx={{ color: 'white' }}
-              >
-                Zaloguj
-              </Button>
+                </Button>
+              </Link>
             </Box>
           )}
         </Toolbar>
