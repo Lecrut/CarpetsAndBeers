@@ -14,7 +14,10 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/userapi/*", "/itemapi/*").permitAll()
+                    .requestMatchers("/userapi/*", "/itemapi/*",
+                        "/userapi/login",
+                        "/userapi/register",
+                        ).permitAll()
                     .anyRequest().authenticated()
             }
             .csrf{ csrf -> csrf.disable()}

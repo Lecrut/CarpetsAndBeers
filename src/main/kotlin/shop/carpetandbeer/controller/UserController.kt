@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 import shop.carpetandbeer.model.User
 import shop.carpetandbeer.model.UserLogin
 import shop.carpetandbeer.model.UserRequest
+import shop.carpetandbeer.model.UserType
 import shop.carpetandbeer.repository.UserRepository
 import java.util.*
 
@@ -52,7 +53,7 @@ class UserController( private val repository: UserRepository) {
         val salt = BCrypt.gensalt()
         val hash = hashpw(user.password, salt)
 
-        val newUser = User(null, user.name, user.email, hash, salt)
+        val newUser = User(null, user.name, user.email, hash, salt, UserType.USER)
         return ResponseEntity.ok(repository.save(newUser))
     }
 
