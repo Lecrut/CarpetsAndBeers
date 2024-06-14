@@ -35,10 +35,10 @@ export default function ShoppingCartPage() {
   
   ];
 
-  const amounts: number[] = [1, 2 , 3]
+  const amounts: number[] = [10, 2 , 3]
 
   const getTotal = () => {
-    return items.reduce((total, item) => total + item.price, 0);
+    return items.reduce((total, item, i) => total + item.price*amounts[i], 0);
   };
   
    return (
