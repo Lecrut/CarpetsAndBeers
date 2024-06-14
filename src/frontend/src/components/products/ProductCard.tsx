@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Paper, IconButton, Box } from '@mui/material';
 import ProductDialog from './ProductDialog.tsx';
-import Item from '../models/Item.ts'
+import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 

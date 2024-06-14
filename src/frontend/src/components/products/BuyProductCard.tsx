@@ -10,7 +10,7 @@ import {
   Dialog,
   TextField
 } from '@mui/material'
-import { CategoryType } from '../models/Item.ts'
+import { CategoryType } from '../../models/Item.ts'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add'
 import { IoTrashBin } from 'react-icons/io5'

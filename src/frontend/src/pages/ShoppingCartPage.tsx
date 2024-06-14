@@ -2,7 +2,7 @@ import { Button, Grid, Box, Card, CardContent, Typography } from '@mui/material'
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import Item from '../models/Item'
-import BuyProductCard from '../components/BuyProductCard.tsx'
+import BuyProductCard from '../components/products/BuyProductCard.tsx'
 
 export default function ShoppingCartPage() {
   const navigate = useNavigate();
