@@ -5,7 +5,7 @@ import Item from '../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
-export default function ProductCard({ name, price, url }: Item) {
+export default function ProductCard(item : Item) {
   const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -16,17 +16,24 @@ export default function ProductCard({ name, price, url }: Item) {
     setOpen(false);
   };
 
+  const handleAddToFavourite = () => {
+    console.log('add to favourite ', item.name)
+  }
+
+  const handleAddToCart = () => {
+    console.log('add to cart ', item.name)
+  }
+
   return (
     <>
       <Paper
         elevation={3}
         square={false}
-        className="size-72 cursor-pointer p-3 duration-500 ease-in-out hover:scale-105 hover:transform hover:transition-transform"
+        className="size-72 p-3 duration-500 ease-in-out hover:scale-105 hover:transform hover:transition-transform"
         sx={{ borderRadius: 5 }}
-        onClick={handleOpenDialog}
       >
         <div className="flex justify-between">
-          <h1 className="inline-block text-center font-bold">{name}</h1>
+          <h1 className="inline-block text-center font-bold">{item.name}</h1>
           <IconButton
             sx={{
               '&:hover': {
@@ -34,33 +41,37 @@ export default function ProductCard({ name, price, url }: Item) {
               },
             }}
             disableRipple={true}
+            onClick={handleAddToFavourite}
           >
             <FavoriteIcon />
           </IconButton>
         </div>
 
-        <p>{price} zł</p>
+        <p>{item.price} zł</p>
 
-        <IconButton>
+        <IconButton onClick={handleAddToCart}>
           <AddShoppingCartIcon />
         </IconButton>
 
         <Box
+          className="cursor-pointer"
           component="img"
           sx={{
             height: '60%',
           }}
           margin="auto"
-          alt={name}
-          src={url}
+          alt={item.name}
+          src={item.url}
+          onClick={handleOpenDialog}
         />
       </Paper>
 
       <ProductDialog
         open={open}
         handleClose={handleCloseDialog}
-        name={name}
-        price={price}
+        handleAddToFavourite={handleAddToFavourite}
+        handleAddToCart={handleAddToCart}
+        product={item}
       />
     </>
   );
