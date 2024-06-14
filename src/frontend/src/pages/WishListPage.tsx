@@ -1,7 +1,7 @@
 import Navbar from '../components/navbar/Navbar'
 import { Card, CardContent, Grid, Typography } from '@mui/material'
 import Item from '../models/Item.ts'
-import ProductCard from '../components/products/ProductCard.tsx'
+import WishedProductCard from '../components/products/WishedProductCard.tsx'
 
 export default function WishListPage() {
 
@@ -61,7 +61,7 @@ export default function WishListPage() {
                       display="flex"
                       justifyContent="center"
                     >
-                      <ProductCard
+                      <WishedProductCard
                         id={item.id}
                         name={item.name}
                         price={item.price}
