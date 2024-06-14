@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { Paper, IconButton, Box } from '@mui/material';
 import ProductDialog from './ProductDialog.tsx';
 import Item from '../models/Item.ts'
-import FavoriteIcon from '@mui/icons-material/Favorite' // Importuj DialogComponent
-function AddShoppingCartIcon() {
-  return null
-}
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
 export default function ProductCard({ name, price, url }: Item) {
   const [open, setOpen] = useState(false);
