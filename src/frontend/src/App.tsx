@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginForm from './pages/LoginPage'
 import WishListPage from './pages/WishListPage.tsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.tsx'
+import AddProductPage from './pages/admin/AddProductPage.tsx'
 import { useUserStore } from './stores/UserStore'
 
 const theme = createTheme({
@@ -41,9 +42,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/contact" element={<ContactPage />}></Route>
-        {/* <Route path="/profile" element={<ProfilePage />}> */}
-        <Route index element={user?.role === 'ADMIN' ? <ProfileAdmin /> : <ProfilePage />} />
-        {/* </Route> */}
+        <Route path="/profile" element={<ProfilePage />}>
+          <Route index element={user?.role === 'ADMIN' ? <ProfileAdmin /> : <ProfilePage />} />
+        </Route>
+        <Route element={user?.role === 'ADMIN' ? <AddProductPage /> : <ProfilePage />} />
         <Route path="/register" element={<RegisterPage />}></Route>
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/wish-list" element={<WishListPage />}></Route>
