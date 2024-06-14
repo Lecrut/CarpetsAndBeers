@@ -97,7 +97,7 @@ export default function ShoppingCartPage() {
             </Box>
           </Card>
         </Grid>
-      </Grid>S
+      </Grid>
     </>
   );
 }
