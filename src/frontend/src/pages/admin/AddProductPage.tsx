@@ -30,10 +30,27 @@ const ProfilePage = () => {
       [e.target.name]: e.target.value,
     });
   };
-    const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     console.log(newItem);
-  };  
+    // itemStore.addItem(newItem);
+    const response = await fetch('itemapi/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newItem),
+    })
+
+    if (response.ok) {
+      const item = await response.json() 
+      itemStore.addItem(item) 
+      console.log('Dodano produkt')
+    } else {
+      console.log('Nie dodano produktu')
+    }
+  }
+
 
   return (
     <>
