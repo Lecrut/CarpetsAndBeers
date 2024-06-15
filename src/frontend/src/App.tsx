@@ -42,10 +42,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/contact" element={<ContactPage />}></Route>
-        <Route path="/profile" element={<ProfilePage />}>
-          <Route index element={user?.role === 'ADMIN' ? <ProfileAdmin /> : <ProfilePage />} />
-        </Route>
-        <Route element={user?.role === 'ADMIN' ? <AddProductPage /> : <ProfilePage />} />
+        <Route path="/profile" element={user?.role === 'ADMIN' ? <AddProductPage /> : <ProfilePage />} />
         <Route path="/register" element={<RegisterPage />}></Route>
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/wish-list" element={<WishListPage />}></Route>
