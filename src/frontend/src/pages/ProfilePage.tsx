@@ -8,12 +8,8 @@ import { useUserStore } from '../stores/UserStore'
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user)
+  console.log(user)
 
-  const userConst = {
-    name: "Piotr",
-    email: "1234@gmail.com",
-    avatar: "./public/temp_products/corona.png"
-  }
   const handleEdit = () => {
     
   };
