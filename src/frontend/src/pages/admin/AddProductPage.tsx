@@ -6,12 +6,15 @@ import { useUserStore } from '../../stores/UserStore'
 import { useState } from 'react';
 import Item from '../../models/Item';
 import { useItemStore } from '../../stores/ItemStore';
+import renderItems from '../../components/products/ProductListItem'
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user)
   const itemStore = useItemStore()
+  const items = itemStore.items  
 
   console.log(user)
+
 
   const handleEdit = () => {
     };
@@ -30,32 +33,25 @@ const ProfilePage = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(newItem);
-    // itemStore.addItem(newItem);
-    const response = await fetch('/api/itemapi/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newItem),
-    })
+    await itemStore.addItem(newItem); // Use postItem from itemStore
+  };
 
-    if (response.ok) {
-      const item = await response.json() 
-      itemStore.addItem(item) 
-      console.log('Dodano produkt')
-    } else {
-      console.log('Nie dodano produktu')
-    }
-  }
+  const handleDisplayItems = async () => {
+    await itemStore.fetchItems();
+    
+  };
+
 
 
   return (
     <>
       <Navbar />
-      <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh" pt={2}>
+      <Box display="flex" flexDirection="column" alignItems="center" minHeight="100vh" pt={2}>
         <Card sx={{ mt: 3, bgcolor: "grey.200"}}>
                 <CardContent>
                   <Typography variant="h5">Dodaj nowy produkt</Typography>
@@ -71,7 +67,17 @@ const ProfilePage = () => {
                     <button type="submit">Dodaj produkt</button>
                   </form>
                 </CardContent>
-              </Card>
+        </Card>
+        <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
+      
+            <button color="primary" type="button" onClick={handleDisplayItems} >Wyświetl produkty</button>
+          
+        </Card>
+        <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
+          <CardContent>
+            {renderItems(items)}
+          </CardContent>
+        </Card>
       </Box>
     </>
   );
