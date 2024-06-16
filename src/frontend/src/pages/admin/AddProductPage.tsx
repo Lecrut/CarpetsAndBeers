@@ -1,12 +1,12 @@
 import Navbar from '../../components/navbar/Navbar';
 import React from 'react';
-import { Avatar, Typography, Card, CardContent, Box, Grid } from '@mui/material';
+import { Avatar, TextField, Button, MenuItem, Typography, Card, CardContent, Box, Grid } from '@mui/material';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { useUserStore } from '../../stores/UserStore'
 import { useState } from 'react';
 import Item from '../../models/Item';
 import { useItemStore } from '../../stores/ItemStore';
-import renderItems from '../../components/products/ProductListItem'
+import RenderItems from '../../components/products/ProductListItem'
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user)
@@ -55,27 +55,59 @@ const ProfilePage = () => {
         <Card sx={{ mt: 3, bgcolor: "grey.200"}}>
                 <CardContent>
                   <Typography variant="h5">Dodaj nowy produkt</Typography>
-                  <form onSubmit={handleSubmit}>
-                    <input type="text" name="name" placeholder="Nazwa produktu" onChange={handleChange} />
-                    <input type="number" name="price" placeholder="Cena" onChange={handleChange} />
-                    <select name="category" >
-                      <option value="CARPET">Dywan</option>
-                      <option value="BEER">Piwo</option>
-                    </select>
-                    <input type="text" name="description" placeholder="Opis" onChange={handleChange} />
-                    <input type="text" name="url" placeholder="URL obrazu" onChange={handleChange} />
-                    <button type="submit">Dodaj produkt</button>
-                  </form>
+                    <form onSubmit={handleSubmit}>
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Nazwa produktu"
+                        name="name"
+                        onChange={handleChange}
+                      />
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Cena"
+                        name="price"
+                        type="number"
+                        onChange={handleChange}
+                      />
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        select
+                        label="Kategoria"
+                        name="category"
+                        onChange={handleChange}
+                      >
+                        <MenuItem value="CARPET">Dywan</MenuItem>
+                        <MenuItem value="BEER">Piwo</MenuItem>
+                      </TextField>
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="Opis"
+                        name="description"
+                        onChange={handleChange}
+                      />
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        label="URL obrazu"
+                        name="url"
+                        onChange={handleChange}
+                      />
+                      <Button type="submit" variant="contained" color="primary">
+                        Dodaj produkt
+                      </Button>
+                    </form>
                 </CardContent>
         </Card>
         <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
-      
             <button color="primary" type="button" onClick={handleDisplayItems} >Wyświetl produkty</button>
-          
         </Card>
-        <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
+        <Card sx={{ mt: 3, bgcolor: "grey.200", maxWidth: '900', mx: 'auto' }}> 
           <CardContent>
-            {renderItems(items)}
+            {RenderItems(items)}
           </CardContent>
         </Card>
       </Box>
