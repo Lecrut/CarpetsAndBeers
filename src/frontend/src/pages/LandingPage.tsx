@@ -2,7 +2,7 @@ import { Grid } from '@mui/material'
 import Carousel from '../components/Carousel'
 import Footer from '../components/Footer'
 import Navbar from '../components/navbar/Navbar'
-import ProductCard from '../components/ProductCard'
+import ProductCard from '../components/products/ProductCard.tsx'
 import Item from '../models/Item.ts'
 
 function LandingPage() {

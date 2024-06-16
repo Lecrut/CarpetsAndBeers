@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Paper, IconButton, Box } from '@mui/material';
-import ProductDialog from './ProductDialog.tsx';
-import Item from '../models/Item.ts'
+import WishedProductDialog from './WishedProductDialog.tsx';
+import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import { IoTrashBin } from 'react-icons/io5'
 
-export default function ProductCard(item : Item) {
+export default function WishedProductCard(item : Item) {
   const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -43,7 +43,7 @@ export default function ProductCard(item : Item) {
             disableRipple={true}
             onClick={handleAddToFavourite}
           >
-            <FavoriteIcon />
+            <IoTrashBin />
           </IconButton>
         </div>
 
@@ -66,10 +66,9 @@ export default function ProductCard(item : Item) {
         />
       </Paper>
 
-      <ProductDialog
+      <WishedProductDialog
         open={open}
         handleClose={handleCloseDialog}
-        handleAddToFavourite={handleAddToFavourite}
         handleAddToCart={handleAddToCart}
         product={item}
       />

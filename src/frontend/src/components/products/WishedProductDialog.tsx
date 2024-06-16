@@ -1,17 +1,15 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Box, Typography, IconButton } from '@mui/material'
-import Item from '../models/Item.ts'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 
 interface ProductDialogProps {
   open: boolean;
   handleClose: () => void;
-  handleAddToFavourite: () => void;
   handleAddToCart: () => void;
   product: Item
 }
 
-export default function ProductDialog({ open, handleClose, product, handleAddToFavourite, handleAddToCart }: ProductDialogProps) {
+export default function ProductDialog({ open, handleClose, product, handleAddToCart }: ProductDialogProps) {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{product.name}</DialogTitle>
@@ -27,18 +25,6 @@ export default function ProductDialog({ open, handleClose, product, handleAddToF
           <h1 className='inline-block text-center font-bold'>Cena: {product.price} zł</h1>
         </Typography>
         <div className="flex justify-center mt-2">
-          <IconButton
-            sx={{
-              '&:hover': {
-                color: '#F44336',
-              },
-            }}
-            disableRipple={true}
-            onClick={handleAddToFavourite}
-          >
-            <FavoriteIcon />
-          </IconButton>
-
           <IconButton onClick={handleAddToCart}>
             <AddShoppingCartIcon />
           </IconButton>

@@ -21,7 +21,7 @@ const LoginForm = () => {
       password: password,
     }
 
-    const response = await fetch('userapi/login', {
+    const response = await fetch('/api/userapi/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

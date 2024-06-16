@@ -34,7 +34,7 @@ const ProfilePage = () => {
     event.preventDefault();
     console.log(newItem);
     // itemStore.addItem(newItem);
-    const response = await fetch('itemapi/add', {
+    const response = await fetch('/api/itemapi/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

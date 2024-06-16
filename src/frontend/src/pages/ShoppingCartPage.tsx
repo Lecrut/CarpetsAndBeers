@@ -2,7 +2,7 @@ import { Button, Grid, Box, Card, CardContent, Typography } from '@mui/material'
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import Item from '../models/Item'
-import ProductCard from '../components/ProductCard.tsx'
+import BuyProductCard from '../components/products/BuyProductCard.tsx'
 
 export default function ShoppingCartPage() {
   const navigate = useNavigate();
@@ -35,8 +35,10 @@ export default function ShoppingCartPage() {
   
   ];
 
+  const amounts: number[] = [10, 2 , 3]
+
   const getTotal = () => {
-    return items.reduce((total, item) => total + item.price, 0);
+    return items.reduce((total, item, i) => total + item.price*amounts[i], 0);
   };
   
    return (
@@ -68,13 +70,14 @@ export default function ShoppingCartPage() {
                       display="flex"
                       justifyContent="center"
                     >
-                      <ProductCard
+                      <BuyProductCard
                         id={item.id}
                         name={item.name}
                         price={item.price}
                         url={item.url}
                         category={item.category}
                         description={item.description}
+                        value={amounts[i]}
                       />
                     </Grid>
                   )
@@ -94,7 +97,7 @@ export default function ShoppingCartPage() {
             </Box>
           </Card>
         </Grid>
-      </Grid>S
+      </Grid>
     </>
   );
 }

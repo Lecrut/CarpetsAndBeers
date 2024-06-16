@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/userapi': {
+      '/api': {
         target: 'http://0.0.0.0:8080',
         ws: true,
         changeOrigin: true,

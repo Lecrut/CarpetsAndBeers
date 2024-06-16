@@ -11,10 +11,10 @@ export default function ContactPage() {
         <Grid item xs={12} md={12} lg={6} position={'relative'}>
           <Card>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="h3" component="div">
                 Kontakt
               </Typography>
-              <Typography gutterBottom variant="h6" component="div">
+              <Typography gutterBottom variant="h4" component="div">
                 Bears&Carpets
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
