@@ -12,7 +12,6 @@ interface ItemStoreState {
 export const useItemStore = create<ItemStoreState>((set) => ({
   items: [],
   removeItem: async (itemId) => {
-    // Call your API to delete the item
     const response = await fetch(`/api/itemapi/${itemId}`, {
       method: 'DELETE',
       headers: {
@@ -21,7 +20,6 @@ export const useItemStore = create<ItemStoreState>((set) => ({
     });
 
     if (response.ok) {
-      // If deletion is successful, update the state to remove the item
       set((state) => ({ items: state.items.filter((item) => item.id !== itemId) }));
     } else {
       console.log('Nie usunięto produktu');
@@ -29,7 +27,6 @@ export const useItemStore = create<ItemStoreState>((set) => ({
   },
 
   editItem: async (itemId, updatedItem) => {
-    // Call your API to update the item
     const response = await fetch(`/api/itemapi/${itemId}`, {
       method: 'PUT',
       headers: {
@@ -40,7 +37,6 @@ export const useItemStore = create<ItemStoreState>((set) => ({
 
     if (response.ok) {
       const item = await response.json();
-      // If update is successful, update the state to include the updated item
       set((state) => ({
         items: state.items.map((item) =>
           item.id === itemId ? { ...item, ...updatedItem } : item
