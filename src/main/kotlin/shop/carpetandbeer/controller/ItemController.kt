@@ -7,7 +7,7 @@ import shop.carpetandbeer.model.ItemRequest
 import shop.carpetandbeer.repository.ItemRepository
 
 @RestController
-@RequestMapping("/itemapi")
+@RequestMapping("/api/itemapi")
 class ItemController(private val repository: ItemRepository) {
     @GetMapping("/getAllItems")
     fun getAllItems() : ResponseEntity<List<Item>> {

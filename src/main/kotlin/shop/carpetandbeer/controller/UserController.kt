@@ -13,7 +13,7 @@ import shop.carpetandbeer.repository.UserRepository
 import java.util.*
 
 @RestController
-@RequestMapping("/userapi")
+@RequestMapping("/api/userapi")
 class UserController( private val repository: UserRepository) {
     @GetMapping("/")
     fun getALlUsers(): ResponseEntity<List<User>> {
