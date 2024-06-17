@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material'
 import Carousel from 'react-material-ui-carousel'
+import { Link, NavLink } from 'react-router-dom'
 
 export default function CarouselComponent() {
   const items = [
@@ -22,6 +23,7 @@ export default function CarouselComponent() {
           <Item key={i} item={item} />
         ))}
       </Carousel>
+      <NavLink to='/find-products'>
       <Button
         variant="contained"
         color="secondary"
@@ -37,7 +39,8 @@ export default function CarouselComponent() {
         }}
       >
         Check it out!
-      </Button>
+        </Button>
+        </NavLink>
     </>
   )
 }
