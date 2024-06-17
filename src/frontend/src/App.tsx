@@ -4,8 +4,8 @@ import LandingPage from './pages/LandingPage'
 import { Route, Routes } from 'react-router-dom'
 import ContactPage from './pages/ContactPage'
 import ProfilePage from './pages/ProfilePage'
-import ProfileAdmin from './pages/admin/ProfileAdmin'
 import RegisterPage from './pages/RegisterPage'
+import FinalOrderPage from './pages/FinalOrderPage'
 import LoginForm from './pages/LoginPage'
 import WishListPage from './pages/WishListPage.tsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.tsx'
@@ -47,6 +47,7 @@ function App() {
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/wish-list" element={<WishListPage />}></Route>
         <Route path="/shopping-cart" element={<ShoppingCartPage />}></Route>
+        <Route path="/final-order" element={<FinalOrderPage />}></Route>
       </Routes>
     </ThemeProvider>
   )
