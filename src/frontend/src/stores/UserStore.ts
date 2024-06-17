@@ -1,17 +1,30 @@
-import { create } from 'zustand'
-import User from '../models/User'
-import zukeeper from 'zukeeper'
+import create from 'zustand';
+import { subscribeWithSelector } from 'zustand/middleware';
+import User from "../models/User.ts";
 
-type UserStore = {
-  user: User | null
-  setUser: (user: User | null) => void
-}
+export const useUserStore = create(
+    subscribeWithSelector((set) => ({
+        user: null,
+        setUser: (user: User | null) => set({ user }),
+        // Initialize the store with the user from localStorage if it exists
+        init: () => {
+            const user = localStorage.getItem('user');
+            if (user) {
+                set({ user: JSON.parse(user) });
+            }
+        },
+    }))
+);
 
-export const useUserStore = create<UserStore>(
-  zukeeper((set) => ({
-    user: null,
-    setUser: (user: User | null) => set({ user }),
-  })),
-)
+useUserStore.subscribe(
+    (state) => state.user,
+    (user) => {
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('user');
+        }
+    }
+);
 
-window.store = useUserStore
+useUserStore.getState().init();
