@@ -15,6 +15,10 @@ interface ItemStoreState {
   addItem: (newItem: Item) => Promise<void>;
   addToWishList: (wishedItem: Item) => void;
   removeFromWishList: (wishedItem: Item) => void;
+  increaseAmountInShoppingCart: (product: Item) => void;
+  decreaseAmountInShoppingCart: (product: Item) => void;
+  removeFromShoppingCart: (product: Item) => void;
+  addToShoppingCart: (product: Item) => void;
 }
 
 export const useItemStore = create<ItemStoreState>((set) => ({
@@ -99,5 +103,50 @@ export const useItemStore = create<ItemStoreState>((set) => ({
   },
   removeFromWishList: (wishedItem) => {
     set((state) => ({wishList: state.wishList.filter((i) => i.id !== wishedItem.id)}));
+  },
+  increaseAmountInShoppingCart: (product) => {
+    set((state) => {
+      const isItemInCart = state.shoppingCart.findIndex((item) => item.item.id === product.id);
+      if (isItemInCart !== -1) {
+        const newCart = [...state.shoppingCart]
+        newCart[isItemInCart].quantity += 1
+        return { shoppingCart: [...newCart]}
+      }
+      return { shoppingCart: [...state.shoppingCart] }
+    });
+  },
+  decreaseAmountInShoppingCart: (product) => {
+    set((state) => {
+      const isItemInCart = state.shoppingCart.findIndex((item) => item.item.id === product.id);
+      if (isItemInCart !== -1 && state.shoppingCart[isItemInCart].quantity === 1) {
+        return {shoppingCart: state.shoppingCart.filter((i) => i.item.id !== product.id)}
+      }
+      else if (isItemInCart !== -1) {
+        const newCart = [...state.shoppingCart]
+        newCart[isItemInCart].quantity -= 1
+        return { shoppingCart: [...newCart]}
+      }
+      return { shoppingCart: [...state.shoppingCart] }
+    });
+  },
+  removeFromShoppingCart: (product) => {
+    set((state) => {
+      const isItemInCart = state.shoppingCart.find((item) => item.item.id === product.id);
+      if (isItemInCart !== undefined) {
+        return {shoppingCart: state.shoppingCart.filter((i) => i.item.id !== product.id)}
+      }
+      return { shoppingCart: [...state.shoppingCart] }
+    });
+  },
+  addToShoppingCart: (product) => {
+    set((state) => {
+      const isItemInCart = state.shoppingCart.findIndex((item) => item.item.id === product.id);
+      if (isItemInCart === -1) {
+        return { shoppingCart: [...state.shoppingCart, {item: product, quantity: 1}] };
+      } else {
+        state.increaseAmountInShoppingCart(product)
+      }
+      return { shoppingCart: [...state.shoppingCart] }
+    });
   },
 }));

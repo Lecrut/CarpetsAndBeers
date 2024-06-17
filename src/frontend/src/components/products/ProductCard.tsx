@@ -25,6 +25,7 @@ export default function ProductCard(item : Item) {
   }
 
   const handleAddToCart = () => {
+      itemStore.addToShoppingCart(item)
     console.log('add to cart ', item.name)
   }
 

@@ -1,44 +1,17 @@
 import { Button, Grid, Box, Card, CardContent, Typography } from '@mui/material';
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
-import Item from '../models/Item'
 import BuyProductCard from '../components/products/BuyProductCard.tsx'
+import {useItemStore} from "../stores/ItemStore.ts";
 
 export default function ShoppingCartPage() {
   const navigate = useNavigate();
 
-  const items: Item[] = [
-  {
-    id: 1,
-    name: 'Piwo Lager',
-    price: 12.99,
-    category: 'BEER',
-    description: 'Chłodne, orzeźwiające piwo typu lager.',
-    url: '/temp_products/corona.png',
-  },
-  {
-    id: 2,
-    name: 'Dywan Perski',
-    price: 199.99,
-    category: 'CARPET',
-    description: 'Luksusowy, ręcznie robiony dywan perski.',
-    url: '/temp_products/corona.png',
-    },
-  {
-    id: 3,
-    name: 'Dywan Perski',
-    price: 199.99,
-    category: 'CARPET',
-    description: 'Luksusowy, ręcznie robiony dywan perski.',
-    url: '/temp_products/corona.png',
-    },
-  
-  ];
-
-  const amounts: number[] = [10, 2 , 3]
+  const itemStore = useItemStore()
+  const shoppingCart = itemStore.shoppingCart
 
   const getTotal = () => {
-    return items.reduce((total, item, i) => total + item.price*amounts[i], 0);
+    return shoppingCart.reduce((total, item) => total + item.item.price*item.quantity, 0);
   };
   
    return (
@@ -52,13 +25,18 @@ export default function ShoppingCartPage() {
               <Typography gutterBottom variant="h3" component="div">
                 Koszyk
               </Typography>
+
+              <Typography gutterBottom variant="h5" component="div">
+                {!shoppingCart.length && "Brak rzeczy w koszyku."}
+              </Typography>
+
               <Grid
                 container
                 justifyContent="center"
                 alignItems="center"
                 className="mt-6 gap-20"
               >
-                {items.map((item, i) => {
+                {shoppingCart.map((item, i) => {
                   return (
                     <Grid
                       item
@@ -71,13 +49,8 @@ export default function ShoppingCartPage() {
                       justifyContent="center"
                     >
                       <BuyProductCard
-                        id={item.id}
-                        name={item.name}
-                        price={item.price}
-                        url={item.url}
-                        category={item.category}
-                        description={item.description}
-                        value={amounts[i]}
+                        item={item.item}
+                        quantity={item.quantity}
                       />
                     </Grid>
                   )

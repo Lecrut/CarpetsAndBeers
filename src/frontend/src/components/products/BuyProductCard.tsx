@@ -10,24 +10,15 @@ import {
   Dialog,
   TextField
 } from '@mui/material'
-import { CategoryType } from '../../models/Item.ts'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add'
 import { IoTrashBin } from 'react-icons/io5'
+import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
 
 
-interface BuyProductProps {
-  id: number,
-  name: string,
-  price: number,
-  category: CategoryType,
-  description: string,
-  url?: string,
-  value: number
-}
-
-export default function BuyProductCard({name, price, url, description, value}: BuyProductProps) {
+export default function BuyProductCard({item, quantity}: CartItem) {
   const [open, setOpen] = useState(false);
+  const itemStore = useItemStore()
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -38,12 +29,16 @@ export default function BuyProductCard({name, price, url, description, value}: B
   };
 
   const handleIncrement = () => {
-    value = value + 1;
+    itemStore.increaseAmountInShoppingCart(item)
   };
 
   const handleDecrement = () => {
-    value = value - 1;
+    itemStore.decreaseAmountInShoppingCart(item)
   };
+
+  const handleRemoveFromCart = () => {
+    itemStore.removeFromShoppingCart(item)
+  }
 
   return (
     <>
@@ -55,7 +50,7 @@ export default function BuyProductCard({name, price, url, description, value}: B
         sx={{ borderRadius: 5 }}
       >
         <div className="flex justify-between">
-          <h1 className="inline-block text-center font-bold">{name}</h1>
+          <h1 className="inline-block text-center font-bold">{item.name}</h1>
           <IconButton
             sx={{
               '&:hover': {
@@ -63,13 +58,14 @@ export default function BuyProductCard({name, price, url, description, value}: B
               }
             }}
             disableRipple={true}
+            onClick={handleRemoveFromCart}
           >
             <IoTrashBin />
           </IconButton>
         </div>
 
         <div className="flex justify-center">
-          <p>{price} zł</p>
+          <p>{item.price} zł</p>
         </div>
 
 
@@ -80,8 +76,8 @@ export default function BuyProductCard({name, price, url, description, value}: B
             height: '60%'
           }}
           margin="auto"
-          alt={name}
-          src={url}
+          alt={item.name}
+          src={item.url}
           onClick={handleOpenDialog}
         />
 
@@ -93,8 +89,8 @@ export default function BuyProductCard({name, price, url, description, value}: B
         </IconButton>
 
         <TextField
-          value={value}
-          onChange={(e) => (value = Number(e.target.value))}
+          value={quantity}
+          onChange={(e) => (quantity = Number(e.target.value))}
           type="number"
           variant="outlined"
           style={{ width: '100px', margin: '0 10px' }}
@@ -107,17 +103,17 @@ export default function BuyProductCard({name, price, url, description, value}: B
       </div>
 
       <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle>{name}</DialogTitle>
+        <DialogTitle>{item.name}</DialogTitle>
         <DialogContent className="text-center">
           <Box my={3}>
-            <img src={url} alt={name} style={{ maxWidth: '100%' }} />
+            <img src={item.url} alt={item.name} style={{ maxWidth: '100%' }} />
           </Box>
           <Typography>
             <h1 className="inline-block text-center font-bold">Opis</h1>
           </Typography>
-          <Typography variant="body1">{description}</Typography>
+          <Typography variant="body1">{item.description}</Typography>
           <Typography>
-            <h1 className='inline-block text-center font-bold'>Cena: {price} zł</h1>
+            <h1 className='inline-block text-center font-bold'>Cena: {item.price} zł</h1>
           </Typography>
 
         </DialogContent>
