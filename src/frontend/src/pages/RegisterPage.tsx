@@ -7,10 +7,9 @@ import {
   Grid,
   Box,
   Avatar,
-  DialogActions,
   Dialog,
-  DialogContentText,
-  DialogContent, DialogTitle, AlertTitle, Alert
+  AlertTitle,
+  Alert,
 } from '@mui/material'
 // import { AccountCircle } from '@mui/icons-material'
 import Navbar from '../components/navbar/Navbar'
@@ -86,6 +85,11 @@ const RegistrationForm = () => {
       // Navigate('/')
     } else {
       console.log('Failed to register user')
+      setOpenDialog(true);
+      setTimeout(() => {
+        setOpenDialog(false);
+      }, 2000);
+      return
     }
   }
 
@@ -163,8 +167,8 @@ const RegistrationForm = () => {
 
       <Dialog open={openDialog}>
         <Alert severity="error">
-          <AlertTitle>Błąd</AlertTitle>
-          Nieprawidłowo wypełniony formularz
+          <AlertTitle>Ops!</AlertTitle>
+          Niestety nie udało Ci się zarejestrować
         </Alert>
       </Dialog>
     </>
