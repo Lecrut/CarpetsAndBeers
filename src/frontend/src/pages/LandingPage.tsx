@@ -3,35 +3,16 @@ import Carousel from '../components/Carousel'
 import Footer from '../components/Footer'
 import Navbar from '../components/navbar/Navbar'
 import ProductCard from '../components/products/ProductCard.tsx'
-import Item from '../models/Item.ts'
+import { useItemStore } from '../stores/ItemStore.ts'
+import { useEffect } from 'react'
 
 function LandingPage() {
-  const recommendedItems: Item[] = [
-    {
-      id: 1,
-      name: 'Lokalne piwo',
-      price: 15,
-      category: 'BEER',
-      description: 'Ciemne piwo o intensywnym smaku palonego słodu, z nutami kawy, czekolady i karmelu.',
-      url: '/temp_products/corona.png',
-    },
-    {
-      id: 2,
-      name: 'Lokalne piwo 2',
-      price: 35,
-      category: 'BEER',
-      description: 'IPA to styl piwa, który jest charakteryzowany przez wyraźny chmielowy smak i aromat. Jest zwykle mocniejsze i bardziej gorzkie niż inne style piwa.',
-      url: '/temp_products/corona.png',
-    },
-    {
-      id: 3,
-      name: 'Dywan',
-      price: 75,
-      category: 'CARPET',
-      description: 'Perskie dywany są ręcznie tkane i znane z bogatych wzorów, intensywnych kolorów i wysokiej jakości materiałów.',
-      url: '/images/banner1.jpg',
-    },
-  ]
+  const itemStore = useItemStore()
+  const items = itemStore.items
+
+  useEffect(() => {
+    itemStore.fetchItems()
+  }, []);
 
   return (
     <>
@@ -51,7 +32,7 @@ function LandingPage() {
         alignItems="center"
         className="mt-6 gap-20"
       >
-        {recommendedItems.map((item, i) => {
+        {items.map((item, i) => {
           return (
             <Grid
               item
