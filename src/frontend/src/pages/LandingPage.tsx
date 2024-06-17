@@ -44,7 +44,6 @@ function LandingPage() {
               display="flex"
               justifyContent="center"
             >
-                Id {i}, {item.id}
               <ProductCard
                 id={item.id}
                 name={item.name}

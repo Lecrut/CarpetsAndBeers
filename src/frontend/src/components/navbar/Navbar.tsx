@@ -21,7 +21,7 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
-import {useItemStore} from "../../stores/ItemStore.ts";
+import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
@@ -36,7 +36,8 @@ export default function ResponsiveAppBar() {
   const navigate = useNavigate()
 
   const itemStore = useItemStore()
-  const wishList = itemStore.items
+  const wishList = itemStore.wishList
+  const shoppingCart: CartItem[] = itemStore.shoppingCart
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -52,7 +53,6 @@ export default function ResponsiveAppBar() {
   const handleMobileLinkCLick = (pageName: string) => {
     setAnchorElNav(null)
     console.log('link click', pageName)
-    console.log('wishList', wishList)
 
     switch (pageName) {
       case 'Kontakt':
@@ -155,7 +155,7 @@ export default function ResponsiveAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                   >
-                    <Badge badgeContent={!wishList.length && wishList.length} color="error">
+                    <Badge badgeContent={wishList.length} color="error">
                       <FavoriteIcon fontSize="large" />
                     </Badge>
                   </IconButton>
@@ -168,7 +168,7 @@ export default function ResponsiveAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                   >
-                    <Badge badgeContent={4} color="error">
+                    <Badge badgeContent={shoppingCart.reduce((total, item: CartItem) => total + item.quantity, 0)} color="error">
                       <FaBasketShopping size={31} />
                     </Badge>
                   </IconButton>

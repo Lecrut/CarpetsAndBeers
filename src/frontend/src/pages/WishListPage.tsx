@@ -1,36 +1,11 @@
 import Navbar from '../components/navbar/Navbar'
 import { Card, CardContent, Grid, Typography } from '@mui/material'
-import Item from '../models/Item.ts'
 import WishedProductCard from '../components/products/WishedProductCard.tsx'
+import {useItemStore} from "../stores/ItemStore.ts";
 
 export default function WishListPage() {
-
-  const wishedItems: Item[] = [
-    {
-      id: 1,
-      name: 'Lokalne piwo',
-      price: 15,
-      category: 'BEER',
-      description: 'Ciemne piwo o intensywnym smaku palonego słodu, z nutami kawy, czekolady i karmelu.',
-      url: '/temp_products/corona.png',
-    },
-    {
-      id: 2,
-      name: 'Lokalne piwo 2',
-      price: 35,
-      category: 'BEER',
-      description: 'IPA to styl piwa, który jest charakteryzowany przez wyraźny chmielowy smak i aromat. Jest zwykle mocniejsze i bardziej gorzkie niż inne style piwa.',
-      url: '/temp_products/corona.png',
-    },
-    {
-      id: 3,
-      name: 'Dywan',
-      price: 75,
-      category: 'CARPET',
-      description: 'Perskie dywany są ręcznie tkane i znane z bogatych wzorów, intensywnych kolorów i wysokiej jakości materiałów.',
-      url: '/images/banner1.jpg',
-    },
-  ]
+  const itemStore = useItemStore()
+  const wishList = itemStore.wishList
 
   return (
     <>
@@ -43,13 +18,18 @@ export default function WishListPage() {
               <Typography gutterBottom variant="h3" component="div">
                 Lista życzeń
               </Typography>
+
+              <Typography gutterBottom variant="h5" component="div">
+                {!wishList.length && "Brak rzeczy w liście życzeń."}
+              </Typography>
+
               <Grid
                 container
                 justifyContent="center"
                 alignItems="center"
                 className="mt-6 gap-20"
               >
-                {wishedItems.map((item, i) => {
+                {wishList.map((item, i) => {
                   return (
                     <Grid
                       item

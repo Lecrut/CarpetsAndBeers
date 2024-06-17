@@ -4,9 +4,11 @@ import WishedProductDialog from './WishedProductDialog.tsx';
 import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import { IoTrashBin } from 'react-icons/io5'
+import {useItemStore} from "../../stores/ItemStore.ts";
 
 export default function WishedProductCard(item : Item) {
   const [open, setOpen] = useState(false);
+  const itemStore = useItemStore()
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -16,7 +18,8 @@ export default function WishedProductCard(item : Item) {
     setOpen(false);
   };
 
-  const handleAddToFavourite = () => {
+  const handleRemoveFromFavourite = () => {
+      itemStore.removeFromWishList(item)
     console.log('add to favourite ', item.name)
   }
 
@@ -41,7 +44,7 @@ export default function WishedProductCard(item : Item) {
               },
             }}
             disableRipple={true}
-            onClick={handleAddToFavourite}
+            onClick={handleRemoveFromFavourite}
           >
             <IoTrashBin />
           </IconButton>
