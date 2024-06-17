@@ -1,4 +1,4 @@
-import { Button, Grid, Box, Card, CardContent, Typography } from '@mui/material';
+import { Button, Grid, Box, Card, CardContent, Typography, TextField } from '@mui/material';
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import BuyProductCard from '../components/products/BuyProductCard.tsx'
@@ -6,6 +6,7 @@ import FindProductCard from '../components/products/FindProductCard.tsx'
 import { useItemStore } from "../stores/ItemStore.ts";
 import { useEffect } from 'react';
 import Item from '../models/Item.ts'
+import { SetStateAction, useState} from 'react'
 
 
 export default function FindProductPage() {
@@ -16,6 +17,16 @@ export default function FindProductPage() {
     useEffect( () => {
         itemStore.fetchItems()
     }, []);
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value.toLowerCase());
+    };
+
+    const filteredItems = items.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm)
+    );
 
   
    return (
@@ -29,13 +40,25 @@ export default function FindProductPage() {
               <Typography gutterBottom variant="h3" component="div">
                 Znajdź produkt
               </Typography>
-              <Grid
-                container
-                justifyContent="center"
-                className="mt-6"
-                spacing={2}
-              >
-                {items.map((item, i) => {
+              <Card
+                style={{ marginTop: '20px', padding: '20px' }}
+                className="mb-6 gap-20">
+                <TextField
+                    fullWidth
+                    label="Wyszukaj produkt"
+                    variant="outlined"
+                    onChange={handleSearch} // You will need to implement this function
+                />          
+              </Card>             
+
+                <Card>
+                <Grid
+                    container
+                    justifyContent="center"
+                    className="mt-6"
+                    spacing={2}
+                >
+                {filteredItems.map((item, i) => {
                   return (
                     <Grid
                       item
@@ -59,13 +82,11 @@ export default function FindProductPage() {
                   )
                 })}
               </Grid>
+              </Card>
             </CardContent>
           </Card>
 
-          <Card style={{ marginTop: '20px', padding: '20px' }}>
-            
-        
-          </Card>
+          
         </Grid>
       </Grid>
     </>

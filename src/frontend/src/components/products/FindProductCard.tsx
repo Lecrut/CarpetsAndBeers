@@ -28,7 +28,7 @@ export default function FindProductCard(item: Item) {
     <>
     <Paper
       elevation={3}
-      className="w-full p-3 duration-500 ease-in-out hover:scale-104 hover:transform hover:transition-transform"
+      className="w-full p-3 duration-500 ease-in-out hover:scale-105 hover:transform hover:transition-transform"
       sx={{ borderRadius: 5, height: 'auto', width: '100%'}}
       >
     <div className="flex justify-between items-center mb-4">
@@ -57,9 +57,9 @@ export default function FindProductCard(item: Item) {
         className="cursor-pointer"
         component="img"
         sx={{
-        maxHeight: '150px',
-        objectFit: 'contain',
-        width: '100%' // This will make the image take the full width of the Paper component
+          maxHeight: '150px',
+          objectFit: 'contain',
+          width: '100%'
         }}
         alt={item.name}
         src={item.url}
