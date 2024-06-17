@@ -18,14 +18,9 @@ export default function WishedProductCard(item : Item) {
     setOpen(false);
   };
 
-  const handleRemoveFromFavourite = () => {
-      itemStore.removeFromWishList(item)
-    console.log('add to favourite ', item.name)
-  }
+  const handleRemoveFromFavourite = () => {itemStore.removeFromWishList(item)}
 
-  const handleAddToCart = () => {
-    console.log('add to cart ', item.name)
-  }
+  const handleAddToCart = () => {itemStore.addToShoppingCart(item)}
 
   return (
     <>

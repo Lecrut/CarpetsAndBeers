@@ -18,16 +18,9 @@ export default function ProductCard(item : Item) {
     setOpen(false);
   };
 
-  const handleAddToFavourite = () => {
-      itemStore.addToWishList(item)
-    console.log('add to favourite ', item.name)
+  const handleAddToFavourite = () => {itemStore.addToWishList(item)}
 
-  }
-
-  const handleAddToCart = () => {
-      itemStore.addToShoppingCart(item)
-    console.log('add to cart ', item.name)
-  }
+  const handleAddToCart = () => {itemStore.addToShoppingCart(item)}
 
   return (
     <>
