@@ -3,14 +3,18 @@ import Item from '../models/Item';
 
 interface ItemStoreState {
   items: Item[];
+  wishList: Item[];
   removeItem: (itemId: number) => void;
   editItem: (itemId: number, updatedItem: Partial<Item>) => void;
   fetchItems: () => Promise<void>;
   addItem: (newItem: Item) => Promise<void>;
+  addToWishList: (wishedItem: Item) => void;
+  removeFromWishList: (wishedItem: Item) => void;
 }
 
 export const useItemStore = create<ItemStoreState>((set) => ({
   items: [],
+  wishList: [],
   removeItem: async (itemId) => {
     const response = await fetch(`/api/itemapi/${itemId}`, {
       method: 'DELETE',
@@ -76,5 +80,11 @@ export const useItemStore = create<ItemStoreState>((set) => ({
     } else {
       console.log('Nie dodano produktu');
     }
+  },
+  addToWishList: (wishedItem) => {
+    set((state) => ({wishList: [...state.wishList, wishedItem]}));
+  },
+  removeFromWishList: (wishedItem) => {
+    set((state) => ({wishList: state.wishList.filter((i) => i !== wishedItem)}));
   },
 }));

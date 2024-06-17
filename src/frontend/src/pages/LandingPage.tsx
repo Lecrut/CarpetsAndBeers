@@ -10,8 +10,8 @@ function LandingPage() {
   const itemStore = useItemStore()
   const items = itemStore.items
 
-  useEffect(() => {
-    itemStore.fetchItems()
+  useEffect( () => {
+      itemStore.fetchItems()
   }, []);
 
   return (
@@ -44,6 +44,7 @@ function LandingPage() {
               display="flex"
               justifyContent="center"
             >
+                Id {i}, {item.id}
               <ProductCard
                 id={item.id}
                 name={item.name}
