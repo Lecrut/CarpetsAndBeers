@@ -1,6 +1,6 @@
 import Navbar from '../../components/navbar/Navbar';
-import React from 'react';
-import { Avatar, TextField, Button, MenuItem, Typography, Card, CardContent, Box, Grid } from '@mui/material';
+import React, {useEffect} from 'react';
+import { TextField, Button, MenuItem, Typography, Card, CardContent, Box } from '@mui/material';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { useUserStore } from '../../stores/UserStore'
 import { useState } from 'react';
@@ -16,9 +16,7 @@ const ProfilePage = () => {
   console.log(user)
 
 
-  const handleEdit = () => {
-    };
-    const [newItem, setNewItem] = useState<Item>({
+  const [newItem, setNewItem] = useState<Item>({
     id: 0,
     name: '',
     price: 0,
@@ -35,7 +33,7 @@ const ProfilePage = () => {
   };
 
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     console.log(newItem);
     await itemStore.addItem(newItem); // Use postItem from itemStore
@@ -46,7 +44,9 @@ const ProfilePage = () => {
     
   };
 
-
+  useEffect( () => {
+    handleDisplayItems()
+  }, []);
 
   return (
     <>
