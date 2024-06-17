@@ -3,7 +3,7 @@ import { subscribeWithSelector } from 'zustand/middleware';
 import User from "../models/User.ts";
 
 export const useUserStore = create(
-    subscribeWithSelector((set, get) => ({
+    subscribeWithSelector((set) => ({
         user: null,
         setUser: (user: User | null) => set({ user }),
         // Initialize the store with the user from localStorage if it exists
