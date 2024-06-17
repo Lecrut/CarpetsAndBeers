@@ -10,8 +10,8 @@ function LandingPage() {
   const itemStore = useItemStore()
   const items = itemStore.items
 
-  useEffect(() => {
-    itemStore.fetchItems()
+  useEffect( () => {
+      itemStore.fetchItems()
   }, []);
 
   return (

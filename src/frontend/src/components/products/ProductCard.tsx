@@ -4,9 +4,11 @@ import ProductDialog from './ProductDialog.tsx';
 import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import {useItemStore} from "../../stores/ItemStore.ts";
 
 export default function ProductCard(item : Item) {
   const [open, setOpen] = useState(false);
+  const itemStore = useItemStore()
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -16,13 +18,9 @@ export default function ProductCard(item : Item) {
     setOpen(false);
   };
 
-  const handleAddToFavourite = () => {
-    console.log('add to favourite ', item.name)
-  }
+  const handleAddToFavourite = () => {itemStore.addToWishList(item)}
 
-  const handleAddToCart = () => {
-    console.log('add to cart ', item.name)
-  }
+  const handleAddToCart = () => {itemStore.addToShoppingCart(item)}
 
   return (
     <>

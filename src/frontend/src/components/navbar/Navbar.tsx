@@ -21,6 +21,7 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
+import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
@@ -33,6 +34,10 @@ export default function ResponsiveAppBar() {
   const setUser = useUserStore((state) => state.setUser)
 
   const navigate = useNavigate()
+
+  const itemStore = useItemStore()
+  const wishList = itemStore.wishList
+  const shoppingCart: CartItem[] = itemStore.shoppingCart
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -150,7 +155,7 @@ export default function ResponsiveAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                   >
-                    <Badge badgeContent={2} color="error">
+                    <Badge badgeContent={wishList.length} color="error">
                       <FavoriteIcon fontSize="large" />
                     </Badge>
                   </IconButton>
@@ -163,7 +168,7 @@ export default function ResponsiveAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                   >
-                    <Badge badgeContent={4} color="error">
+                    <Badge badgeContent={shoppingCart.reduce((total, item: CartItem) => total + item.quantity, 0)} color="error">
                       <FaBasketShopping size={31} />
                     </Badge>
                   </IconButton>
