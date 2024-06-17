@@ -1,4 +1,4 @@
-import { Button, Grid, Box, Card, CardContent, Typography, TextField } from '@mui/material';
+import { Button, Grid, Box, Card, CardContent, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import BuyProductCard from '../components/products/BuyProductCard.tsx'
@@ -19,14 +19,33 @@ export default function FindProductPage() {
     }, []);
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('ALL');
+    const [sortOrder, setSortOrder] = useState('ASC');
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value.toLowerCase());
     };
 
-    const filteredItems = items.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm)
-    );
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+    };
+
+    const handleSortChange = (event) => {
+        setSortOrder(event.target.value);
+    };
+
+    const filteredItems = items
+        .filter((item) =>
+            item.name.toLowerCase().includes(searchTerm) &&
+            (selectedCategory === 'ALL' || item.category === selectedCategory)
+        )
+        .sort((a, b) => {
+            if (sortOrder === 'ASC') {
+            return a.price - b.price;
+            } else {
+            return b.price - a.price;
+        }
+     });
 
   
    return (
@@ -40,17 +59,49 @@ export default function FindProductPage() {
               <Typography gutterBottom variant="h3" component="div">
                 Znajdź produkt
               </Typography>
-              <Card
-                style={{ marginTop: '20px', padding: '20px' }}
-                className="mb-6 gap-20">
-                <TextField
-                    fullWidth
-                    label="Wyszukaj produkt"
-                    variant="outlined"
-                    onChange={handleSearch} // You will need to implement this function
-                />          
-              </Card>             
-
+              <Card style={{ marginTop: '20px', padding: '20px' }} className="mb-6 gap-20">
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Wyszukaj produkt"
+                                variant="outlined"
+                                onChange={handleSearch}
+                            />
+                            </Grid>
+                            <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="category-select-label">Kategoria</InputLabel>
+                                <Select
+                                labelId="category-select-label"
+                                id="category-select"
+                                value={selectedCategory}
+                                label="Kategoria"
+                                onChange={handleCategoryChange}
+                                >
+                                <MenuItem value="ALL">Wszystkie</MenuItem>
+                                <MenuItem value="BEER">Piwo</MenuItem>
+                                <MenuItem value="CARPET">Dywany</MenuItem>
+                                </Select>
+                            </FormControl>
+                            </Grid>
+                            <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="sort-select-label">Sortuj według ceny</InputLabel>
+                                <Select
+                                labelId="sort-select-label"
+                                id="sort-select"
+                                value={sortOrder}
+                                label="Sortuj według ceny"
+                                onChange={handleSortChange}
+                                >
+                                <MenuItem value="ASC">Od najniższej</MenuItem>
+                                <MenuItem value="DESC">Od najwyższej</MenuItem>
+                                </Select>
+                            </FormControl>
+                            </Grid>
+                        </Grid>
+                    </Card>
                 <Card>
                 <Grid
                     container

@@ -48,7 +48,7 @@ function LandingPage() {
                 id={item.id}
                 name={item.name}
                 price={item.price}
-                url={item.url}
+                src='src/frontend/public/temp_products/corona.png'
                 category={item.category}
                 description={item.description}
               />
