@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material'
 import Carousel from 'react-material-ui-carousel'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export default function CarouselComponent() {
   const items = [
@@ -38,7 +38,7 @@ export default function CarouselComponent() {
           transform: 'translateX(-50%)',
         }}
       >
-        Check it out!
+        Zobacz więcej
         </Button>
         </NavLink>
     </>

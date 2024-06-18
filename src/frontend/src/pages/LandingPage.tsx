@@ -32,7 +32,7 @@ function LandingPage() {
         alignItems="center"
         className="mt-6 gap-20"
       >
-        {items.map((item, i) => {
+        {items.slice(0,3).map((item, i) => {
           return (
             <Grid
               item

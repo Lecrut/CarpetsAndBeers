@@ -1,12 +1,11 @@
-import { Button, Grid, Box, Card, CardContent, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Grid, Card, CardContent, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
-import BuyProductCard from '../components/products/BuyProductCard.tsx'
 import FindProductCard from '../components/products/FindProductCard.tsx'
 import { useItemStore } from "../stores/ItemStore.ts";
 import { useEffect } from 'react';
 import Item from '../models/Item.ts'
-import { SetStateAction, useState} from 'react'
+import { useState} from 'react'
 
 
 export default function FindProductPage() {
@@ -52,7 +51,7 @@ export default function FindProductPage() {
     <>
       <Navbar />
 
-      <Grid container marginTop={5} paddingX={2} justifyContent="center">
+      <Grid container marginY={5} paddingX={2} justifyContent="center">
         <Grid item xs={12} md={12} lg={8} position={'relative'}>
           <Card>
             <CardContent>
@@ -102,11 +101,11 @@ export default function FindProductPage() {
                             </Grid>
                         </Grid>
                     </Card>
-                <Card>
+
                 <Grid
                     container
                     justifyContent="center"
-                    className="mt-6"
+                    className="mt-6 px-6"
                     spacing={2}
                 >
                 {filteredItems.map((item, i) => {
@@ -133,7 +132,6 @@ export default function FindProductPage() {
                   )
                 })}
               </Grid>
-              </Card>
             </CardContent>
           </Card>
 
