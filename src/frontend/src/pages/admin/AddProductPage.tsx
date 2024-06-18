@@ -105,7 +105,7 @@ const ProfilePage = () => {
         <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
             <button color="primary" type="button" onClick={handleDisplayItems} >Wyświetl produkty</button>
         </Card>
-        <Card sx={{ mt: 3, bgcolor: "grey.200", maxWidth: '900', mx: 'auto' }}> 
+        <Card sx={{ my: 3, bgcolor: "grey.200", maxWidth: '900', mx: 'auto' }}>
           <CardContent>
             {RenderItems(items)}
           </CardContent>
