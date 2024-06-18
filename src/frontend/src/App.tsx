@@ -9,6 +9,7 @@ import FinalOrderPage from './pages/FinalOrderPage'
 import LoginForm from './pages/LoginPage'
 import WishListPage from './pages/WishListPage.tsx'
 import ShoppingCartPage from './pages/ShoppingCartPage.tsx'
+import FindProductPage from './pages/FindProductPage.tsx'
 import AddProductPage from './pages/admin/AddProductPage.tsx'
 import { useUserStore } from './stores/UserStore'
 
@@ -48,6 +49,7 @@ function App() {
         <Route path="/wish-list" element={<WishListPage />}></Route>
         <Route path="/shopping-cart" element={<ShoppingCartPage />}></Route>
         <Route path="/final-order" element={<FinalOrderPage />}></Route>
+        <Route path="/find-products" element={<FindProductPage />}></Route>
       </Routes>
     </ThemeProvider>
   )

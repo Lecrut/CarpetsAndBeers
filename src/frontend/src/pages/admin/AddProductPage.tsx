@@ -32,11 +32,11 @@ const ProfilePage = () => {
     });
   };
 
-
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void; target: { reset: () => void; }; }) => {
     event.preventDefault();
     console.log(newItem);
     await itemStore.addItem(newItem); // Use postItem from itemStore
+    event.target.reset()
   };
 
   const handleDisplayItems = async () => {
@@ -105,7 +105,7 @@ const ProfilePage = () => {
         <Card sx={{ mt: 3, bgcolor: "grey.200" }}>
             <button color="primary" type="button" onClick={handleDisplayItems} >Wyświetl produkty</button>
         </Card>
-        <Card sx={{ mt: 3, bgcolor: "grey.200", maxWidth: '900', mx: 'auto' }}> 
+        <Card sx={{ my: 3, bgcolor: "grey.200", maxWidth: '900', mx: 'auto' }}>
           <CardContent>
             {RenderItems(items)}
           </CardContent>
