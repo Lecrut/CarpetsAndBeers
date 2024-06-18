@@ -64,7 +64,7 @@ export default function ShoppingCartPage() {
               Suma: {getTotal()} zł
             </Typography>
             <Box display="flex" justifyContent="flex-end">
-              <Button variant="contained" color="secondary" onClick={() => navigate('/final-order')}>
+              <Button variant="contained" color="secondary" disabled={getTotal()===0} onClick={() => navigate('/final-order')}>
                 Przejdź do płatności
               </Button>
             </Box>
