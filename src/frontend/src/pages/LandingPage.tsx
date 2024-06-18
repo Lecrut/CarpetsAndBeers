@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 import Carousel from '../components/Carousel'
-// import Footer from '../components/Footer'
+import Footer from '../components/Footer'
 import Navbar from '../components/navbar/Navbar'
 import ProductCard from '../components/products/ProductCard.tsx'
 import { useItemStore } from '../stores/ItemStore.ts'
@@ -57,7 +57,7 @@ function LandingPage() {
         })}
       </Grid>
 
-      {/*<Footer />*/}
+      <Footer />
     </>
   )
 }
