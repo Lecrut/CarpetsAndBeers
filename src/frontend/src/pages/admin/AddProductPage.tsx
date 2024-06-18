@@ -32,11 +32,11 @@ const ProfilePage = () => {
     });
   };
 
-
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void; target: { reset: () => void; }; }) => {
     event.preventDefault();
     console.log(newItem);
     await itemStore.addItem(newItem); // Use postItem from itemStore
+    event.target.reset()
   };
 
   const handleDisplayItems = async () => {
