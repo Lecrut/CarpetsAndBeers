@@ -13,7 +13,9 @@ export default function FinalOrderPage() {
     const steps = ['Adres dostawy', 'Podsumowanie'];
     const [activeStep, setActiveStep] = useState(0);
     const [shippingData, setShippingData] = useState({
-        address: '',
+        street: '',
+        house: '',
+        flat: '',
         city: '',
         zip: '',
     });
@@ -59,9 +61,25 @@ export default function FinalOrderPage() {
                                 {activeStep === 0 && (
                                     <Box sx={{mt: 2}}>
                                         <TextField
-                                            label="Adres"
-                                            name="address"
-                                            value={shippingData.address}
+                                            label="Ulica"
+                                            name="street"
+                                            value={shippingData.street}
+                                            onChange={handleShippingChange}
+                                            fullWidth
+                                            margin="normal"
+                                        />
+                                        <TextField
+                                            label="Numer domu"
+                                            name="house"
+                                            value={shippingData.house}
+                                            onChange={handleShippingChange}
+                                            fullWidth
+                                            margin="normal"
+                                        />
+                                        <TextField
+                                            label="Numer mieszkania"
+                                            name="flat"
+                                            value={shippingData.flat}
                                             onChange={handleShippingChange}
                                             fullWidth
                                             margin="normal"
@@ -96,7 +114,7 @@ export default function FinalOrderPage() {
                                                     Adres
                                                 </Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">
-                                                    {shippingData.address}
+                                                    {shippingData.street} {shippingData.house}/{shippingData.flat}
                                                 </Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">
                                                     {shippingData.zip} {shippingData.city}
