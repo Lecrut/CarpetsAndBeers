@@ -2,6 +2,7 @@ package shop.carpetandbeer.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.github.cdimascio.dotenv.Dotenv
 import jakarta.annotation.PostConstruct
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -23,8 +24,9 @@ import java.util.*
 class OrderController(private val repository: OrderRepository) {
 
     companion object {
-        private val PAYPAL_CLIENT_ID: String = System.getenv("PAYPAL_CLIENT_ID") ?: ""
-        private val PAYPAL_CLIENT_SECRET: String = System.getenv("PAYPAL_CLIENT_SECRET") ?: ""
+        private val dotenv = Dotenv.load()
+        private val PAYPAL_CLIENT_ID: String = dotenv["PAYPAL_CLIENT_ID"] ?: ""
+        private val PAYPAL_CLIENT_SECRET: String = dotenv["PAYPAL_CLIENT_SECRET"] ?: ""
         private const val BASE_URL = "https://api-m.sandbox.paypal.com"
     }
 
@@ -64,6 +66,8 @@ class OrderController(private val repository: OrderRepository) {
 
     @PostMapping("/orders")
     fun createOrder(@RequestBody paypalOrder: PaypalOrderRequest): ResponseEntity<Map<String, Any>> {
+        val order: Order = repository.findById(paypalOrder.orderId).orElseThrow { RuntimeException("Order not found") }
+
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
         val url = "$BASE_URL/v2/checkout/orders"
         val payload = """
@@ -87,6 +91,9 @@ class OrderController(private val repository: OrderRepository) {
 
         val response = client.newCall(request).execute()
         val responseBody = response.body?.string() ?: throw RuntimeException("Response body is null")
+        order.paymentId = responseBody
+        order.status = OrderStatus.PENDING
+        repository.save(order)
         return ResponseEntity.status(response.code).body(mapOf("response" to responseBody))
     }
 

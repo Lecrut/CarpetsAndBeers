@@ -2,6 +2,7 @@ package shop.carpetandbeer.model
 
 import lombok.Data
 import org.jetbrains.annotations.NotNull
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -9,7 +10,7 @@ import java.time.LocalDateTime
 @Document(collection = "orders")
 @Data
 class Order (
-    @Indexed(unique = true)
+    @Id
     var id: String?,
     @NotNull
     var userId: String?,
