@@ -1,74 +1,81 @@
-import { SetStateAction, useState} from 'react'
+import type { SetStateAction } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // import React, { useState } from 'react'
 import {
-  Button,
-  TextField,
-  Container,
-  Grid,
-  Box,
-  Avatar,
-  Dialog,
-  AlertTitle,
   Alert,
+  AlertTitle,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Dialog,
+  Grid,
+  TextField,
 } from '@mui/material'
 // import { AccountCircle } from '@mui/icons-material'
 import Navbar from '../components/navbar/Navbar'
 // import { useNavigate } from 'react-router-dom'
 
-const RegistrationForm = () => {
+function RegistrationForm() {
   const [name, setName] = useState('')
-  const [nameError, setNameError] = useState('');
+  const [nameError, setNameError] = useState('')
 
-  const handleNameChange = (e: { target: { value: SetStateAction<string> } }) => {
+  const navigate = useNavigate()
+
+  const handleNameChange = (e: {
+    target: { value: SetStateAction<string> }
+  }) => {
     setName(e.target.value)
-    if (!name || name.length < 2) {
-      setNameError("Za krótka nazwa użytkownika")
-    }
-    else
-      setNameError('')
+    if (!name || name.length < 2) setNameError('Za krótka nazwa użytkownika')
+    else setNameError('')
   }
 
   const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState('');
+  const [emailError, setEmailError] = useState('')
 
-  const handleEmailChange = (e: { target: { value: SetStateAction<string> } }) => {
+  const handleEmailChange = (e: {
+    target: { value: SetStateAction<string> }
+  }) => {
     setEmail(e.target.value)
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Zły format adresu email")
-    }
-    else
-      setEmailError('')
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      setEmailError('Zły format adresu email')
+    else setEmailError('')
   }
-
 
   const [password, setPassword] = useState('')
-  const [passwordError, setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState('')
 
-  const handlePasswordChange = (e: { target: { value: SetStateAction<string> } }) => {
+  const handlePasswordChange = (e: {
+    target: { value: SetStateAction<string> }
+  }) => {
     setPassword(e.target.value)
-    if (!password || password.length < 12) {
-      setPasswordError("Za krótkie hasło")
-    }
-    else
-      setPasswordError('')
+    if (!password || password.length < 7) setPasswordError('Za krótkie hasło')
+    else setPasswordError('')
   }
 
-
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false)
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
     const userRequest = {
-      name: name,
-      email: email,
-      password: password,
+      name,
+      email,
+      password,
     }
 
-    if (emailError || passwordError || nameError || !name || !password || !email) {
-      setOpenDialog(true);
+    if (
+      emailError ||
+      passwordError ||
+      nameError ||
+      !name ||
+      !password ||
+      !email
+    ) {
+      setOpenDialog(true)
       setTimeout(() => {
-        setOpenDialog(false);
-      }, 2000);
+        setOpenDialog(false)
+      }, 2000)
       return
     }
 
@@ -82,14 +89,14 @@ const RegistrationForm = () => {
 
     if (response.ok) {
       console.log('User registered successfully')
-      // Navigate('/')
+      navigate('/')
+      alert('Zarejestrowano pomyślnie')
     } else {
       console.log('Failed to register user')
-      setOpenDialog(true);
+      setOpenDialog(true)
       setTimeout(() => {
-        setOpenDialog(false);
-      }, 2000);
-      return
+        setOpenDialog(false)
+      }, 2000)
     }
   }
 
@@ -134,7 +141,7 @@ const RegistrationForm = () => {
                     variant="outlined"
                     value={email}
                     inputProps={{
-                      type: "email",
+                      type: 'email',
                     }}
                     onChange={handleEmailChange}
                     helperText={emailError}
