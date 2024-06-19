@@ -21,7 +21,8 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
-import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
+import {useItemStore} from "../../stores/ItemStore.ts";
+import {CartItem} from "../../models/CartItem.ts";
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']

@@ -13,7 +13,8 @@ import {
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add'
 import { IoTrashBin } from 'react-icons/io5'
-import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
+import {useItemStore} from "../../stores/ItemStore.ts";
+import {CartItem} from "../../models/CartItem.ts";
 
 
 export default function BuyProductCard({item, quantity}: CartItem) {

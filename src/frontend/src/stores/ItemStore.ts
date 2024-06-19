@@ -1,11 +1,7 @@
 import create from 'zustand';
 import Item from '../models/Item';
-import { subscribeWithSelector } from 'zustand/middleware';
-
-export interface CartItem {
-  item: Item,
-  quantity: number,
-}
+import {subscribeWithSelector} from 'zustand/middleware';
+import {CartItem} from "../models/CartItem.ts";
 
 export const useItemStore = create(
     subscribeWithSelector((set) => ({
