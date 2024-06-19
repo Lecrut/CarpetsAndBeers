@@ -15,7 +15,7 @@ export default function ContactPage() {
                 Kontakt
               </Typography>
               <Typography gutterBottom variant="h4" component="div">
-                Bears&Carpets
+                Beers&Carpets
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 Adres: ul. Wólczańska 221, budynek B18, 93-005 Łódź
