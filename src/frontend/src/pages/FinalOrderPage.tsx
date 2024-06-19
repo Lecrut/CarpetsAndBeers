@@ -166,100 +166,110 @@ export default function FinalOrderPage() {
                                 )}
 
                                 {activeStep === 2 && (
-                                    <Box sx={{my: 4}} classNam="justify-center flex">
-                                        <Typography variant="h6" component="div">
-                                            Płatność
-                                        </Typography>
-                                        <PayPalScriptProvider options={initialOptions}>
-                                            <PayPalButtons
-                                                style={{
-                                                    shape: "rect",
-                                                    layout: "vertical",
-                                                    color: "gold",
-                                                    label: "paypal",
-                                                }}
-                                                createOrder={async () => {
-                                                    try {
-                                                        const response = await fetch("/api/orders", {
-                                                            method: "POST",
-                                                            headers: {
-                                                                "Content-Type": "application/json",
-                                                            },
-                                                            body: JSON.stringify({
-                                                                cart: [
-                                                                    {
-                                                                        id: "YOUR_PRODUCT_ID",
-                                                                        quantity: "YOUR_PRODUCT_QUANTITY",
+                                    <Box sx={{my: 4}} >
+                                        <Grid container justifyContent="center">
+                                            <Grid item xs={12} className="text-center">
+                                                <Typography variant="h6" className="font-bold" component="div">
+                                                    Metoda płatności
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={12} sm={8} md={8} lg={4} >
+                                                <div justifyContent="center">
+                                                    <PayPalScriptProvider justifyContent="center" className="justify-center" options={initialOptions}>
+                                                    <PayPalButtons
+                                                        style={{
+                                                            shape: "rect",
+                                                            layout: "vertical",
+                                                            color: "gold",
+                                                            label: "paypal",
+                                                        }}
+                                                        createOrder={async () => {
+                                                            try {
+                                                                const response = await fetch("/api/orders", {
+                                                                    method: "POST",
+                                                                    headers: {
+                                                                        "Content-Type": "application/json",
                                                                     },
-                                                                ],
-                                                            }),
-                                                        });
+                                                                    body: JSON.stringify({
+                                                                        cart: [
+                                                                            {
+                                                                                id: "YOUR_PRODUCT_ID",
+                                                                                quantity: "YOUR_PRODUCT_QUANTITY",
+                                                                            },
+                                                                        ],
+                                                                    }),
+                                                                });
 
-                                                        const orderData = await response.json();
+                                                                const orderData = await response.json();
 
-                                                        if (orderData.id) {
-                                                            return orderData.id;
-                                                        } else {
-                                                            const errorDetail = orderData?.details?.[0];
-                                                            const errorMessage = errorDetail
-                                                                ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                                                                : JSON.stringify(orderData);
+                                                                if (orderData.id) {
+                                                                    return orderData.id;
+                                                                } else {
+                                                                    const errorDetail = orderData?.details?.[0];
+                                                                    const errorMessage = errorDetail
+                                                                        ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+                                                                        : JSON.stringify(orderData);
 
-                                                            throw new Error(errorMessage);
-                                                        }
-                                                    } catch (error) {
-                                                        console.error(error);
-                                                        setMessage(`Could not initiate PayPal Checkout...${error}`);
-                                                    }
-                                                }}
-                                                onApprove={async (
-                                                    data,
-                                                    actions
-                                                ) => {
-                                                    try {
-                                                        const response = await fetch(
-                                                            `/api/orders/${data.orderID}/capture`,
-                                                            {
-                                                                method: "POST",
-                                                                headers: {
-                                                                    "Content-Type": "application/json",
-                                                                },
+                                                                    throw new Error(errorMessage);
+                                                                }
+                                                            } catch (error) {
+                                                                console.error(error);
+                                                                setMessage(`Could not initiate PayPal Checkout...${error}`);
                                                             }
-                                                        );
+                                                        }}
+                                                        onApprove={async (
+                                                            data,
+                                                            actions
+                                                        ) => {
+                                                            try {
+                                                                const response = await fetch(
+                                                                    `/api/orders/${data.orderID}/capture`,
+                                                                    {
+                                                                        method: "POST",
+                                                                        headers: {
+                                                                            "Content-Type": "application/json",
+                                                                        },
+                                                                    }
+                                                                );
 
-                                                        const orderData = await response.json();
+                                                                const orderData = await response.json();
 
-                                                        const errorDetail = orderData?.details?.[0];
+                                                                const errorDetail = orderData?.details?.[0];
 
-                                                        if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+                                                                if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
 
-                                                            return actions.restart();
-                                                        } else if (errorDetail) {
-                                                            throw new Error(
-                                                                `${errorDetail.description} (${orderData.debug_id})`
-                                                            );
-                                                        } else {
-                                                            const transaction =
-                                                                orderData.purchase_units[0].payments.captures[0];
-                                                            setMessage(
-                                                                `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
-                                                            );
-                                                            console.log(
-                                                                "Capture result",
-                                                                orderData,
-                                                                JSON.stringify(orderData, null, 2)
-                                                            );
-                                                        }
-                                                    } catch (error) {
-                                                        console.error(error);
-                                                        setMessage(
-                                                            `Sorry, your transaction could not be processed...${error}`
-                                                        );
-                                                    }
-                                                }}
-                                            />
-                                        </PayPalScriptProvider>
-                                        <p>{message}</p>
+                                                                    return actions.restart();
+                                                                } else if (errorDetail) {
+                                                                    throw new Error(
+                                                                        `${errorDetail.description} (${orderData.debug_id})`
+                                                                    );
+                                                                } else {
+                                                                    const transaction =
+                                                                        orderData.purchase_units[0].payments.captures[0];
+                                                                    setMessage(
+                                                                        `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
+                                                                    );
+                                                                    console.log(
+                                                                        "Capture result",
+                                                                        orderData,
+                                                                        JSON.stringify(orderData, null, 2)
+                                                                    );
+                                                                }
+                                                            } catch (error) {
+                                                                console.error(error);
+                                                                setMessage(
+                                                                    `Sorry, your transaction could not be processed...${error}`
+                                                                );
+                                                            }
+                                                        }}
+                                                    />
+                                                </PayPalScriptProvider>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={12} className="text-center">
+                                                <p>{message}</p>
+                                            </Grid>
+                                        </Grid>
                                     </Box>
                                 )}
                                 <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
