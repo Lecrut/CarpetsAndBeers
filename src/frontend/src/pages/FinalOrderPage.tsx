@@ -66,6 +66,7 @@ export default function FinalOrderPage() {
                                             value={shippingData.street}
                                             onChange={handleShippingChange}
                                             fullWidth
+                                            required
                                             margin="normal"
                                         />
                                         <TextField
@@ -74,6 +75,7 @@ export default function FinalOrderPage() {
                                             value={shippingData.house}
                                             onChange={handleShippingChange}
                                             fullWidth
+                                            required
                                             margin="normal"
                                         />
                                         <TextField
@@ -90,6 +92,7 @@ export default function FinalOrderPage() {
                                             value={shippingData.city}
                                             onChange={handleShippingChange}
                                             fullWidth
+                                            required
                                             margin="normal"
                                         />
                                         <TextField
@@ -98,6 +101,7 @@ export default function FinalOrderPage() {
                                             value={shippingData.zip}
                                             onChange={handleShippingChange}
                                             fullWidth
+                                            required
                                             margin="normal"
                                         />
                                     </Box>
@@ -157,7 +161,7 @@ export default function FinalOrderPage() {
                                         variant="contained"
                                         color="secondary"
                                         onClick={handleNext}
-                                        disabled={activeStep === 2 || !shippingData.city || !shippingData.zip || !shippingData.address}
+                                        disabled={activeStep === 2 || !shippingData.city || !shippingData.zip || !shippingData.street || !shippingData.house}
                                     >
                                         {activeStep === steps.length - 1 ? 'Opłać' : 'Następny'}
                                     </Button>
