@@ -33,11 +33,11 @@ export default function FindProductCard(item: Item) {
       >
     <div className="flex justify-between items-center mb-4">
         <h1 className="font-bold">{item.name}</h1>
-            <div>
+          <div>
             <IconButton
-                sx={{
-                    '&:hover': {
-                    color: '#F44336',
+              sx={{
+                '&:hover': {
+                color: '#F44336',
                     },
                 }}
                 disableRipple={true}

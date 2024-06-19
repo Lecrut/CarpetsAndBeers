@@ -21,10 +21,41 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
-import {CartItem, useItemStore} from "../../stores/ItemStore.ts";
+import { CartItem, useItemStore } from "../../stores/ItemStore.ts";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Item from '../../models/Item.ts'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
+
+const SearchBar = ({ setSearchQuery }) => (
+  <form>
+    <TextField
+      id="search-bar"
+      className="text"
+      onInput={(e) => {
+        setSearchQuery(e.target.value.toLowerCase());
+      }}
+      label="Wyszukaj produkt"
+      variant="outlined"
+      placeholder="Wpisz nazwę..."
+      size="small"
+      color="primary"
+    />
+    <IconButton type="submit" aria-label="search">
+      <SearchIcon style={{ fill: "blue" }} />
+    </IconButton>
+  </form>
+);
+
+const filterData = (search: string, data: Item[]) => {
+  if (!search) {
+    return [];
+  } else {
+    return data.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+  }
+};
 
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -90,6 +121,10 @@ export default function ResponsiveAppBar() {
     }
   }
 
+  const allItems = itemStore.items;
+  const [searchName, setSearchQuery] = useState('');
+  const dataFiltered = filterData(searchName, allItems);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -129,7 +164,27 @@ export default function ResponsiveAppBar() {
             })}
           >
             <Grid item xs={10}>
-              <SearchField />
+              {/* <SearchField /> */}
+              <SearchBar setSearchQuery={setSearchQuery} />
+              <div style={{ padding: 3, maxWidth: '80%' }}>
+                {dataFiltered.map((item) => (
+                  <div
+                    className="text"
+                    style={{
+                      padding: 5,
+                      justifyContent: "normal",
+                      fontSize: 20,
+                      color: "blue",
+                      margin: 1,
+                      width: "250px", // Ogranicz szerokość elementu produktu
+                      borderWidth: "10px",
+                    }}
+                    key={item.id}
+                  >
+                    {item.name}
+                  </div>
+                ))}
+              </div>
             </Grid>
             <Grid item xs={1}>
               <Box
@@ -314,6 +369,8 @@ export default function ResponsiveAppBar() {
           )}
         </Toolbar>
       </Container>
+
+      
     </AppBar>
   )
 }
