@@ -3,6 +3,7 @@ import {Box, Button, Card, CardContent, Grid, Step, StepLabel, Stepper, TextFiel
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useItemStore} from "../stores/ItemStore.ts";
+import Address from "../models/Address.ts";
 
 export default function FinalOrderPage() {
     const navigate = useNavigate();
@@ -12,10 +13,10 @@ export default function FinalOrderPage() {
 
     const steps = ['Adres dostawy', 'Podsumowanie'];
     const [activeStep, setActiveStep] = useState(0);
-    const [shippingData, setShippingData] = useState({
+    const [shippingData, setShippingData] = useState<Address>({
         street: '',
-        house: '',
-        flat: '',
+        building: '',
+        number: '',
         city: '',
         zip: '',
     });
@@ -71,8 +72,8 @@ export default function FinalOrderPage() {
                                         />
                                         <TextField
                                             label="Numer domu"
-                                            name="house"
-                                            value={shippingData.house}
+                                            name="building"
+                                            value={shippingData.building}
                                             onChange={handleShippingChange}
                                             fullWidth
                                             required
@@ -80,8 +81,8 @@ export default function FinalOrderPage() {
                                         />
                                         <TextField
                                             label="Numer mieszkania"
-                                            name="flat"
-                                            value={shippingData.flat}
+                                            name="number"
+                                            value={shippingData.number}
                                             onChange={handleShippingChange}
                                             fullWidth
                                             margin="normal"
@@ -118,7 +119,7 @@ export default function FinalOrderPage() {
                                                     Adres
                                                 </Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">
-                                                    {shippingData.street} {shippingData.house}/{shippingData.flat}
+                                                    {shippingData.street} {shippingData.building}/{shippingData.number}
                                                 </Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">
                                                     {shippingData.zip} {shippingData.city}
@@ -161,7 +162,7 @@ export default function FinalOrderPage() {
                                         variant="contained"
                                         color="secondary"
                                         onClick={handleNext}
-                                        disabled={activeStep === 2 || !shippingData.city || !shippingData.zip || !shippingData.street || !shippingData.house}
+                                        disabled={activeStep === 2 || !shippingData.city || !shippingData.zip || !shippingData.street || !shippingData.building}
                                     >
                                         {activeStep === steps.length - 1 ? 'Opłać' : 'Następny'}
                                     </Button>
