@@ -14,7 +14,7 @@ class Order (
     @NotNull
     var userId: String?,
     @NotNull
-    var items: Map<String, Int>?, //number of items and item
+    var items: List<CartItem>, //number of items and item
     @NotNull
     var totalPrice: Double?,
     @NotNull
