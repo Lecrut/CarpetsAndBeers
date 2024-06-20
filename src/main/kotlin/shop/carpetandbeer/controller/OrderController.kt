@@ -119,7 +119,9 @@ class OrderController(private val repository: OrderRepository) {
         val response = client.newCall(request).execute()
         val responseBody = response.body?.string() ?: throw RuntimeException("Response body is null")
         logger.info("Response: $responseBody")
-        return ResponseEntity.status(response.code).body(mapOf("response" to responseBody))
+        val mapper: ObjectMapper = jacksonObjectMapper()
+        val jsonResponseBody = mapper.readTree(responseBody)
+        return ResponseEntity.status(response.code).body(mapOf("response" to jsonResponseBody))
     }
 
     private fun generateAccessToken(): String? {
