@@ -52,6 +52,7 @@ export const useItemStore = create(
 
         if (response.ok) {
           const fetchedData = await response.json();
+          console.log(fetchedData)
           set({ items: fetchedData });
         } else {
           console.log('Nie znaleziono produktów');
