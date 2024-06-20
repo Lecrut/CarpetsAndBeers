@@ -16,14 +16,14 @@ import { useNavigate } from 'react-router-dom'
 import { useItemStore } from '../stores/ItemStore.ts'
 import Address from '../models/Address.ts'
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
+import { useOrderStore } from '../stores/OrderStore.ts'
 
 export default function FinalOrderPage() {
   const navigate = useNavigate()
 
   const itemStore = useItemStore()
+  const orderStore = useOrderStore()
   const shoppingCart = itemStore.shoppingCart
-
-  const [orderId, setOrderId] = useState('')
 
   const steps = ['Adres dostawy', 'Podsumowanie', 'Wybierz metodę płatności']
   const [activeStep, setActiveStep] = useState(0)
@@ -72,6 +72,16 @@ export default function FinalOrderPage() {
     return shoppingCart.reduce(
       (total, item) => total + item.item.price * item.quantity,
       0,
+    )
+  }
+
+  const navigateToSuccessfulOrder = (orderData) => {
+    navigate('/successful-order')
+    console.log(orderData, 'from function')
+    orderStore.setEmail(orderData.response.payer.email_address)
+    orderStore.setTransId(orderData.response.id)
+    orderStore.setPrice(
+      orderData.response.purchase_units[0].payments.captures[0].amount.value,
     )
   }
 
@@ -237,7 +247,6 @@ export default function FinalOrderPage() {
                                   const orderData = await response.json()
 
                                   if (orderData.response) {
-                                    setOrderId(orderData.response.id)
                                     return orderData.response.id
                                   } else {
                                     const errorDetail = orderData?.details?.[0]
@@ -290,6 +299,8 @@ export default function FinalOrderPage() {
                                       orderData,
                                       JSON.stringify(orderData, null, 2),
                                     )
+
+                                    navigateToSuccessfulOrder(orderData)
                                   }
                                 } catch (error) {
                                   console.error(error)

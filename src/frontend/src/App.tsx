@@ -12,6 +12,7 @@ import ShoppingCartPage from './pages/ShoppingCartPage.tsx'
 import FindProductPage from './pages/FindProductPage.tsx'
 import AddProductPage from './pages/admin/AddProductPage.tsx'
 import { useUserStore } from './stores/UserStore'
+import { SuccessfulOrderPage } from './pages/SuccessfulOrderPage.tsx'
 
 const theme = createTheme({
   palette: {
@@ -43,13 +44,22 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/contact" element={<ContactPage />}></Route>
-        <Route path="/profile" element={user?.role === 'ADMIN' ? <AddProductPage /> : <ProfilePage />} />
+        <Route
+          path="/profile"
+          element={
+            user?.role === 'ADMIN' ? <AddProductPage /> : <ProfilePage />
+          }
+        />
         <Route path="/register" element={<RegisterPage />}></Route>
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/wish-list" element={<WishListPage />}></Route>
         <Route path="/shopping-cart" element={<ShoppingCartPage />}></Route>
         <Route path="/final-order" element={<FinalOrderPage />}></Route>
         <Route path="/find-products" element={<FindProductPage />}></Route>
+        <Route
+          path="/successful-order"
+          element={<SuccessfulOrderPage />}
+        ></Route>
       </Routes>
     </ThemeProvider>
   )
