@@ -17,12 +17,14 @@ import { useItemStore } from '../stores/ItemStore.ts'
 import Address from '../models/Address.ts'
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import { useOrderStore } from '../stores/OrderStore.ts'
+import { useUserStore } from '../stores/UserStore.ts'
 
 export default function FinalOrderPage() {
   const navigate = useNavigate()
 
   const itemStore = useItemStore()
   const orderStore = useOrderStore()
+  const userStore = useUserStore()
   const shoppingCart = itemStore.shoppingCart
 
   const steps = ['Adres dostawy', 'Podsumowanie', 'Wybierz metodę płatności']
@@ -49,8 +51,25 @@ export default function FinalOrderPage() {
 
   const [message, setMessage] = useState('')
 
-  const handleNext = () => {
+  const getTotal = () => {
+    return shoppingCart.reduce(
+      (total, item) => total + item.item.price * item.quantity,
+      0,
+    )
+  }
+
+  const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    if (activeStep === 1) {
+      const newOrder = await orderStore.addOrder({
+        address: shippingData,
+        userID: userStore.user.id,
+        items: shoppingCart,
+        totalPrice: getTotal(),
+      })
+      orderStore.setCurrentOrder(newOrder)
+      console.log(orderStore.currentOrder, 'store current order')
+    }
   }
 
   const handleBack = () => {
@@ -68,12 +87,7 @@ export default function FinalOrderPage() {
     })
   }
 
-  const getTotal = () => {
-    return shoppingCart.reduce(
-      (total, item) => total + item.item.price * item.quantity,
-      0,
-    )
-  }
+
 
   const navigateToSuccessfulOrder = (orderData: any) => {
     navigate('/successful-order')
@@ -229,6 +243,7 @@ export default function FinalOrderPage() {
                                 label: 'paypal',
                               }}
                               createOrder={async () => {
+                                console.log(orderStore.currentOrder)
                                 try {
                                   const response = await fetch(
                                     '/api/orderapi/orders',
@@ -239,7 +254,7 @@ export default function FinalOrderPage() {
                                       },
                                       body: JSON.stringify({
                                         orderPrice: getTotal(),
-                                        orderId: '6673ff34c9ea904e3002d6c3',
+                                        orderId: orderStore.currentOrder.id,
                                       }),
                                     },
                                   )
