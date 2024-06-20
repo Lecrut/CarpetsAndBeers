@@ -29,7 +29,7 @@ class Order (
 )
 
 enum class OrderStatus {
-    RECEIVED, PENDING, DELIVERED, CANCELLED
+    RECEIVED, PENDING, DELIVERED, CANCELLED, COMPLETED
 }
 
 class OrderRequest(
