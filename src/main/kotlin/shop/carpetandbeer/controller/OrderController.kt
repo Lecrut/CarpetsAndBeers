@@ -18,6 +18,7 @@ import shop.carpetandbeer.repository.OrderRepository
 import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
+import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/api/orderapi")
@@ -103,6 +104,9 @@ class OrderController(private val repository: OrderRepository) {
     @PostMapping("/orders/{orderID}/capture")
     fun captureOrder(@PathVariable orderID: String): ResponseEntity<Map<String, Any>> {
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
+        val logger = Logger.getLogger(OrderController::class.java.name)
+        logger.info("Access token: $accessToken")
+
         val url = "$BASE_URL/v2/checkout/orders/$orderID/capture"
         val request = Request.Builder()
             .url(url)
@@ -110,9 +114,10 @@ class OrderController(private val repository: OrderRepository) {
             .addHeader("Content-Type", "application/json")
             .addHeader("Authorization", "Bearer $accessToken")
             .build()
-
+        logger.info("Request: $request")
         val response = client.newCall(request).execute()
         val responseBody = response.body?.string() ?: throw RuntimeException("Response body is null")
+        logger.info("Response: $responseBody")
         return ResponseEntity.status(response.code).body(mapOf("response" to responseBody))
     }
 

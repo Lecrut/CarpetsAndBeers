@@ -15,6 +15,7 @@ class SecurityConfig {
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/api/userapi/*", "/api/itemapi/*", "/api/orderapi/*",
+                        "/api/orderapi/orders/**",
                         "/userapi/login",
                         "/userapi/register",
                         ).permitAll()
