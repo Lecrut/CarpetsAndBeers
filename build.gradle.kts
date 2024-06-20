@@ -37,6 +37,8 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("com.squareup.okhttp3:okhttp:4.9.2")
+	implementation("io.github.cdimascio:java-dotenv:5.2.2")
 }
 dependencyManagement {
 	imports {
