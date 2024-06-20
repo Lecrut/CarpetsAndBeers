@@ -66,7 +66,7 @@ export default function FinalOrderPage() {
     if (activeStep === 1) {
       const item = await orderStore.addOrder({
         address: shippingData,
-        userID: userStore.user.id,
+        userId: userStore.user.id,
         items: shoppingCart.map((item) => ({
           quantity: item.quantity,
           item: item.item.id,
