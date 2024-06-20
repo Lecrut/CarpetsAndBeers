@@ -8,7 +8,6 @@ import { useUserStore } from '../stores/UserStore'
 
 const ProfilePage = () => {
   const user = useUserStore((state) => state.user)
-  console.log(user)
 
   const handleEdit = () => {
     

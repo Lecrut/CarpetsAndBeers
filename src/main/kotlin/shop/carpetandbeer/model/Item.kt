@@ -4,6 +4,7 @@ import lombok.Data
 import org.jetbrains.annotations.NotNull
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.net.URL
 
 enum class Category {
     BEER, CARPET
@@ -11,16 +12,18 @@ enum class Category {
 
 @Document(collection = "items")
 @Data
-class Item(@Id
-           var id: String?,
-           @NotNull
-           var name: String?,
-           @NotNull
-           var price: Double?,
-           @NotNull
-           var description: String?,
-           @NotNull
-           var category: Category?
+class Item(
+    @Id
+    var id: String?,
+    @NotNull
+    var name: String?,
+    @NotNull
+    var price: Double?,
+    @NotNull
+    var description: String?,
+    @NotNull
+    var category: Category?,
+    var imgURL: String?
 )
 
 class ItemRequest {
@@ -28,4 +31,5 @@ class ItemRequest {
     var price: Double? = null
     var description: String? = null
     var category: Category? = null
+    var imgUrl: String? = null
 }
