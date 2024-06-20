@@ -50,8 +50,16 @@ class OrderController(private val repository: OrderRepository) {
         return ResponseEntity.ok(repository.findById(id).orElseThrow { RuntimeException("Order not found") })
     }
 
+    @GetMapping("/user/{userId}")
+    fun getOrdersByUserId(@PathVariable userId: String): ResponseEntity<List<Order>> {
+        val orders : List<Order> = repository.findAll()
+        return ResponseEntity.ok(orders.filter { it.userId == userId })
+    }
+
     @PostMapping("/add")
     fun createOrder(@RequestBody orderRequest: OrderRequest): ResponseEntity<Order> {
+        val logger = Logger.getLogger(OrderController::class.java.name)
+        logger.info("Order request: $orderRequest")
         val order = Order(
             id = null,
             userId = orderRequest.userId,
@@ -102,14 +110,14 @@ class OrderController(private val repository: OrderRepository) {
         return ResponseEntity.status(response.code).body(mapOf("response" to jsonResponseBody))
     }
 
-    @PostMapping("/orders/{orderID}/capture")
-    fun captureOrder(@PathVariable orderID: String): ResponseEntity<Map<String, Any>> {
+    @PostMapping("/orders/{orderID}/{paypalOrderId}")
+    fun captureOrder(@PathVariable orderID: String, @PathVariable paypalOrderId: String): ResponseEntity<Map<String, Any>> {
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
         val order: Order = repository.findById(orderID).orElseThrow { RuntimeException("Order not found") }
         val logger = Logger.getLogger(OrderController::class.java.name)
         logger.info("Access token: $accessToken")
 
-        val url = "$BASE_URL/v2/checkout/orders/$orderID/capture"
+        val url = "$BASE_URL/v2/checkout/orders/$paypalOrderId/capture"
         val request = Request.Builder()
             .url(url)
             .post("".toRequestBody("application/json".toMediaTypeOrNull()))

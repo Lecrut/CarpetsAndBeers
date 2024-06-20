@@ -23,7 +23,7 @@ class Item(
     var description: String?,
     @NotNull
     var category: Category?,
-    var imgURL: String?
+    var imgUrl: String?
 )
 
 class ItemRequest {

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*
 import shop.carpetandbeer.model.Item
 import shop.carpetandbeer.model.ItemRequest
 import shop.carpetandbeer.repository.ItemRepository
+import java.util.logging.Logger
+import kotlin.math.log
 
 @RestController
 @RequestMapping("/api/itemapi")
@@ -18,7 +20,11 @@ class ItemController(private val repository: ItemRepository, @Autowired private 
 
     @GetMapping("/{id}")
     fun getItemById(@PathVariable id: String) : ResponseEntity<Item> {
-        return ResponseEntity.ok(repository.findById(id).get())
+        val item = repository.findById(id).orElse(null)
+        val image = item.imgUrl?.let { azureBlobStorageService.getBase64FromUrl(it) }
+        val logger = Logger.getLogger(ItemController::class.java.name)
+        logger.info("Image: $image")
+        return ResponseEntity.ok(item)
     }
 
     @PostMapping("/add")
@@ -37,7 +43,7 @@ class ItemController(private val repository: ItemRepository, @Autowired private 
             it.price = item.price
             it.description = item.description
             it.category = item.category
-            it.imgURL = item.imgUrl?.let { azureBlobStorageService.uploadToBlobStorage(it).toString() }
+            it.imgUrl = item.imgUrl?.let { azureBlobStorageService.uploadToBlobStorage(it).toString() }
             return ResponseEntity.ok().body(repository.save(it))
         }
         return ResponseEntity.notFound().build()

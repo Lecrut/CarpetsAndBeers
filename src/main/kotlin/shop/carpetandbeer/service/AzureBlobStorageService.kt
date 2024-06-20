@@ -3,6 +3,7 @@ package shop.carpetandbeer.service
 import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.models.BlobHttpHeaders
 import io.github.cdimascio.dotenv.Dotenv
+import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -13,8 +14,20 @@ import javax.imageio.ImageIO
 @Service
 class AzureBlobStorageService {
     private val containerName = "beerscarpets"
-    private val dotEnv = Dotenv.load()
-    private val sasToken = dotEnv["SAS_TOKEN_AZURE"]
+
+    companion object {
+        private val dotEnv = Dotenv.load()
+        private val sasToken = dotEnv["SAS_TOKEN_AZURE"]
+    }
+//    private val dotEnv = Dotenv.load()
+//    private val sasToken = dotEnv["SAS_TOKEN_AZURE"]
+
+    @PostConstruct
+    fun init() {
+        if (sasToken.isNullOrEmpty()) {
+            throw IllegalStateException("MISSING_SAS_TOKEN")
+        }
+    }
 
     fun uploadToBlobStorage(imageData: String): URL {
         val blobName = "${UUID.randomUUID()}.jpeg"
@@ -42,5 +55,16 @@ class AzureBlobStorageService {
         blobClient.setHttpHeaders(headers)
 
         return URL(blobClient.blobUrl)
+    }
+
+    fun getBase64FromUrl(urlString: String): String {
+        val url = URL(urlString)
+        val connection = url.openConnection()
+        val inputStream = connection.getInputStream()
+        val image = ImageIO.read(inputStream)
+        val os = ByteArrayOutputStream()
+        ImageIO.write(image, "jpeg", os)
+        val imageBytes = os.toByteArray()
+        return Base64.getEncoder().encodeToString(imageBytes)
     }
 }
