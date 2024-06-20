@@ -75,14 +75,14 @@ export default function FinalOrderPage() {
     )
   }
 
-  const navigateToSuccessfulOrder = (orderData) => {
+  const navigateToSuccessfulOrder = (orderData: any) => {
     navigate('/successful-order')
-    console.log(orderData, 'from function')
     orderStore.setEmail(orderData.response.payer.email_address)
     orderStore.setTransId(orderData.response.id)
     orderStore.setPrice(
       orderData.response.purchase_units[0].payments.captures[0].amount.value,
     )
+    itemStore.clearShoppingCart()
   }
 
   return (
@@ -293,11 +293,6 @@ export default function FinalOrderPage() {
                                         .payments.captures[0]
                                     setMessage(
                                       `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`,
-                                    )
-                                    console.log(
-                                      'Capture result',
-                                      orderData,
-                                      JSON.stringify(orderData, null, 2),
                                     )
 
                                     navigateToSuccessfulOrder(orderData)
