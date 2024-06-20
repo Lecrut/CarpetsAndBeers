@@ -98,7 +98,8 @@ class OrderController(private val repository: OrderRepository) {
         order.paymentId = responseBody
         order.status = OrderStatus.PENDING
         repository.save(order)
-        return ResponseEntity.status(response.code).body(mapOf("response" to id))
+        val jsonResponseBody = mapper.readTree(responseBody)
+        return ResponseEntity.status(response.code).body(mapOf("response" to jsonResponseBody))
     }
 
     @PostMapping("/orders/{orderID}/capture")
