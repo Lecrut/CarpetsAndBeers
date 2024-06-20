@@ -21,8 +21,8 @@ import { FaBasketShopping } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
-import {useItemStore} from "../../stores/ItemStore.ts";
-import {CartItem} from "../../models/CartItem.ts";
+import { useItemStore } from '../../stores/ItemStore.ts'
+import { CartItem } from '../../models/CartItem.ts'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
 const settings = ['Profil', 'Ustawienia', 'Wyloguj']
@@ -149,7 +149,7 @@ export default function ResponsiveAppBar() {
                   </IconButton>
                 </NavLink>
 
-                <NavLink to='/wish-list'>
+                <NavLink to="/wish-list">
                   <IconButton
                     disableRipple={true}
                     size="large"
@@ -162,19 +162,24 @@ export default function ResponsiveAppBar() {
                   </IconButton>
                 </NavLink>
 
-                <NavLink to='/shopping-cart'>
+                <NavLink to="/shopping-cart">
                   <IconButton
                     disableRipple={true}
                     size="large"
                     aria-label="show 4 new mails"
                     color="inherit"
                   >
-                    <Badge badgeContent={shoppingCart.reduce((total, item: CartItem) => total + item.quantity, 0)} color="error">
+                    <Badge
+                      badgeContent={shoppingCart.reduce(
+                        (total, item: CartItem) => total + item.quantity,
+                        0,
+                      )}
+                      color="error"
+                    >
                       <FaBasketShopping size={31} />
                     </Badge>
                   </IconButton>
                 </NavLink>
-
               </Box>
             </Grid>
           </Grid>
@@ -270,7 +275,10 @@ export default function ResponsiveAppBar() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                  <Avatar style={{backgroundColor: '#F5980E'}}> {user.name[0]}</Avatar> 
+                  <Avatar style={{ backgroundColor: '#F5980E' }}>
+                    {' '}
+                    {user.name[0]}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu

@@ -29,18 +29,18 @@ class Order (
 )
 
 enum class OrderStatus {
-    RECEIVED, PENDING, DELIVERED, CANCELLED
+    RECEIVED, PENDING, DELIVERED, CANCELLED, COMPLETED
 }
 
 class OrderRequest(
     var userId: String?,
-    var items: List<CartItem>, //id produktu -> ilość produktu
+    var items: List<CartItem>,
     var totalPrice: Double?,
     var address: Address?
 )
 
 class CartItem(
-    var id: String?,
+    var item: String,
     var quantity: Int
 )
 

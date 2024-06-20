@@ -16,8 +16,8 @@ class SecurityConfig {
                 authorizeRequests
                     .requestMatchers("/api/userapi/*", "/api/itemapi/*", "/api/orderapi/*",
                         "/api/orderapi/orders/**",
-                        "/userapi/login",
-                        "/userapi/register",
+                        "/api/orderapi/orders",
+                        "/api/orderapi/add"
                         ).permitAll()
                     .anyRequest().authenticated()
             }
