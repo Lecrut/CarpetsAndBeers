@@ -1,26 +1,30 @@
-import { useState } from 'react';
-import { Paper, IconButton, Box } from '@mui/material';
-import WishedProductDialog from './WishedProductDialog.tsx';
+import { useState } from 'react'
+import { Paper, IconButton, Box } from '@mui/material'
+import WishedProductDialog from './WishedProductDialog.tsx'
 import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import { IoTrashBin } from 'react-icons/io5'
-import {useItemStore} from "../../stores/ItemStore.ts";
+import { useItemStore } from '../../stores/ItemStore.ts'
 
-export default function WishedProductCard(item : Item) {
-  const [open, setOpen] = useState(false);
+export default function WishedProductCard(item: Item) {
+  const [open, setOpen] = useState(false)
   const itemStore = useItemStore()
 
   const handleOpenDialog = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const handleRemoveFromFavourite = () => {itemStore.removeFromWishList(item)}
+  const handleRemoveFromFavourite = () => {
+    itemStore.removeFromWishList(item)
+  }
 
-  const handleAddToCart = () => {itemStore.addToShoppingCart(item)}
+  const handleAddToCart = () => {
+    itemStore.addToShoppingCart(item)
+  }
 
   return (
     <>
@@ -59,7 +63,7 @@ export default function WishedProductCard(item : Item) {
           }}
           margin="auto"
           alt={item.name}
-          src={item.url}
+          src={item.imgUrl}
           onClick={handleOpenDialog}
         />
       </Paper>
@@ -71,5 +75,5 @@ export default function WishedProductCard(item : Item) {
         product={item}
       />
     </>
-  );
+  )
 }

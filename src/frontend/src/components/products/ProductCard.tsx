@@ -1,26 +1,30 @@
-import { useState } from 'react';
-import { Paper, IconButton, Box } from '@mui/material';
-import ProductDialog from './ProductDialog.tsx';
+import { useState } from 'react'
+import { Paper, IconButton, Box } from '@mui/material'
+import ProductDialog from './ProductDialog.tsx'
 import Item from '../../models/Item.ts'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import {useItemStore} from "../../stores/ItemStore.ts";
+import { useItemStore } from '../../stores/ItemStore.ts'
 
-export default function ProductCard(item : Item) {
-  const [open, setOpen] = useState(false);
+export default function ProductCard(item: Item) {
+  const [open, setOpen] = useState(false)
   const itemStore = useItemStore()
 
   const handleOpenDialog = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const handleAddToFavourite = () => {itemStore.addToWishList(item)}
+  const handleAddToFavourite = () => {
+    itemStore.addToWishList(item)
+  }
 
-  const handleAddToCart = () => {itemStore.addToShoppingCart(item)}
+  const handleAddToCart = () => {
+    itemStore.addToShoppingCart(item)
+  }
 
   return (
     <>
@@ -51,17 +55,19 @@ export default function ProductCard(item : Item) {
           <AddShoppingCartIcon />
         </IconButton>
 
-        <Box
-          className="cursor-pointer"
-          component="img"
-          sx={{
-            height: '60%',
-          }}
-          margin="auto"
-          alt={item.name}
-          src={item.url}
-          onClick={handleOpenDialog}
-        />
+        {item.imgUrl && (
+          <Box
+            className="cursor-pointer"
+            component="img"
+            sx={{
+              height: '60%',
+            }}
+            margin="auto"
+            alt={item.name}
+            src={item.imgUrl}
+            onClick={handleOpenDialog}
+          />
+        )}
       </Paper>
 
       <ProductDialog
@@ -72,5 +78,5 @@ export default function ProductCard(item : Item) {
         product={item}
       />
     </>
-  );
+  )
 }
