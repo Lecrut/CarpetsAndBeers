@@ -87,8 +87,6 @@ export default function FinalOrderPage() {
     })
   }
 
-
-
   const navigateToSuccessfulOrder = (orderData: any) => {
     navigate('/successful-order')
     orderStore.setEmail(orderData.response.payer.email_address)
@@ -308,11 +306,6 @@ export default function FinalOrderPage() {
                                         .payments.captures[0]
                                     setMessage(
                                       `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`,
-                                    )
-                                    console.log(
-                                      'Capture result',
-                                      orderData,
-                                      JSON.stringify(orderData, null, 2),
                                     )
 
                                     navigateToSuccessfulOrder(orderData)
