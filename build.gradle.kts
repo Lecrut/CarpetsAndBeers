@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
 }
+val springCloudAzureVersion by extra("5.13.0")
 
 group = "shop"
 version = "0.0.1-SNAPSHOT"
@@ -31,10 +32,16 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.mongodb:mongodb-driver-sync")
+	implementation("com.azure.spring:spring-cloud-azure-starter-storage")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+dependencyManagement {
+	imports {
+		mavenBom("com.azure.spring:spring-cloud-azure-dependencies:$springCloudAzureVersion")
+	}
 }
 
 tasks.withType<KotlinCompile> {

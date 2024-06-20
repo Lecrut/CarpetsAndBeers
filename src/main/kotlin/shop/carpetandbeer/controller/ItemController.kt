@@ -1,5 +1,7 @@
 package shop.carpetandbeer.controller
 
+import shop.carpetandbeer.service.AzureBlobStorageService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import shop.carpetandbeer.model.Item
@@ -8,7 +10,7 @@ import shop.carpetandbeer.repository.ItemRepository
 
 @RestController
 @RequestMapping("/api/itemapi")
-class ItemController(private val repository: ItemRepository) {
+class ItemController(private val repository: ItemRepository, @Autowired private val azureBlobStorageService: AzureBlobStorageService) {
     @GetMapping("/getAllItems")
     fun getAllItems() : ResponseEntity<List<Item>> {
         return ResponseEntity.ok(repository.findAll())
@@ -21,7 +23,9 @@ class ItemController(private val repository: ItemRepository) {
 
     @PostMapping("/add")
     fun createItem(@RequestBody item: ItemRequest) : ResponseEntity<Item> {
-        val itemReq = Item(null, item.name, item.price, item.description, item.category)
+        val imageUrl = item.imgUrl?.let { azureBlobStorageService.uploadToBlobStorage(it) }
+        val itemReq = Item(null, item.name, item.price, item.description, item.category, imageUrl.toString())
+
         return ResponseEntity.ok(repository.save(itemReq))
     }
 
@@ -33,6 +37,7 @@ class ItemController(private val repository: ItemRepository) {
             it.price = item.price
             it.description = item.description
             it.category = item.category
+            it.imgURL = item.imgUrl?.let { azureBlobStorageService.uploadToBlobStorage(it).toString() }
             return ResponseEntity.ok().body(repository.save(it))
         }
         return ResponseEntity.notFound().build()

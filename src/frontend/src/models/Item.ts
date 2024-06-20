@@ -6,5 +6,5 @@ export default interface Item {
   price: number,
   category: CategoryType,
   description: string,
-  url?: string,
+  imgUrl?: string,
 }
