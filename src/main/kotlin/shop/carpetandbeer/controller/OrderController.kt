@@ -70,6 +70,8 @@ class OrderController(private val repository: OrderRepository) {
         val order: Order = repository.findById(paypalOrder.orderId).orElseThrow { RuntimeException("Order not found") }
 
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
+        val logger = Logger.getLogger(OrderController::class.java.name)
+        logger.info("access token: $accessToken")
         val url = "$BASE_URL/v2/checkout/orders"
         val payload = """
             {
@@ -102,14 +104,14 @@ class OrderController(private val repository: OrderRepository) {
         return ResponseEntity.status(response.code).body(mapOf("response" to jsonResponseBody))
     }
 
-    @PostMapping("/orders/{orderID}/capture")
-    fun captureOrder(@PathVariable orderID: String): ResponseEntity<Map<String, Any>> {
+    @PostMapping("/orders/{orderID}/{paypalOrderId}")
+    fun captureOrder(@PathVariable orderID: String, @PathVariable paypalOrderId: String): ResponseEntity<Map<String, Any>> {
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
         val order: Order = repository.findById(orderID).orElseThrow { RuntimeException("Order not found") }
         val logger = Logger.getLogger(OrderController::class.java.name)
         logger.info("Access token: $accessToken")
 
-        val url = "$BASE_URL/v2/checkout/orders/$orderID/capture"
+        val url = "$BASE_URL/v2/checkout/orders/$paypalOrderId/capture"
         val request = Request.Builder()
             .url(url)
             .post("".toRequestBody("application/json".toMediaTypeOrNull()))

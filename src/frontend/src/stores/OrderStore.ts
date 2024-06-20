@@ -7,11 +7,10 @@ export const useOrderStore = create(
     email: '',
     transactionsId: '',
     price: 0,
-    currentOrder: null,
+    // currentOrder: null,
+    currentOrderId: '',
 
     addOrder: async (newOrder: Order) => {
-      console.log(newOrder, 'adding order')
-
       const response = await fetch('/api/orderapi/add', {
         method: 'POST',
         headers: {
@@ -22,8 +21,8 @@ export const useOrderStore = create(
 
       if (response.ok) {
         const item = await response.json()
-        console.log(item, 'added order')
-        set({ currentOrder: item })
+        set({ currentOrderId: item.id })
+        return item
       } else {
         console.log('Blad dodawania zamowienia')
       }
@@ -32,10 +31,10 @@ export const useOrderStore = create(
     setEmail: (email: string) => set({ email }),
     setTransId: (id: string) => set({ transactionsId: id }),
     setPrice: (price: number) => set({ price }),
-    setCurrentOrder: (order: Order) => set({ currentOrder: order }),
+    setCurrentOrder: async (order: Order) => set({ currentOrder: order }),
 
     init: () => {
-      set({ email: '', transactionsId: '', amount: 0, currentOrderId: null })
+      set({ email: '', transactionsId: '', amount: 0, currentOrderId: '' })
     },
   })),
 )
