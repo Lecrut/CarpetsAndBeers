@@ -39,3 +39,4 @@ out/
 ### Kotlin ###
 .kotlin
 server.tar
+./src/main/kotlin/shop/carpetandbeer/.env

@@ -25,6 +25,8 @@ repositories {
 }
 
 dependencies {
+	implementation("com.squareup.okhttp3:okhttp:4.9.2")
+	implementation("io.github.cdimascio:java-dotenv:5.2.2")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	implementation("org.springframework.boot:spring-boot-starter-web")
