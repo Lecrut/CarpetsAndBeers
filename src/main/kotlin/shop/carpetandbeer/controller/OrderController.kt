@@ -91,10 +91,13 @@ class OrderController(private val repository: OrderRepository) {
 
         val response = client.newCall(request).execute()
         val responseBody = response.body?.string() ?: throw RuntimeException("Response body is null")
+        val mapper: ObjectMapper = jacksonObjectMapper()
+        val jsonObject = mapper.readTree(responseBody)
+        val id = jsonObject.get("id").asText()
         order.paymentId = responseBody
         order.status = OrderStatus.PENDING
         repository.save(order)
-        return ResponseEntity.status(response.code).body(mapOf("response" to responseBody))
+        return ResponseEntity.status(response.code).body(mapOf("response" to id))
     }
 
     @PostMapping("/orders/{orderID}/capture")
