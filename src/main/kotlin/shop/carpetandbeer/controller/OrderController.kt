@@ -95,7 +95,7 @@ class OrderController(private val repository: OrderRepository) {
         val mapper: ObjectMapper = jacksonObjectMapper()
         val jsonObject = mapper.readTree(responseBody)
         val id = jsonObject.get("id").asText()
-        order.paymentId = responseBody
+        order.paymentId = id
         order.status = OrderStatus.PENDING
         repository.save(order)
         val jsonResponseBody = mapper.readTree(responseBody)
@@ -105,6 +105,7 @@ class OrderController(private val repository: OrderRepository) {
     @PostMapping("/orders/{orderID}/capture")
     fun captureOrder(@PathVariable orderID: String): ResponseEntity<Map<String, Any>> {
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
+        val order: Order = repository.findById(orderID).orElseThrow { RuntimeException("Order not found") }
         val logger = Logger.getLogger(OrderController::class.java.name)
         logger.info("Access token: $accessToken")
 
@@ -119,6 +120,10 @@ class OrderController(private val repository: OrderRepository) {
         val response = client.newCall(request).execute()
         val responseBody = response.body?.string() ?: throw RuntimeException("Response body is null")
         logger.info("Response: $responseBody")
+
+        order.status = OrderStatus.COMPLETED
+        repository.save(order)
+
         val mapper: ObjectMapper = jacksonObjectMapper()
         val jsonResponseBody = mapper.readTree(responseBody)
         return ResponseEntity.status(response.code).body(mapOf("response" to jsonResponseBody))
