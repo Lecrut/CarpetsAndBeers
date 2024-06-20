@@ -44,6 +44,11 @@ class CartItem(
     var quantity: Int
 )
 
+class CartWithItemValues(
+    var item: Item,
+    var quantity: Int
+)
+
 class Address (
     var number: String?,
     var building: String? = null,

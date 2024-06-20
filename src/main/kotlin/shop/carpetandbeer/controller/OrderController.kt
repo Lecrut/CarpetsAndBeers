@@ -10,10 +10,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.RequestBody
-import shop.carpetandbeer.model.Order
-import shop.carpetandbeer.model.OrderRequest
-import shop.carpetandbeer.model.OrderStatus
-import shop.carpetandbeer.model.PaypalOrderRequest
+import shop.carpetandbeer.model.*
+import shop.carpetandbeer.repository.ItemRepository
 import shop.carpetandbeer.repository.OrderRepository
 import java.io.IOException
 import java.time.LocalDateTime
@@ -22,7 +20,7 @@ import java.util.logging.Logger
 
 @RestController
 @RequestMapping("/api/orderapi")
-class OrderController(private val repository: OrderRepository) {
+class OrderController(private val repository: OrderRepository, private val itemService: ItemRepository) {
 
     companion object {
         private val dotenv = Dotenv.load()
@@ -54,6 +52,19 @@ class OrderController(private val repository: OrderRepository) {
     fun getOrdersByUserId(@PathVariable userId: String): ResponseEntity<List<Order>> {
         val orders : List<Order> = repository.findAll()
         return ResponseEntity.ok(orders.filter { it.userId == userId })
+    }
+
+    @GetMapping("/orderItems/{orderId}")
+    fun getOrderByOrderId(@PathVariable orderId: String): ResponseEntity<List<CartWithItemValues>> {
+        val order: Order = repository.findById(orderId).orElseThrow { RuntimeException("Order not found") }
+        val items: MutableList<CartWithItemValues> = mutableListOf()
+        order.items.forEach { item ->
+            val itemObj = itemService.findById(item.item).orElse(null)
+            if(itemObj != null) {
+                items.add(CartWithItemValues(itemObj, item.quantity))
+            }
+        }
+        return ResponseEntity.ok(items)
     }
 
     @PostMapping("/add")

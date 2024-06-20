@@ -17,7 +17,9 @@ class SecurityConfig {
                     .requestMatchers("/api/userapi/*", "/api/itemapi/*", "/api/orderapi/*",
                         "/api/orderapi/orders/**",
                         "/api/orderapi/orders",
-                        "/api/orderapi/add"
+                        "/api/orderapi/add",
+                        "/api/orderapi/user/**",
+                        "/api/orderapi/orderItems/**",
                         ).permitAll()
                     .anyRequest().authenticated()
             }
