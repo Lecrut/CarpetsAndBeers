@@ -78,6 +78,8 @@ class OrderController(private val repository: OrderRepository) {
         val order: Order = repository.findById(paypalOrder.orderId).orElseThrow { RuntimeException("Order not found") }
 
         val accessToken = generateAccessToken() ?: throw RuntimeException("Failed to generate access token")
+        val logger = Logger.getLogger(OrderController::class.java.name)
+        logger.info("access token: $accessToken")
         val url = "$BASE_URL/v2/checkout/orders"
         val payload = """
             {

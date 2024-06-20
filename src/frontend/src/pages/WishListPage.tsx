@@ -1,7 +1,7 @@
 import Navbar from '../components/navbar/Navbar'
 import { Card, CardContent, Grid, Typography } from '@mui/material'
 import WishedProductCard from '../components/products/WishedProductCard.tsx'
-import {useItemStore} from "../stores/ItemStore.ts";
+import { useItemStore } from '../stores/ItemStore.ts'
 
 export default function WishListPage() {
   const itemStore = useItemStore()
@@ -20,7 +20,7 @@ export default function WishListPage() {
               </Typography>
 
               <Typography gutterBottom variant="h5" component="div">
-                {!wishList.length && "Brak rzeczy w liście życzeń."}
+                {!wishList.length && 'Brak rzeczy w liście życzeń.'}
               </Typography>
 
               <Grid
@@ -45,7 +45,7 @@ export default function WishListPage() {
                         id={item.id}
                         name={item.name}
                         price={item.price}
-                        url={item.url}
+                        imgUrl={item.imgUrl}
                         category={item.category}
                         description={item.description}
                       />

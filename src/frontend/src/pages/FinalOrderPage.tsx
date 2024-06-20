@@ -27,6 +27,8 @@ export default function FinalOrderPage() {
   const userStore = useUserStore()
   const shoppingCart = itemStore.shoppingCart
 
+  const [orderId, setOrderId] = useState('')
+
   const steps = ['Adres dostawy', 'Podsumowanie', 'Wybierz metodę płatności']
   const [activeStep, setActiveStep] = useState(0)
   const [shippingData, setShippingData] = useState<Address>({
@@ -60,15 +62,22 @@ export default function FinalOrderPage() {
 
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    console.log(activeStep)
     if (activeStep === 1) {
-      const newOrder = await orderStore.addOrder({
+      const item = await orderStore.addOrder({
         address: shippingData,
-        userID: userStore.user.id,
-        items: shoppingCart,
+        userId: userStore.user.id,
+        items: shoppingCart.map((item) => ({
+          quantity: item.quantity,
+          item: item.item.id,
+        })),
         totalPrice: getTotal(),
       })
-      orderStore.setCurrentOrder(newOrder)
-      console.log(orderStore.currentOrder, 'store current order')
+      // await orderStore.setCurrentOrder(newOrder)
+      console.log(item)
+      setOrderId(item.id)
+      console.log(orderId)
+      console.log(orderStore.currentOrderId)
     }
   }
 
@@ -86,8 +95,6 @@ export default function FinalOrderPage() {
       [event.target.name]: event.target.value,
     })
   }
-
-
 
   const navigateToSuccessfulOrder = (orderData: any) => {
     navigate('/successful-order')
@@ -243,7 +250,10 @@ export default function FinalOrderPage() {
                                 label: 'paypal',
                               }}
                               createOrder={async () => {
-                                console.log(orderStore.currentOrder)
+                                if (!orderStore.currentOrderId) {
+                                  return
+                                }
+                                // console.log(orderStore.currentOrder)
                                 try {
                                   const response = await fetch(
                                     '/api/orderapi/orders',
@@ -254,7 +264,7 @@ export default function FinalOrderPage() {
                                       },
                                       body: JSON.stringify({
                                         orderPrice: getTotal(),
-                                        orderId: orderStore.currentOrder.id,
+                                        orderId: orderStore.currentOrderId,
                                       }),
                                     },
                                   )
@@ -272,16 +282,16 @@ export default function FinalOrderPage() {
                                     throw new Error(errorMessage)
                                   }
                                 } catch (error) {
-                                  console.error(error)
-                                  setMessage(
-                                    `Could not initiate PayPal Checkout...${error}`,
-                                  )
+                                  // console.error(error)
+                                  // setMessage(
+                                  //   `Could not initiate PayPal Checkout...${error}`,
+                                  // )
                                 }
                               }}
                               onApprove={async (data, actions) => {
                                 try {
                                   const response = await fetch(
-                                    `/api/orderapi/orders/${data.orderID}/capture`,
+                                    `/api/orderapi/orders/${orderStore.currentOrderId}/${data.orderID}`,
                                     {
                                       method: 'POST',
                                       headers: {
@@ -292,7 +302,8 @@ export default function FinalOrderPage() {
 
                                   const orderData = await response.json()
 
-                                  const errorDetail = orderData?.details?.[0]
+                                  const errorDetail =
+                                    orderData?.response.details?.[0]
 
                                   if (
                                     errorDetail?.issue === 'INSTRUMENT_DECLINED'
@@ -300,7 +311,7 @@ export default function FinalOrderPage() {
                                     return actions.restart()
                                   } else if (errorDetail) {
                                     throw new Error(
-                                      `${errorDetail.description} (${orderData.debug_id})`,
+                                      `${errorDetail.description} (${orderData.response.debug_id})`,
                                     )
                                   } else {
                                     const transaction =
@@ -313,10 +324,10 @@ export default function FinalOrderPage() {
                                     navigateToSuccessfulOrder(orderData)
                                   }
                                 } catch (error) {
-                                  console.error(error)
-                                  setMessage(
-                                    `Sorry, your transaction could not be processed...${error}`,
-                                  )
+                                  // console.error(error)
+                                  // setMessage(
+                                  //   `Sorry, your transaction could not be processed...${error}`,
+                                  // )
                                 }
                               }}
                             />
@@ -342,7 +353,7 @@ export default function FinalOrderPage() {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={handleNext}
+                    onClick={() => handleNext()}
                     disabled={
                       activeStep === 2 ||
                       !shippingData.city ||
