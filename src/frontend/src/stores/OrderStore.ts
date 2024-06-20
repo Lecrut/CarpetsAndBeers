@@ -1,5 +1,6 @@
 import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
+import Order from '../models/Order'
 
 export const useOrderStore = create(
   subscribeWithSelector((set) => ({
@@ -34,9 +35,7 @@ export const useOrderStore = create(
     setCurrentOrder: (order: Order) => set({ currentOrder: order }),
 
     init: () => {
-      set({ email: '', transactionsId: '', amount: 0 })
+      set({ email: '', transactionsId: '', amount: 0, currentOrderId: null })
     },
   })),
 )
-
-useOrderStore.getState().init()
