@@ -1,10 +1,10 @@
 import create from 'zustand'
-import Item from '../models/Item'
 import { subscribeWithSelector } from 'zustand/middleware'
-import { CartItem } from '../models/CartItem.ts'
+import type Item from '../models/Item'
+import type { CartItem } from '../models/CartItem.ts'
 
 export const useItemStore = create(
-  subscribeWithSelector((set) => ({
+  subscribeWithSelector(set => ({
     items: [],
     wishList: [],
     shoppingCart: [],
@@ -17,10 +17,11 @@ export const useItemStore = create(
       })
 
       if (response.ok) {
-        set((state) => ({
+        set(state => ({
           items: state.items.filter((item: Item) => item.id !== itemId),
         }))
-      } else {
+      }
+      else {
         console.log('Nie usunięto produktu')
       }
     },
@@ -35,12 +36,13 @@ export const useItemStore = create(
 
       if (response.ok) {
         const item = await response.json()
-        set((state) => ({
+        set(state => ({
           items: state.items.map((item: Item) =>
             item.id === itemId ? { ...item, ...updatedItem } : item,
           ),
         }))
-      } else {
+      }
+      else {
         console.log('Nie zaktualizowano produktu')
       }
     },
@@ -55,7 +57,8 @@ export const useItemStore = create(
       if (response.ok) {
         const fetchedData = await response.json()
         set({ items: fetchedData })
-      } else {
+      }
+      else {
         console.log('Nie znaleziono produktów')
       }
     },
@@ -70,8 +73,9 @@ export const useItemStore = create(
 
       if (response.ok) {
         const item = await response.json()
-        set((state) => ({ items: [...state.items, item] }))
-      } else {
+        set(state => ({ items: [...state.items, item] }))
+      }
+      else {
         console.log('Nie dodano produktu')
       }
     },
@@ -80,15 +84,14 @@ export const useItemStore = create(
         const isItemInWishList = state.wishList.some(
           (item: Item) => item.id === wishedItem.id,
         )
-        if (!isItemInWishList) {
+        if (!isItemInWishList)
           return { wishList: [...state.wishList, wishedItem] }
-        } else {
+        else
           return { wishList: [...state.wishList] }
-        }
       })
     },
     removeFromWishList: (wishedItem: Item) => {
-      set((state) => ({
+      set(state => ({
         wishList: state.wishList.filter((i: Item) => i.id !== wishedItem.id),
       }))
     },
@@ -111,15 +114,16 @@ export const useItemStore = create(
           (item: CartItem) => item.item.id === product.id,
         )
         if (
-          isItemInCart !== -1 &&
-          state.shoppingCart[isItemInCart].quantity === 1
+          isItemInCart !== -1
+          && state.shoppingCart[isItemInCart].quantity === 1
         ) {
           return {
             shoppingCart: state.shoppingCart.filter(
               (i: CartItem) => i.item.id !== product.id,
             ),
           }
-        } else if (isItemInCart !== -1) {
+        }
+        else if (isItemInCart !== -1) {
           const newCart = [...state.shoppingCart]
           newCart[isItemInCart].quantity -= 1
           return { shoppingCart: [...newCart] }
@@ -154,7 +158,8 @@ export const useItemStore = create(
               { item: product, quantity: 1 },
             ],
           }
-        } else {
+        }
+        else {
           state.increaseAmountInShoppingCart(product)
         }
         return { shoppingCart: [...state.shoppingCart] }
@@ -168,35 +173,34 @@ export const useItemStore = create(
       const wishList = localStorage.getItem('wishList')
       const shoppingCart = localStorage.getItem('shoppingCart')
 
-      if (items) {
+      if (items)
         set({ items: JSON.parse(items) })
-      }
-      if (wishList) {
+
+      if (wishList)
         set({ wishList: JSON.parse(wishList) })
-      }
-      if (shoppingCart) {
+
+      if (shoppingCart)
         set({ shoppingCart: JSON.parse(shoppingCart) })
-      }
     },
   })),
 )
 
 useItemStore.subscribe(
-  (state) => state.items,
+  state => state.items,
   (items) => {
     localStorage.setItem('items', JSON.stringify(items))
   },
 )
 
 useItemStore.subscribe(
-  (state) => state.wishList,
+  state => state.wishList,
   (wishList) => {
     localStorage.setItem('wishList', JSON.stringify(wishList))
   },
 )
 
 useItemStore.subscribe(
-  (state) => state.shoppingCart,
+  state => state.shoppingCart,
   (shoppingCart) => {
     localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart))
   },

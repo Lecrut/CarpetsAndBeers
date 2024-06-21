@@ -1,14 +1,33 @@
 import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
-import Order from '../models/Order'
+import type Order from '../models/Order'
 
 export const useOrderStore = create(
-  subscribeWithSelector((set) => ({
+  subscribeWithSelector(set => ({
     email: '',
     transactionsId: '',
     price: 0,
     // currentOrder: null,
     currentOrderId: '',
+
+    allUserOrders: [],
+    fetchAllOrders: async (userId: string) => {
+      const endpoint = `/api/orderapi/user/${userId}`
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (response.ok) {
+        const fetchedData = await response.json()
+        set({ allUserOrders: fetchedData })
+      }
+      else {
+        console.log('Nie znaleziono produktów')
+      }
+    },
 
     addOrder: async (newOrder: Order) => {
       const response = await fetch('/api/orderapi/add', {
@@ -23,7 +42,8 @@ export const useOrderStore = create(
         const item = await response.json()
         set({ currentOrderId: item.id })
         return item
-      } else {
+      }
+      else {
         console.log('Blad dodawania zamowienia')
       }
     },
