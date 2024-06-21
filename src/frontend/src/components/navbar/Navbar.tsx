@@ -22,10 +22,10 @@ import { Link, NavLink } from 'react-router-dom'
 import { useUserStore } from '../../stores/UserStore'
 import { useNavigate } from 'react-router-dom'
 import { useItemStore } from '../../stores/ItemStore.ts'
-import { CartItem } from '../../models/CartItem.ts'
+import CartItem from '../../models/CartItem.ts'
 
 const pages = ['Kontakt', 'Lista życzeń', 'Koszyk']
-const settings = ['Profil', 'Ustawienia', 'Wyloguj']
+const settings = ['Profil', 'Wyloguj']
 
 export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -130,7 +130,7 @@ export default function ResponsiveAppBar() {
             })}
           >
             <Grid item xs={10}>
-              <SearchField />
+              {/*<SearchField />*/}
             </Grid>
             <Grid item xs={1}>
               <Box
@@ -192,24 +192,6 @@ export default function ResponsiveAppBar() {
               sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
             />
           </NavLink>
-          {/* <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'inherit',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Beers & carpets
-          </Typography> */}
 
           <Grid
             container
@@ -219,11 +201,11 @@ export default function ResponsiveAppBar() {
             })}
           >
             <Grid item xs={11}>
-              <SearchField
-                sx={() => ({
-                  marginTop: '6px',
-                })}
-              />
+              {/*<SearchField*/}
+              {/*  sx={() => ({*/}
+              {/*    marginTop: '6px',*/}
+              {/*  })}*/}
+              {/*/>*/}
             </Grid>
 
             <Grid item xs={1}>
