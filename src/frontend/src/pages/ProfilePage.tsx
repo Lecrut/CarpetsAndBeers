@@ -1,21 +1,24 @@
-import Navbar from '../components/navbar/Navbar';
-import React from 'react';
-import { Avatar, Typography, Card, CardContent, Box, Grid } from '@mui/material';
-import PurchaseCard from '../components/PurchaseCard';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import React, { useEffect, useState } from 'react'
+import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material'
+import { Carousel } from 'react-responsive-carousel'
+import PurchaseCard from '../components/PurchaseCard'
+import Navbar from '../components/navbar/Navbar'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { useUserStore } from '../stores/UserStore'
+import type Order from '../models/Order'
+import { useOrderStore } from '../stores/OrderStore'
 
-const ProfilePage = () => {
-  const user = useUserStore((state) => state.user)
+function ProfilePage() {
+  const user = useUserStore(state => state.user)
+  console.log(user)
+  const orderStore = useOrderStore()
+  const orders = orderStore.allUserOrders
 
-  const purchases = [
-    { date: '2024-06-01', items: [{ name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 },{ name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 }, { name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 }], paymentMethod: 'Karta', price: 150 },
-    { date: '2024-05-20', items: [{ name: 'Piwo', quantity: 3 }], paymentMethod: 'Gotówka', price: 50 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-  ];
+  useEffect(() => {
+    console.log(user)
+    orderStore.fetchAllOrders(user.id)
+    console.log(orders)
+  }, [])
 
   return (
     <>
@@ -23,10 +26,10 @@ const ProfilePage = () => {
       <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh" pt={2}>
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={8} md={6}>
-            <Card sx={{ mt: 3, bgcolor: "grey.200"}}>
+            <Card sx={{ mt: 3, bgcolor: 'grey.200' }}>
               <CardContent>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar style={{ backgroundColor: '#F5980E'}}>
+                  <Avatar style={{ backgroundColor: '#F5980E' }}>
                     {user?.name[0]}
                   </Avatar>
                   <Typography variant="h4">{user?.name}</Typography>
@@ -35,18 +38,37 @@ const ProfilePage = () => {
               </CardContent>
             </Card>
             <Typography variant="h5" sx={{ mt: 3 }}>Twoje ostatnie zakupy</Typography>
-            <Carousel  showThumbs={false}>
+            {/* <Carousel showThumbs={false}>
               {purchases.map((purchase, index) => (
-                <div style={{  justifyContent: 'center', alignItems: 'center', height: '100%'}} key={index}>
+                <div style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }} key={index}>
                   <PurchaseCard {...purchase} />
                 </div>
               ))}
+            </Carousel> */}
+            <Carousel showThumbs={false}>
+              {orders.map(order => (
+                <div key={order.id}>
+                  <Typography variant="body1">
+                    Data płatności:
+                    {' '}
+                    { order.orderDate.slice(0, 10) }
+                  </Typography>
+                  <Typography variant="body1">
+                    Zapłacony rachunek:
+                    {' '}
+                    {order.totalPrice}
+                    {' '}
+                    zł
+                  </Typography>
+                </div>
+              ))}
             </Carousel>
+
           </Grid>
         </Grid>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage
