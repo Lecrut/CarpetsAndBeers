@@ -51,13 +51,32 @@ function ProfilePage() {
               </CardContent>
             </Card>
             <Typography variant="h5" sx={{ mt: 3 }}>Twoje ostatnie zakupy</Typography>
-            <Carousel showThumbs={false}>
+            {/* <Carousel showThumbs={false}>
               {purchases.map((purchase, index) => (
                 <div style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }} key={index}>
                   <PurchaseCard {...purchase} />
                 </div>
               ))}
+            </Carousel> */}
+            <Carousel showThumbs={false}>
+              {orders.map(order => (
+                <div key={order.id}>
+                  <Typography variant="body1">
+                    Data płatności:
+                    {' '}
+                    { order.orderDate.slice(0, 10) }
+                  </Typography>
+                  <Typography variant="body1">
+                    Zapłacony rachunek:
+                    {' '}
+                    {order.totalPrice}
+                    {' '}
+                    zł
+                  </Typography>
+                </div>
+              ))}
             </Carousel>
+
           </Grid>
         </Grid>
       </Box>
