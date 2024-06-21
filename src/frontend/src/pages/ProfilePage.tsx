@@ -20,18 +20,6 @@ function ProfilePage() {
     console.log(orders)
   }, [])
 
-  const handleEdit = () => {
-
-  }
-
-  const purchases = [
-    { date: '2024-06-01', items: [{ name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 }, { name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 }, { name: 'Piwo', quantity: 6 }, { name: 'Dywan', quantity: 1 }], paymentMethod: 'Karta', price: 150 },
-    { date: '2024-05-20', items: [{ name: 'Piwo', quantity: 3 }], paymentMethod: 'Gotówka', price: 50 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-    { date: '2024-05-15', items: [{ name: 'Dywan', quantity: 2 }], paymentMethod: 'Karta', price: 100 },
-  ]
-
   return (
     <>
       <Navbar />
@@ -46,7 +34,6 @@ function ProfilePage() {
                   </Avatar>
                   <Typography variant="h4">{user?.name}</Typography>
                   <Typography variant="subtitle1">{user?.email}</Typography>
-                  <button onClick={handleEdit}>Zmień hasło</button>
                 </Box>
               </CardContent>
             </Card>
@@ -80,26 +67,6 @@ function ProfilePage() {
           </Grid>
         </Grid>
       </Box>
-
-      {/* <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="100vh" pt={2}>
-        <Grid container justifyContent="center">
-          <Grid item xs={12} sm={8} md={6}>
-            <Card sx={{ mt: 3 }}>
-              <CardContent>
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Avatar src={user.avatar} />
-                  <Typography variant="h4">{user.name}</Typography>
-                  <Typography variant="subtitle1">{user.email}</Typography>
-                  <button onClick={handleEdit}>Wyloguj</button>
-                </Box>
-              </CardContent>
-            </Card>
-            {purchases.slice(0, 3).map((purchase, index) => (
-              <PurchaseCard key={index} {...purchase} />
-            ))}
-          </Grid>
-        </Grid>
-      </Box> */}
     </>
   )
 }

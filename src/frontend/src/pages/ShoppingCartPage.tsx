@@ -3,10 +3,12 @@ import Navbar from '../components/navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import BuyProductCard from '../components/products/BuyProductCard.tsx'
 import {useItemStore} from "../stores/ItemStore.ts";
+import {useUserStore} from "../stores/UserStore.ts";
 
 export default function ShoppingCartPage() {
   const navigate = useNavigate();
-
+  const userStore = useUserStore()
+  const user = userStore.user
   const itemStore = useItemStore()
   const shoppingCart = itemStore.shoppingCart
 
@@ -64,9 +66,15 @@ export default function ShoppingCartPage() {
               Suma: {getTotal()} zł
             </Typography>
             <Box display="flex" justifyContent="flex-end">
-              <Button variant="contained" color="secondary" disabled={getTotal()===0} onClick={() => navigate('/final-order')}>
-                Przejdź do płatności
-              </Button>
+              {user ?
+                  <Button variant="contained" color="secondary" disabled={getTotal()===0} onClick={() => navigate('/final-order')}>
+                    Przejdź do płatności
+                  </Button>
+                  :
+                  <Button variant="contained" color="secondary" disabled={getTotal()===0} onClick={() => navigate('/login')}>
+                    Zaloguj się
+                  </Button>
+              }
             </Box>
           </Card>
         </Grid>
