@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BottomMenu extends StatefulWidget {
-  final String userRole;
-
-  BottomMenu({required this.userRole});
+  const BottomMenu({super.key});
 
   @override
   _BottomMenuState createState() => _BottomMenuState();
