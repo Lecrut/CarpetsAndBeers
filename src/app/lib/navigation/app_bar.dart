@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String pageTitle;
 
-  const MyAppBar({Key? key, required this.pageTitle}) : super(key: key);
+  const MyAppBar({super.key, required this.pageTitle});
 
   @override
   Widget build(BuildContext context) {
