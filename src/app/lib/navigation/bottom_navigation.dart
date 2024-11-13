@@ -10,26 +10,43 @@ class BottomMenu extends StatefulWidget {
 class _BottomMenuState extends State<BottomMenu> {
   int _selectedIndex = 0;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateSelectedIndex();
-  }
+  static const List<Widget> _pages = <Widget>[
+    Text('Strona Główna'),
+    Text('Koszyk'),
+    Text('Lista życzeń'),
+    Text('Profil'),
+  ];
 
-  void _updateSelectedIndex() {
-    String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
-    List<String> routes = _getRoutes();
-    int newIndex = routes.indexOf(currentRoute);
-    if (newIndex != -1) {
-      setState(() {
-        _selectedIndex = newIndex;
-      });
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar();
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Strona Główna',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart),
+          label: 'Koszyk',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: 'Lista życzeń',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.blue,
+      onTap: _onItemTapped,
+    );
   }
-
 }
