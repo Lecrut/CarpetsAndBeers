@@ -7,6 +7,12 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final List<Map<String, dynamic>> products = [
+    {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
+    {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
+    {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -28,28 +34,77 @@ class _LandingPageState extends State<LandingPage> {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Polecane produkty',
+              'WITAMY NA CARPETS&BEERS',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            // GridView.builder(
-            //     shrinkWrap: true,
-            //     physics: NeverScrollableScrollPhysics(),
-            //     padding: EdgeInsets.all(16),
-            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //       crossAxisCount: 2, // adjust according to your design
-            //       crossAxisSpacing: 16,
-            //       mainAxisSpacing: 16,
-            //       childAspectRatio: 0.7, // adjust according to your design
-            //     )),
+            Center(
+              child: Image.asset('images/banner2.jpg'),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Najnowsze produkty:',
+              style: TextStyle(
+                  fontSize: 20,
+                  // fontWeight: FontWeight.bold,
+                  color: Colors.green),
+              textAlign: TextAlign.center,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: products.map((product) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ProductCard(
+                    name: product['name'],
+                    price: product['price'],
+                    imagePath: product['imagePath'],
+                  ),
+                );
+              }).toList(),
+            ),
           ],
         ),
       ),
       bottomNavigationBar: BottomMenu(),
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  final String name;
+  final double price;
+  final String imagePath;
+
+  ProductCard(
+      {required this.name, required this.price, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Image.asset(
+            imagePath,
+            width: 100,
+            height: 100,
+          ),
+          SizedBox(height: 10),
+          Text(
+            name,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Text(
+            '\$${price.toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }
