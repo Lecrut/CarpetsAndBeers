@@ -10,7 +10,7 @@ void main() async {
     title: "CarpetsAndBeers",
     initialRoute: '/',
     routes: {
-      '/': (context) => const LandingPage(),
+      '/': (context) => LandingPage(),
       '/cart': (context) => const CartPage(),
       '/profile': (context) => const ProfilePage(),
       '/wish-list': (context) => const WishListPage(),
