@@ -1,3 +1,4 @@
+import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class WishListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const MyAppBar(pageTitle: "Wish list"),
       body: SingleChildScrollView(
         child: Column(
           children: [
