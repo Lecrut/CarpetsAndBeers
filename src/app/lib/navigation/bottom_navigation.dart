@@ -9,18 +9,34 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   int _selectedIndex = 0;
+  static const List<String> routes = ['/', '/cart', '/wish-list', '/profile'];
 
-  static const List<Widget> _pages = <Widget>[
-    Text('Strona Główna'),
-    Text('Koszyk'),
-    Text('Lista życzeń'),
-    Text('Profil'),
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateSelectedIndex();
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
+    if (currentRoute != routes[index]) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      Navigator.of(context).pushReplacementNamed(routes[index]).then((_) {
+        _updateSelectedIndex();
+      });
+    }
+  }
+
+  void _updateSelectedIndex() {
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
+    int newIndex = routes.indexOf(currentRoute);
+    if (newIndex != -1) {
+      setState(() {
+        _selectedIndex = newIndex;
+      });
+    }
   }
 
   @override
@@ -45,7 +61,9 @@ class _BottomMenuState extends State<BottomMenu> {
         ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.blue,
+      selectedItemColor: Colors.green,
+      unselectedItemColor: Colors.grey,
+      backgroundColor: Colors.yellowAccent,
       onTap: _onItemTapped,
     );
   }
