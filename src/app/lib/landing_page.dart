@@ -1,5 +1,6 @@
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:app/navigation/app_bar.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -26,20 +27,12 @@ class _LandingPageState extends State<LandingPage> {
     // final items = itemStore.items;
 
     return Scaffold(
+      appBar: const MyAppBar(pageTitle: "Carpets & Beers"),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               margin: EdgeInsets.only(top: 20, left: 16, right: 16),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'WITAMY NA CARPETS&BEERS',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green),
-              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             Center(
