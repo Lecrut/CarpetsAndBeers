@@ -12,7 +12,7 @@ void main() async {
     routes: {
       '/': (context) => LandingPage(),
       '/cart': (context) => const CartPage(),
-      '/profile': (context) => const ProfilePage(),
+      '/profile': (context) => ProfilePage(),
       '/wish-list': (context) => const WishListPage(),
       // Add other routes here
     },
