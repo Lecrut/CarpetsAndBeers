@@ -23,9 +23,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final itemStore = Provider.of<ItemStore>(context);
-    // final items = itemStore.items;
-
     return Scaffold(
       appBar: const MyAppBar(pageTitle: "Carpets & Beers"),
       body: SingleChildScrollView(
@@ -34,17 +31,62 @@ class _LandingPageState extends State<LandingPage> {
             Container(
               margin: EdgeInsets.only(top: 20, left: 16, right: 16),
             ),
-            const SizedBox(height: 20),
             Center(
               child: Image.asset('images/banner2.jpg'),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // funkcja do logowania
+                  },
+                  style: ElevatedButton.styleFrom(
+                    iconColor: Colors.green,
+                    backgroundColor: Colors.green,
+                  ),
+                  child: const Text(
+                    'Zaloguj',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    // funkcja do rejestracji
+                  },
+                  style: ElevatedButton.styleFrom(
+                    iconColor: Colors.blue,
+                    backgroundColor: Colors.green,
+                  ),
+                  child: const Text(
+                    'Zarejestruj',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              child: Divider(
+                color: Colors.green,
+                thickness: 4.0,
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
               'Najnowsze produkty:',
               style: TextStyle(
-                  fontSize: 20,
-                  // fontWeight: FontWeight.bold,
-                  color: Colors.green),
+                fontSize: 20,
+                color: Colors.green,
+              ),
               textAlign: TextAlign.center,
             ),
             Row(
