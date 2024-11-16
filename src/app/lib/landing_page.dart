@@ -112,6 +112,14 @@ class ProductCard extends StatelessWidget {
   ProductCard(
       {required this.name, required this.price, required this.imagePath});
 
+  String truncateText(String text) {
+    if (text.length > 10) {
+      return '${text.substring(0, 10)}...';
+    } else {
+      return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -124,7 +132,7 @@ class ProductCard extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            name,
+            truncateText(name),
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5),
