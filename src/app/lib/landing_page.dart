@@ -130,10 +130,10 @@ class ProductCard extends StatelessWidget {
             width: 100,
             height: 100,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             truncateText(name),
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5),
           Text(

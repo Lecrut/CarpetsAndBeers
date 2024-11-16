@@ -9,7 +9,11 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   final List<Map<String, dynamic>> products = [
-    {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
+    {
+      'name': 'Dywan Perski testuje sobie naze',
+      'price': 150.00,
+      'imagePath': 'images/dywan.jpg'
+    },
     {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
     {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
   ];
@@ -102,6 +106,22 @@ class ProductTile extends StatelessWidget {
   ProductTile(
       {required this.name, required this.price, required this.imagePath});
 
+  void _addToCart() {
+    // dodanie do koszyka
+  }
+
+  void _addToFavorite() {
+    // dodanie do ulubionych
+  }
+
+  String truncateText(String text) {
+    if (text.length > 20) {
+      return '${text.substring(0, 20)}...';
+    } else {
+      return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -117,20 +137,35 @@ class ProductTile extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    truncateText(name),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '${price.toStringAsFixed(2)} PLN',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                IconButton(
+                  onPressed: _addToCart,
+                  icon: const Icon(Icons.shopping_cart_sharp,
+                      color: Colors.green),
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  '${price.toStringAsFixed(2)} PLN',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                IconButton(
+                  onPressed: _addToFavorite,
+                  icon: const Icon(Icons.favorite, color: Colors.red),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),
