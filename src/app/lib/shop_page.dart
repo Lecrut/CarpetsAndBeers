@@ -106,12 +106,26 @@ class ProductTile extends StatelessWidget {
   ProductTile(
       {required this.name, required this.price, required this.imagePath});
 
-  void _addToCart() {
+  void _addToCart(BuildContext context) {
     // dodanie do koszyka
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Dodano $name do koszyka'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Color.fromARGB(255, 50, 196, 55),
+      ),
+    );
   }
 
-  void _addToFavorite() {
+  void _addToFavorite(BuildContext context) {
     // dodanie do ulubionych
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Dodano $name do ulubionych'),
+        duration: Duration(seconds: 2),
+        backgroundColor: const Color.fromARGB(255, 241, 91, 154),
+      ),
+    );
   }
 
   String truncateText(String text) {
@@ -156,12 +170,12 @@ class ProductTile extends StatelessWidget {
             Column(
               children: [
                 IconButton(
-                  onPressed: _addToCart,
+                  onPressed: () => _addToCart(context),
                   icon: const Icon(Icons.shopping_cart_sharp,
                       color: Colors.green),
                 ),
                 IconButton(
-                  onPressed: _addToFavorite,
+                  onPressed: () => _addToFavorite(context),
                   icon: const Icon(Icons.favorite, color: Colors.red),
                 ),
               ],
