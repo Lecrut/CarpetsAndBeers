@@ -1,4 +1,5 @@
 import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/shop_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app/navigation/app_bar.dart';
 
@@ -22,9 +23,10 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _navigateToProductList() {
-    // Implement navigation to product list page
-    // For example:
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductListPage()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ShopPage()),
+    );
   }
 
   @override
