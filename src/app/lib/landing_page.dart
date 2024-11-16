@@ -137,7 +137,7 @@ class ProductCard extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            '\$${price.toStringAsFixed(2)}',
+            '${price.toStringAsFixed(2)} PLN',
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ],
