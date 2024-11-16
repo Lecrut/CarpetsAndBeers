@@ -1,4 +1,5 @@
 import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/shop_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app/navigation/app_bar.dart';
 
@@ -21,51 +22,82 @@ class _LandingPageState extends State<LandingPage> {
     // itemStore.fetchItems();
   }
 
+  void _navigateToProductList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ShopPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(pageTitle: "Carpets & Beers"),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 20, left: 16, right: 16),
-            ),
-            Center(
-              child: Image.asset('images/banner2.jpg'),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Divider(
-                color: Colors.green,
-                thickness: 4.0,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Najnowsze produkty:',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.green,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: products.map((product) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ProductCard(
-                    name: product['name'],
-                    price: product['price'],
-                    imagePath: product['imagePath'],
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+                ),
+                Center(
+                  child: Image.asset('images/banner2.jpg'),
+                ),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Divider(
+                    color: Colors.green,
+                    thickness: 4.0,
                   ),
-                );
-              }).toList(),
+                ),
+                const Text(
+                  'Najnowsze produkty:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.green,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: products.map((product) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ProductCard(
+                        name: product['name'],
+                        price: product['price'],
+                        imagePath: product['imagePath'],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: FloatingActionButton.extended(
+                onPressed: _navigateToProductList,
+                backgroundColor: Colors.green,
+                icon: const Icon(
+                  Icons.list,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'Lista produktów',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomMenu(),
     );
@@ -80,6 +112,14 @@ class ProductCard extends StatelessWidget {
   ProductCard(
       {required this.name, required this.price, required this.imagePath});
 
+  String truncateText(String text) {
+    if (text.length > 10) {
+      return '${text.substring(0, 10)}...';
+    } else {
+      return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -90,14 +130,14 @@ class ProductCard extends StatelessWidget {
             width: 100,
             height: 100,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            name,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            truncateText(name),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5),
           Text(
-            '\$${price.toStringAsFixed(2)}',
+            '${price.toStringAsFixed(2)} PLN',
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ],
