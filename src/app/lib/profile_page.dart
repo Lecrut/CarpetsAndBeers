@@ -2,21 +2,44 @@ import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
-  final bool _isLogged = true;
+class ProfilePage extends StatefulWidget {
   ProfilePage({super.key});
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool _isLogged = false;
 
   final List<Map<String, dynamic>> orders = [
-    {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
-    {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
-    {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
+    {'id': 0, 'orderDate': '2024-10-20', 'totalPrice': 150.00},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _isLogged = false;
+    // final itemStore = Provider.of<ItemStore>(context, listen: false);
+    // itemStore.fetchItems();
+  }
+
+  void logIn() {
+    setState(() {
+      _isLogged = true;
+    });
+  }
+
+  void logOut() {
+    setState(() {
+      _isLogged = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(pageTitle: "Twój profil"),
-      body: true
+      body: _isLogged
           ? SingleChildScrollView(
               child: Column(
                 children: [
@@ -79,6 +102,7 @@ class ProfilePage extends StatelessWidget {
                       TextButton.icon(
                         onPressed: () {
                           // logout
+                          logOut();
                         },
                         icon: const Icon(Icons.logout, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -100,7 +124,52 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
             )
-          : SingleChildScrollView(),
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // funkcja do logowania
+                          logIn();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          iconColor: Colors.green,
+                          backgroundColor: Colors.green,
+                        ),
+                        child: const Text(
+                          'Zaloguj',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // funkcja do rejestracji
+                          logIn();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          iconColor: Colors.blue,
+                          backgroundColor: Colors.green,
+                        ),
+                        child: const Text(
+                          'Zarejestruj',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
       bottomNavigationBar: const BottomMenu(),
     );
   }
@@ -124,9 +193,14 @@ class OrderCard extends StatelessWidget {
             id.toString(),
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
-            '\$${totalPrice.toStringAsFixed(2)}',
+            orderDate,
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            totalPrice.toStringAsFixed(2) + ' PLN',
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ],

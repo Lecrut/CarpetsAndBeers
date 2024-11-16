@@ -35,44 +35,6 @@ class _LandingPageState extends State<LandingPage> {
               child: Image.asset('images/banner2.jpg'),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // funkcja do logowania
-                  },
-                  style: ElevatedButton.styleFrom(
-                    iconColor: Colors.green,
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text(
-                    'Zaloguj',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // funkcja do rejestracji
-                  },
-                  style: ElevatedButton.styleFrom(
-                    iconColor: Colors.blue,
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text(
-                    'Zarejestruj',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Divider(
