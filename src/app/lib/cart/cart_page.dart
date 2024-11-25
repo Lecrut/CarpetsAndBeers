@@ -1,4 +1,4 @@
-import 'package:app/cart/final_order.dart';
+import 'package:app/ordering/address_page.dart';
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
   void _finalizeOrder(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const FinalOrderPage()),
+      MaterialPageRoute(builder: (context) => const AddressPage()),
     );
   }
 
