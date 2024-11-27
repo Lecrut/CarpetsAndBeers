@@ -1,6 +1,4 @@
-import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:app/navigation/app_bar.dart';
 
 class ShopPage extends StatefulWidget {
   @override
@@ -43,26 +41,9 @@ class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(pageTitle: "Nasze produkty"),
+      appBar: AppBar(title: const Text("Nasze produkty")),
       body: Column(
         children: [
-          // const SizedBox(height: 20.0),
-          // const Text(
-          //   'Nasze produkty',
-          //   style: const TextStyle(
-          //     fontWeight: FontWeight.bold,
-          //     color: Colors.green,
-          //     fontSize: 42.0,
-          //   ),
-          // ),
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 30.0),
-          //   child: Divider(
-          //     color: Colors.green,
-          //     thickness: 4.0,
-          //   ),
-          // ),
-          // SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -93,7 +74,6 @@ class _ShopPageState extends State<ShopPage> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomMenu(),
     );
   }
 }

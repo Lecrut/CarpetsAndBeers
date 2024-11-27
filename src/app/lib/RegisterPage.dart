@@ -1,5 +1,4 @@
 import 'package:app/callouts/UserController.dart';
-import 'package:app/profile_page.dart';
 import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
