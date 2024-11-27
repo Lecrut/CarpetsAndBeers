@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+                    margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
                   ),
                   const SizedBox(height: 20),
                   const CircleAvatar(
@@ -69,14 +69,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundImage: AssetImage('images/lech.jpg'),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Jan Kowalski',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Text(
+                    Provider.of<UserProvider>(context).user!.name ?? 'brak',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'jan.kowalski@example.com',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Text(
+                    Provider.of<UserProvider>(context).user!.email,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 30),
                   Row(
