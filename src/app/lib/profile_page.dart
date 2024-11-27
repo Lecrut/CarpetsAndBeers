@@ -71,7 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
                   Text(
                     Provider.of<UserProvider>(context).user!.name ?? 'brak',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -118,7 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(width: 20),
                       TextButton.icon(
                         onPressed: () {
-                          Provider.of<UserProvider>(context, listen: false).logout();
+                          Provider.of<UserProvider>(context, listen: false)
+                              .logout();
                         },
                         icon: const Icon(Icons.logout, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -141,78 +143,82 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             )
           : SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(
+                              labelText: 'Hasło',
+                              border: OutlineInputBorder(),
+                            ),
+                            obscureText: true,
+                          ),
+                        ],
                       ),
-                      keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Hasło',
-                        border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          User user = User(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final response = await UserController.loginUser(user);
+
+                          if (response.statusCode == 200) {
+                            Provider.of<UserProvider>(context, listen: false)
+                                .login(user);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Logowanie się powiodło!')),
+                            );
+                            logIn();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Błąd: ${response.body}')),
+                            );
+                          }
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Wystąpił błąd: $error')),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
                       ),
-                      obscureText: true,
+                      child: const Text(
+                        'Zaloguj',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: goToRegister,
+                      child: const Text('Nie masz konta? Zarejestruj się'),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    User user = User(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                    final response = await UserController.loginUser(user);
-
-                    if (response.statusCode == 200) {
-                      Provider.of<UserProvider>(context, listen: false).login(user);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Logowanie się powiodło!')),
-                      );
-                      logIn();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Błąd: ${response.body}')),
-                      );
-                    }
-                  } catch (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Wystąpił błąd: $error')),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                ),
-                child: const Text('Zaloguj'),
-              ),
-              TextButton(
-                onPressed: goToRegister,
-                child: const Text('Nie masz konta? Zarejestruj się'),
-              ),
-            ],
-          ),
-        ),
-      ),
-
+            ),
       bottomNavigationBar: const BottomMenu(),
     );
   }

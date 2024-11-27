@@ -64,9 +64,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   final response = await UserController.createUser(user);
 
                   if (response.statusCode == 200) {
-                    Provider.of<UserProvider>(context, listen: false).login(user);
+                    Provider.of<UserProvider>(context, listen: false)
+                        .login(user);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Rejestracja zakończona sukcesem!')),
+                      const SnackBar(
+                          content: Text('Rejestracja zakończona sukcesem!')),
                     );
                     Navigator.pushReplacement(
                       context,
@@ -74,7 +76,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Błąd: ${response.body}')),
+                      SnackBar(
+                          content: Text(
+                              'Błąd: ${response.body} ${response.statusCode}')),
                     );
                   }
                 } catch (error) {
@@ -84,9 +88,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.green,
               ),
-              child: const Text('Zarejestruj się'),
+              child: const Text(
+                'Zarejestruj się',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
