@@ -70,10 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SnackBar(
                           content: Text('Rejestracja zakończona sukcesem!')),
                     );
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
-                    );
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/profile', (_) => false);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
