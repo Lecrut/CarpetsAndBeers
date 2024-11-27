@@ -2,6 +2,8 @@ import 'package:app/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class FinalOrderPage extends StatefulWidget {
+  const FinalOrderPage({super.key});
+
   @override
   _FinalOrderPageState createState() => _FinalOrderPageState();
 }
@@ -64,10 +66,9 @@ class _FinalOrderPageState extends State<FinalOrderPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ZŁóż zamówienie'),
-        automaticallyImplyLeading: false,
       ),
       body: _isComplete
-          ? Center(
+          ? const Center(
               child: Text(
                 'Thank you for your order!',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -79,13 +80,14 @@ class _FinalOrderPageState extends State<FinalOrderPage> {
               onStepCancel: _previousStep,
               steps: [
                 Step(
-                  title: Text('Enter Address'),
+                  title: const Text('Podaj adres'),
+                  stepStyle: const StepStyle(color: Colors.green),
                   content: Form(
                     key: _formKey,
                     child: TextFormField(
                       controller: _addressController,
-                      decoration: InputDecoration(
-                        labelText: 'Address',
+                      decoration: const InputDecoration(
+                        labelText: 'Adres',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -101,7 +103,8 @@ class _FinalOrderPageState extends State<FinalOrderPage> {
                       _currentStep > 0 ? StepState.complete : StepState.indexed,
                 ),
                 Step(
-                  title: Text('Review Order'),
+                  title: const Text('Podsumowanie zamówienia'),
+                  stepStyle: const StepStyle(color: Colors.green),
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -114,7 +117,8 @@ class _FinalOrderPageState extends State<FinalOrderPage> {
                       _currentStep > 1 ? StepState.complete : StepState.indexed,
                 ),
                 Step(
-                  title: Text('Payment'),
+                  stepStyle: const StepStyle(color: Colors.green),
+                  title: const Text('Płatność'),
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
