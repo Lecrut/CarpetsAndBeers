@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
   void _finalizeOrder(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const FinalOrderPage()),
+      MaterialPageRoute(builder: (context) => FinalOrderPage()),
     );
   }
 

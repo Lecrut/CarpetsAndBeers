@@ -3,6 +3,7 @@ import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 
 import 'RegisterPage.dart';
 import 'callouts/UserController.dart';
@@ -21,18 +22,23 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool _isLogged = false;
 
+  final _userId = String;
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
+    print(User);
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void logIn() {
+  void logIn(User user) {
     setState(() {
+      _nameController.text = user.name!;
+      _emailController.text = user.email;
       _isLogged = true;
     });
   }
@@ -185,13 +191,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           final response = await UserController.loginUser(user);
 
                           if (response.statusCode == 200) {
+                            final Map<String, dynamic> userData =
+                                jsonDecode(response.body);
+                            User userToShow = User(
+                                name: userData['name'],
+                                email: userData['email'],
+                                password: userData['password']);
                             Provider.of<UserProvider>(context, listen: false)
-                                .login(user);
+                                .login(userToShow);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Logowanie się powiodło!')),
                             );
-                            logIn();
+
+                            logIn(userToShow);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Błąd: ${response.body}')),
