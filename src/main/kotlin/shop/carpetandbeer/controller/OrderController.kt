@@ -19,6 +19,8 @@ import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
 import java.util.logging.Logger
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 
 @RestController
 @RequestMapping("/api/orderapi")
@@ -61,6 +63,30 @@ class OrderController(private val repository: OrderRepository) {
             status = OrderStatus.RECEIVED,
             address = orderRequest.address,
             paymentId = null
+        )
+        return ResponseEntity.ok(repository.save(order))
+    }
+
+    @PostMapping("/addCompletedOrder/{paymentId}")
+    fun createCompletedOrder(
+        @RequestBody orderRequest: OrderRequest,
+        @PathVariable paymentId: String,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) authHeader: String
+    ): ResponseEntity<Order> {
+
+        if (authHeader != "Bearer $PAYPAL_CLIENT_SECRET") {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        }
+
+        val order = Order(
+            id = null,
+            userId = orderRequest.userId,
+            items = orderRequest.items,
+            totalPrice = orderRequest.totalPrice,
+            orderDate = LocalDateTime.now(),
+            status = OrderStatus.COMPLETED,
+            address = orderRequest.address,
+            paymentId = paymentId
         )
         return ResponseEntity.ok(repository.save(order))
     }
