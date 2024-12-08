@@ -35,8 +35,10 @@ class _SummaryPageState extends State<SummaryPage> {
 
   Future<int> createCompletedOrder(
       Order order, String paymentId, String secretKey) async {
-    final url = Uri.parse(
-        'http://192.168.18.44:8080/api/orderapi/addCompletedOrder/$paymentId');
+    await dotenv.load(fileName: ".env");
+    final serverIp = dotenv.env['SERVER_IP'];
+    final url =
+        Uri.parse('http://$serverIp/api/orderapi/addCompletedOrder/$paymentId');
     final response = await http.post(
       url,
       headers: {
