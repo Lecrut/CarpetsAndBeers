@@ -1,7 +1,10 @@
+import 'package:app/callouts/item_controller.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/shop_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app/navigation/app_bar.dart';
+
+import 'model/Item.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -9,17 +12,12 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final List<Map<String, dynamic>> products = [
-    {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
-    {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
-    {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
-  ];
+  late Future<List<Item>> _futureItems;
 
   @override
   void initState() {
     super.initState();
-    // final itemStore = Provider.of<ItemStore>(context, listen: false);
-    // itemStore.fetchItems();
+    _futureItems = ItemController.getAllItems();
   }
 
   void _navigateToProductList() {
@@ -39,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+                  margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
                 ),
                 Center(
                   child: Image.asset('images/banner2.jpg'),
@@ -60,18 +58,36 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: products.map((product) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ProductCard(
-                        name: product['name'],
-                        price: product['price'],
-                        imagePath: product['imagePath'],
-                      ),
-                    );
-                  }).toList(),
+                FutureBuilder<List<Item>>(
+                  future: _futureItems,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Error: ${snapshot.error.toString()}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No products available.'));
+                    } else {
+                      final items = snapshot.data!.take(3).toList();
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: items.map((item) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ProductCard(
+                                name: item.name,
+                                price: item.price,
+                                imagePath: item.imageUrl,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -125,7 +141,7 @@ class ProductCard extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          Image.asset(
+          Image.network(
             imagePath,
             width: 100,
             height: 100,
@@ -135,10 +151,10 @@ class ProductCard extends StatelessWidget {
             truncateText(name),
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
             '${price.toStringAsFixed(2)} PLN',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ],
       ),
