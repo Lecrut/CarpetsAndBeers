@@ -40,3 +40,5 @@ out/
 .kotlin
 server.tar
 ./src/main/kotlin/shop/carpetandbeer/.env
+
+.env

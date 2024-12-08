@@ -1,6 +1,12 @@
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'RegisterPage.dart';
+import 'callouts/UserController.dart';
+import 'model/User.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({super.key});
@@ -9,18 +15,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool _isLogged = false;
-
   final List<Map<String, dynamic>> orders = [
     {'id': 0, 'orderDate': '2024-10-20', 'totalPrice': 150.00},
   ];
 
+  bool _isLogged = false;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
-  void initState() {
-    super.initState();
-    _isLogged = false;
-    // final itemStore = Provider.of<ItemStore>(context, listen: false);
-    // itemStore.fetchItems();
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   void logIn() {
@@ -35,8 +43,17 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void goToRegister() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    _isLogged = Provider.of<UserProvider>(context).isLogged;
+
     return Scaffold(
       appBar: const MyAppBar(pageTitle: "Twój profil"),
       body: _isLogged
@@ -44,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+                    margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
                   ),
                   const SizedBox(height: 20),
                   const CircleAvatar(
@@ -52,14 +69,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundImage: AssetImage('images/lech.jpg'),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Jan Kowalski',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Text(
+                    Provider.of<UserProvider>(context).user!.name ?? 'brak',
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'jan.kowalski@example.com',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Text(
+                    Provider.of<UserProvider>(context).user!.email,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 30),
                   Row(
@@ -101,8 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(width: 20),
                       TextButton.icon(
                         onPressed: () {
-                          // logout
-                          logOut();
+                          Provider.of<UserProvider>(context, listen: false)
+                              .logout();
                         },
                         icon: const Icon(Icons.logout, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -125,49 +143,80 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             )
           : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // funkcja do logowania
-                          logIn();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          iconColor: Colors.green,
-                          backgroundColor: Colors.green,
-                        ),
-                        child: const Text(
-                          'Zaloguj',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.emailAddress,
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          // funkcja do rejestracji
-                          logIn();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          iconColor: Colors.blue,
-                          backgroundColor: Colors.green,
-                        ),
-                        child: const Text(
-                          'Zarejestruj',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(
+                              labelText: 'Hasło',
+                              border: OutlineInputBorder(),
+                            ),
+                            obscureText: true,
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          User user = User(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final response = await UserController.loginUser(user);
+
+                          if (response.statusCode == 200) {
+                            Provider.of<UserProvider>(context, listen: false)
+                                .login(user);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Logowanie się powiodło!')),
+                            );
+                            logIn();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Błąd: ${response.body}')),
+                            );
+                          }
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Wystąpił błąd: $error')),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text(
+                        'Zaloguj',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: goToRegister,
+                      child: const Text('Nie masz konta? Zarejestruj się'),
+                    ),
+                  ],
+                ),
               ),
             ),
       bottomNavigationBar: const BottomMenu(),
