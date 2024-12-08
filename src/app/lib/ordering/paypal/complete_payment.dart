@@ -88,7 +88,7 @@ class _CompletePaymentState extends State<CompletePayment> {
                   Expanded(
                     child: Center(
                       child: SpinKitFadingCube(
-                        color: Color(0xFFEB920D),
+                        color: Colors.green,
                         size: 30.0,
                       ),
                     ),

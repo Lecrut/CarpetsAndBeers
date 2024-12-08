@@ -4,14 +4,11 @@ import 'package:app/profile_page.dart';
 import 'package:app/wish_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:flutter/services.dart' show rootBundle;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // // Load the .env file from assets
-  // final envString = await rootBundle.loadString('.env');
-  await dotenv.load(fileName: "../../.env");
+  await dotenv.load(fileName: ".env");
 
   runApp(MaterialApp(
     title: "CarpetsAndBeers",

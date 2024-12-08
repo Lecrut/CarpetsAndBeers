@@ -10,6 +10,15 @@ class Order {
     required this.items,
     required this.totalPrice,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'address': address.toJson(),
+      'userID': userID,
+      'items': items.map((item) => item.toJson()).toList(),
+      'totalPrice': totalPrice,
+    };
+  }
 }
 
 class Address {
@@ -26,6 +35,16 @@ class Address {
     required this.city,
     required this.zip,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'number': number,
+      'building': building,
+      'street': street,
+      'city': city,
+      'zip': zip,
+    };
+  }
 }
 
 class OrderItem {
@@ -36,4 +55,11 @@ class OrderItem {
     required this.item,
     required this.quantity,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'item': item,
+      'quantity': quantity,
+    };
+  }
 }

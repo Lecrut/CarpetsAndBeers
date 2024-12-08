@@ -62,6 +62,7 @@ class UsePaypalState extends State<UsePaypal> {
   }
 
   loadPayment() async {
+    if (!mounted) return;
     setState(() {
       loading = true;
     });
@@ -73,6 +74,7 @@ class UsePaypalState extends State<UsePaypal> {
         final res =
             await services.createPaypalPayment(transactions, accessToken);
         if (res["approvalUrl"] != null) {
+          if (!mounted) return;
           setState(() {
             checkoutUrl = res["approvalUrl"].toString();
             navUrl = res["approvalUrl"].toString();
@@ -84,6 +86,7 @@ class UsePaypalState extends State<UsePaypal> {
           _controller.loadRequest(Uri.parse(checkoutUrl));
         } else {
           widget.onError(res);
+          if (!mounted) return;
           setState(() {
             loading = false;
             pageLoading = false;
@@ -92,7 +95,7 @@ class UsePaypalState extends State<UsePaypal> {
         }
       } else {
         widget.onError("${getToken['message']}");
-
+        if (!mounted) return;
         setState(() {
           loading = false;
           pageLoading = false;
@@ -101,6 +104,7 @@ class UsePaypalState extends State<UsePaypal> {
       }
     } catch (e) {
       widget.onError(e);
+      if (!mounted) return;
       setState(() {
         loading = false;
         pageLoading = false;
@@ -149,6 +153,7 @@ class UsePaypalState extends State<UsePaypal> {
             debugPrint('WebView is loading (progress : $progress%)');
           },
           onPageStarted: (String url) {
+            if (!mounted) return;
             setState(() {
               pageLoading = true;
               loadingError = false;
@@ -156,6 +161,7 @@ class UsePaypalState extends State<UsePaypal> {
             debugPrint('Page started loading: $url');
           },
           onPageFinished: (String url) {
+            if (!mounted) return;
             setState(() {
               navUrl = url;
               pageLoading = false;
@@ -228,6 +234,7 @@ class UsePaypalState extends State<UsePaypal> {
     return WillPopScope(
       onWillPop: () async {
         if (pressed < 2) {
+          if (!mounted) return false;
           setState(() {
             pressed++;
           });
