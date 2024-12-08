@@ -1,9 +1,12 @@
-import 'package:app/navigation/app_bar.dart';
-import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/ordering/step_indicator.dart';
+import 'package:app/ordering/summary_page.dart';
+import 'package:app/models/order_model.dart';
 import 'package:flutter/material.dart';
 
 class AddressPage extends StatefulWidget {
-  const AddressPage({super.key});
+  final List<Map<String, dynamic>> products;
+
+  const AddressPage({super.key, required this.products});
 
   @override
   State<AddressPage> createState() => _AddressPageState();
@@ -51,21 +54,21 @@ class _AddressPageState extends State<AddressPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(left: 50.0),
               child: Text(
                 "Finalizacja",
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.green,
                   fontSize: 32.0,
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 42, 0),
               child: Divider(
                 color: Colors.green,
@@ -86,6 +89,13 @@ class _AddressPageState extends State<AddressPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildStepIndicator("Adres dostawy", true),
+                    buildStepIndicator("Podsumowanie", false),
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: SizedBox(
@@ -104,8 +114,8 @@ class _AddressPageState extends State<AddressPage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       hintText: "Numer domu",
                     ),
                     keyboardType: TextInputType.visiblePassword,
@@ -118,8 +128,8 @@ class _AddressPageState extends State<AddressPage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       hintText: "Numer mieszkania (opcjonalnie)",
                     ),
                     keyboardType: TextInputType.visiblePassword,
@@ -132,8 +142,8 @@ class _AddressPageState extends State<AddressPage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       hintText: "Miasto",
                     ),
                     keyboardType: TextInputType.visiblePassword,
@@ -146,8 +156,8 @@ class _AddressPageState extends State<AddressPage> {
                 SizedBox(
                   width: double.infinity,
                   child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       hintText: "Kod pocztowy",
                     ),
                     keyboardType: TextInputType.visiblePassword,
@@ -165,12 +175,32 @@ class _AddressPageState extends State<AddressPage> {
                       height: 48,
                       margin: const EdgeInsets.only(top: 30.0, bottom: 30.0),
                       child: ElevatedButton(
-                        onPressed: isValid ? () {} : null,
+                        onPressed: isValid
+                            ? () {
+                                final address = Address(
+                                  number: houseNumController.text,
+                                  building: apartmentNumController.text,
+                                  street: streetController.text,
+                                  city: cityController.text,
+                                  zip: zipCodeController.text,
+                                );
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SummaryPage(
+                                      address: address,
+                                      products: widget.products,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
                         ),
-                        child: Text("Następny krok"),
+                        child: Text("Podsumowanie"),
                       ),
                     );
                   },

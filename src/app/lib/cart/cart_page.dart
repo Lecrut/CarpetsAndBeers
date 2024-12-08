@@ -13,18 +13,21 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final List<Map<String, dynamic>> products = [
     {
+      'id': 1,
       'name': 'Dywan Perski',
       'price': 150.00,
       'imagePath': 'images/dywan.jpg',
       'quantity': 1
     },
     {
+      'id': 2,
       'name': 'Piwo Corona',
       'price': 6.99,
       'imagePath': 'images/corona.png',
       'quantity': 1
     },
     {
+      'id': 3,
       'name': 'Piwo Lech',
       'price': 5.99,
       'imagePath': 'images/lech.jpg',
@@ -64,7 +67,9 @@ class _CartPageState extends State<CartPage> {
   void _finalizeOrder(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AddressPage()),
+      MaterialPageRoute(
+        builder: (context) => AddressPage(products: products),
+      ),
     );
   }
 
