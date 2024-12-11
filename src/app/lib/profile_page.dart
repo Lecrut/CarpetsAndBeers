@@ -20,7 +20,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<List<Order>> orders;
+  late Future<List<Order>>? orders = null;
   bool _isLogged = false;
 
   String _userId = '';
