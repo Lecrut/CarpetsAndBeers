@@ -1,3 +1,4 @@
+import 'package:app/providers/WishListProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -137,7 +138,16 @@ class ProductTile extends StatelessWidget {
   }
 
   void _addToFavorite(BuildContext context) {
-    // dodanie do ulubionych
+    final item = Item(
+        id: id,
+        name: name,
+        price: price,
+        category: category,
+        description: description,
+        imageUrl: imagePath);
+    Provider.of<WishListProvider>(context, listen: false)
+        .addItemToWishList(item);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Dodano $name do ulubionych'),

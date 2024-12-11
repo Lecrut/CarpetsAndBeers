@@ -1,6 +1,10 @@
+import 'package:app/model/Item.dart';
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/providers/ItemProvider.dart';
+import 'package:app/providers/WishListProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WishListPage extends StatefulWidget {
   const WishListPage({super.key});
@@ -10,20 +14,27 @@ class WishListPage extends StatefulWidget {
 }
 
 class _WishListPageState extends State<WishListPage> {
-  final List<Map<String, dynamic>> products = [
-    {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
-    {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
-    {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
-  ];
+  // final List<Map<String, dynamic>> products = [
+  //   {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
+  //   {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
+  //   {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
+  // ];
+  var _wishList = [];
 
   @override
   void initState() {
     super.initState();
+    var wishListProvider =
+        Provider.of<WishListProvider>(context, listen: false);
+    _wishList = wishListProvider.wishList;
   }
 
   void removeProduct(int index) {
     setState(() {
-      products.removeAt(index);
+      Item itemToDelete = _wishList[index];
+      Provider.of<WishListProvider>(context, listen: false)
+          .removeItemFromWishList(itemToDelete);
+      _wishList.removeAt(index);
     });
   }
 
@@ -35,7 +46,8 @@ class _WishListPageState extends State<WishListPage> {
     }
   }
 
-  void _addToCart(BuildContext context, String name) {
+  void _addToCart(BuildContext context, String name, Item item) {
+    Provider.of<ItemProvider>(context, listen: false).addItemToCart(item);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Dodano $name do koszyka'),
@@ -57,6 +69,10 @@ class _WishListPageState extends State<WishListPage> {
 
   @override
   Widget build(BuildContext context) {
+    var wishListProvider = Provider.of<WishListProvider>(context);
+    var products = wishListProvider.wishList;
+    _wishList = products;
+
     return Scaffold(
       appBar: const MyAppBar(pageTitle: "Lista życzeń"),
       body: ListView.builder(
@@ -69,8 +85,8 @@ class _WishListPageState extends State<WishListPage> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Image.asset(
-                    product['imagePath'],
+                  Image.network(
+                    product.imageUrl,
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -81,13 +97,13 @@ class _WishListPageState extends State<WishListPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          truncateText(product['name']),
+                          truncateText(product.name),
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          '${product['price'].toStringAsFixed(2)} PLN',
+                          '${product.price.toStringAsFixed(2)} PLN',
                           style:
                               const TextStyle(fontSize: 14, color: Colors.grey),
                         ),
@@ -97,14 +113,15 @@ class _WishListPageState extends State<WishListPage> {
                   Column(
                     children: [
                       IconButton(
-                        onPressed: () => _addToCart(context, product["name"]),
+                        onPressed: () =>
+                            _addToCart(context, product.name, product),
                         icon: const Icon(Icons.shopping_cart_sharp,
                             color: Colors.green),
                       ),
                       IconButton(
                         onPressed: () => {
                           removeProduct(index),
-                          _deleteFromFavorite(context, product["name"]),
+                          _deleteFromFavorite(context, product.name),
                         },
                         icon: const Icon(Icons.delete, color: Colors.red),
                       ),
