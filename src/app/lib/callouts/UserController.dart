@@ -43,6 +43,7 @@ class UserController {
       body: jsonEncode(user.mapToLogin()),
     );
     print('Response status: ${response.toString()}');
+    print('Response body: ${response.body}');
 
     return response;
   }

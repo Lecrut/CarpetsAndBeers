@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app/callouts/order_controller.dart';
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/providers/UserProvider.dart';
@@ -7,6 +10,7 @@ import 'dart:convert';
 
 import 'RegisterPage.dart';
 import 'callouts/UserController.dart';
+import 'model/Order.dart';
 import 'model/User.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,16 +20,32 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final List<Map<String, dynamic>> orders = [
-    {'id': 0, 'orderDate': '2024-10-20', 'totalPrice': 150.00},
-  ];
-
+  late Future<List<Order>> orders;
   bool _isLogged = false;
 
   String _userId = '';
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Check if user is logged in
+    _isLogged = Provider.of<UserProvider>(context, listen: false).isLogged;
+    if (_isLogged) {
+      _fetchOrders();
+    }
+  }
+
+  void _fetchOrders() {
+    String? userId = Provider.of<UserProvider>(context, listen: false).user?.id;
+    if (userId != null) {
+      setState(() {
+        orders = OrderController.getUserOrders(userId);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -41,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _emailController.text = user.email;
       _isLogged = true;
     });
+    _fetchOrders();
   }
 
   void logOut() {
@@ -128,18 +149,36 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: orders.map((product) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: OrderCard(
-                          id: product['id'],
-                          orderDate: product['orderDate'],
-                          totalPrice: product['totalPrice'],
-                        ),
-                      );
-                    }).toList(),
+                  FutureBuilder<List<Order>>(
+                    future: orders,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                            child: Text('Error: ${snapshot.error.toString()}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No orders available.'));
+                      } else {
+                        final orders = snapshot.data!;
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: orders.map((order) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: OrderCard(
+                                  id: order.id,
+                                  orderDate: order.orderDate,
+                                  totalPrice: order.price,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -147,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       TextButton.icon(
                         onPressed: () {
-                          _showEditDialog();
+                          // Handle edit profile
                         },
                         icon: const Icon(Icons.edit, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -169,6 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onPressed: () {
                           Provider.of<UserProvider>(context, listen: false)
                               .logout();
+                          logOut();
                         },
                         icon: const Icon(Icons.logout, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -233,21 +273,15 @@ class _ProfilePageState extends State<ProfilePage> {
                           final response = await UserController.loginUser(user);
 
                           if (response.statusCode == 200) {
-                            final Map<String, dynamic> userData =
-                                jsonDecode(response.body);
-                            _userId = userData['id'];
-                            User userToShow = User(
-                                name: userData['name'],
-                                email: userData['email'],
-                                password: userData['password']);
+                            user.name = jsonDecode(response.body)['name'];
+                            user.id = jsonDecode(response.body)['id'];
                             Provider.of<UserProvider>(context, listen: false)
-                                .login(userToShow);
+                                .login(user);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Logowanie się powiodło!')),
                             );
-
-                            logIn(userToShow);
+                            logIn();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Błąd: ${response.body}')),
@@ -281,7 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class OrderCard extends StatelessWidget {
-  final num id;
+  final String id;
   final String orderDate;
   final double totalPrice;
 

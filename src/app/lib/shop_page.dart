@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
 
+import 'callouts/item_controller.dart';
+import 'model/Item.dart';
+
 class ShopPage extends StatefulWidget {
   @override
   _ShopPageState createState() => _ShopPageState();
 }
 
 class _ShopPageState extends State<ShopPage> {
-  final List<Map<String, dynamic>> products = [
-    {
-      'name': 'Dywan Perski testuje sobie naze',
-      'price': 150.00,
-      'imagePath': 'images/dywan.jpg'
-    },
-    {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
-    {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
-  ];
-
-  late List<Map<String, dynamic>> filteredProducts;
   TextEditingController searchController = TextEditingController();
+  late Future<List<Item>> _futureItems;
+  List<Item>? allProducts; // Cache of all products to filter
 
   @override
   void initState() {
     super.initState();
-    filteredProducts = products;
-    searchController.addListener(() {
-      filterProducts();
+    _futureItems = ItemController.getAllItems();
+    _futureItems.then((items) {
+      allProducts = items; // Cache the original products list
     });
+    searchController.addListener(filterProducts);
   }
 
   void filterProducts() {
     setState(() {
-      filteredProducts = products
-          .where((product) => product['name']
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase()))
-          .toList();
+      if (allProducts != null) {
+        final query = searchController.text.toLowerCase();
+        final filtered = allProducts!
+            .where((product) =>
+            product.name.toLowerCase().contains(query))
+            .toList();
+        _futureItems = Future.value(filtered); // Update the future
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,16 +63,31 @@ class _ShopPageState extends State<ShopPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
-                return ProductTile(
-                  name: product['name'],
-                  price: product['price'],
-                  imagePath: product['imagePath'],
-                );
+            child: FutureBuilder<List<Item>>(
+              future: _futureItems,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Error: ${snapshot.error.toString()}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No products available.'));
+                } else {
+                  final items = snapshot.data!;
+                  return ListView(
+                    children: items.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ProductTile(
+                          name: item.name,
+                          price: item.price,
+                          imagePath: item.imageUrl,
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }
               },
             ),
           ),
@@ -77,6 +96,7 @@ class _ShopPageState extends State<ShopPage> {
     );
   }
 }
+
 
 class ProductTile extends StatelessWidget {
   final String name;
@@ -124,17 +144,21 @@ class ProductTile extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Image.asset(
+            Image.network(
               imagePath,
               width: 100,
               height: 100,
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 16),
-            Expanded(
+
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Text(truncateText(name)),
+                  // Text(price.toStringAsFixed(2)),
                   Text(
                     truncateText(name),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
