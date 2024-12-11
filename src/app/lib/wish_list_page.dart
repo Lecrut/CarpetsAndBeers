@@ -14,11 +14,6 @@ class WishListPage extends StatefulWidget {
 }
 
 class _WishListPageState extends State<WishListPage> {
-  // final List<Map<String, dynamic>> products = [
-  //   {'name': 'Dywan Perski', 'price': 150.00, 'imagePath': 'images/dywan.jpg'},
-  //   {'name': 'Piwo Corona', 'price': 6.99, 'imagePath': 'images/corona.png'},
-  //   {'name': 'Piwo Lech', 'price': 5.99, 'imagePath': 'images/lech.jpg'},
-  // ];
   var _wishList = [];
 
   @override

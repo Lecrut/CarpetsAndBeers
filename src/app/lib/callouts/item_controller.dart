@@ -1,17 +1,16 @@
 import 'dart:convert';
-
-import 'package:app/callouts/UserController.dart';
-import 'package:http/http.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../model/Item.dart';
 import 'package:http/http.dart' as http;
 
 class ItemController {
-  static String ITEM_API_ENDPOINT = 'http://192.168.0.157:8080/api/itemapi';
+  static String ITEM_API_ENDPOINT = 'http://192.168.1.13:8080/api/itemapi';
 
   static Future<List<Item>> getAllItems() async {
-    final response =
-        await http.get(Uri.parse('$ITEM_API_ENDPOINT/getAllItems'), headers: {
+    final serverIp = dotenv.env['SERVER_IP'];
+
+    final response = await http
+        .get(Uri.parse('http://$serverIp/api/itemapi/getAllItems'), headers: {
       'Content-Type': 'application/json',
     });
     print('Response status: ${response.body}, ${response.statusCode}');

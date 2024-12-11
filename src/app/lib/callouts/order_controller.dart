@@ -1,16 +1,17 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../model/Order.dart';
 import 'package:http/http.dart' as http;
 
 class OrderController {
-  static String ORDER_API_ENDPOINT = 'http://192.168.0.157:8080/api/orderapi';
   static Future<List<Order>> getUserOrders(String? userId) async {
     if (userId == null) {
       return [];
     }
-    final response =
-        await http.get(Uri.parse('$ORDER_API_ENDPOINT/user/$userId'), headers: {
+    final serverIp = dotenv.env['SERVER_IP'];
+
+    final response = await http
+        .get(Uri.parse('http://$serverIp/api/orderapi/user/$userId'), headers: {
       'Content-Type': 'application/json',
     });
     print('Response status: ${response.body}, ${response.statusCode}');
