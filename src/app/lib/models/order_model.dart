@@ -1,6 +1,6 @@
 class Order {
   final Address address;
-  final int userID;
+  final String? userID;
   final List<OrderItem> items;
   final double totalPrice;
 
@@ -14,7 +14,7 @@ class Order {
   Map<String, dynamic> toJson() {
     return {
       'address': address.toJson(),
-      'userID': userID,
+      'userId': userID,
       'items': items.map((item) => item.toJson()).toList(),
       'totalPrice': totalPrice,
     };
