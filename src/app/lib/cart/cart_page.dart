@@ -1,7 +1,11 @@
+import 'package:app/model/Item.dart';
 import 'package:app/ordering/address_page.dart';
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
+import 'package:app/providers/ItemProvider.dart';
+import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -12,49 +16,71 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   // TODO change
-  final List<Map<String, dynamic>> products = [
-    {
-      'id': 1,
-      'name': 'Dywan Perski',
-      'price': 150.00,
-      'imagePath': 'images/dywan.jpg',
-      'quantity': 1
-    },
-    {
-      'id': 2,
-      'name': 'Piwo Corona',
-      'price': 6.99,
-      'imagePath': 'images/corona.png',
-      'quantity': 1
-    },
-    {
-      'id': 3,
-      'name': 'Piwo Lech',
-      'price': 5.99,
-      'imagePath': 'images/lech.jpg',
-      'quantity': 1
-    },
-  ];
+  // final List<Map<String, dynamic>> products = [
+  //   {
+  //     'id': 1,
+  //     'name': 'Dywan Perski',
+  //     'price': 150.00,
+  //     'imagePath': 'images/dywan.jpg',
+  //     'quantity': 1
+  //   },
+  //   {
+  //     'id': 2,
+  //     'name': 'Piwo Corona',
+  //     'price': 6.99,
+  //     'imagePath': 'images/corona.png',
+  //     'quantity': 1
+  //   },
+  //   {
+  //     'id': 3,
+  //     'name': 'Piwo Lech',
+  //     'price': 5.99,
+  //     'imagePath': 'images/lech.jpg',
+  //     'quantity': 1
+  //   },
+  // ];
+
+  List<Map<String, dynamic>> _cartProducts = [];
+
+  var products;
+  @override
+  void initState() {
+    super.initState();
+    final itemProvider = Provider.of<ItemProvider>(context, listen: false);
+    _cartProducts = itemProvider.cartItems.map((item) {
+      return {
+        'item': item,
+        'quantity': 1,
+      };
+    }).toList();
+  }
 
   void removeProduct(int index) {
     setState(() {
-      products.removeAt(index);
+      Item itemToDelete = _cartProducts[index]['item'];
+      Provider.of<ItemProvider>(context, listen: false)
+          .removeItemFromCart(itemToDelete);
+      _cartProducts.removeAt(index);
     });
   }
 
   void updateQuantity(int index, int quantity) {
     setState(() {
       if (quantity <= 0) {
-        products.removeAt(index);
+        Item itemToDelete = _cartProducts[index]['item'];
+        Provider.of<ItemProvider>(context, listen: false)
+            .removeItemFromCart(itemToDelete);
+        _cartProducts.removeAt(index);
       } else {
-        products[index]['quantity'] = quantity;
+        _cartProducts[index]['quantity'] = quantity;
       }
     });
   }
 
   double calculateTotalPrice() {
-    return products.fold(0.0,
-        (total, product) => total + product['price'] * product['quantity']);
+    return _cartProducts.fold(0.0, (total, product) {
+      return total + product['item'].price * product['quantity'];
+    });
   }
 
   String truncateText(String text) {
@@ -66,6 +92,12 @@ class _CartPageState extends State<CartPage> {
   }
 
   void _finalizeOrder(BuildContext context) {
+    final products = _cartProducts.map((product) {
+      return {
+        'item': product['item'],
+        'quantity': product['quantity'],
+      };
+    }).toList();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -82,17 +114,18 @@ class _CartPageState extends State<CartPage> {
         children: [
           ListView.builder(
             padding: const EdgeInsets.only(bottom: 150.0),
-            itemCount: products.length,
+            itemCount: _cartProducts.length,
             itemBuilder: (context, index) {
-              final product = products[index];
+              final product = _cartProducts[index];
+              final item = product['item'] as Item;
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Image.asset(
-                        product['imagePath'],
+                      Image.network(
+                        item.imageUrl,
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
@@ -103,13 +136,13 @@ class _CartPageState extends State<CartPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              truncateText(product['name']),
+                              truncateText(item.name),
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              '${product['price'].toStringAsFixed(2)} PLN',
+                              '${item.price.toStringAsFixed(2)} PLN',
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.grey),
                             ),
@@ -117,7 +150,7 @@ class _CartPageState extends State<CartPage> {
                             Row(
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.remove_circle),
+                                  icon: const Icon(Icons.remove_circle),
                                   onPressed: () {
                                     updateQuantity(
                                         index, product['quantity'] - 1);
@@ -138,7 +171,9 @@ class _CartPageState extends State<CartPage> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => removeProduct(index),
+                        onPressed: () => setState(() {
+                          removeProduct(index);
+                        }),
                       ),
                     ],
                   ),

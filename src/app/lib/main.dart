@@ -2,6 +2,8 @@ import 'package:app/cart/cart_page.dart';
 import 'package:app/landing_page.dart';
 import 'package:app/profile_page.dart';
 import 'package:app/providers/UserProvider.dart';
+import 'package:app/providers/ItemProvider.dart';
+import 'package:app/providers/WishListProvider.dart';
 import 'package:app/wish_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +18,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ItemProvider()),
+        ChangeNotifierProvider(create: (_) => WishListProvider()),
       ],
       child: MaterialApp(
         title: "CarpetsAndBeers",

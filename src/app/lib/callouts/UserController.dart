@@ -6,7 +6,7 @@ import '../model/User.dart';
 import 'package:http/http.dart' as http;
 
 class UserController {
-  static const USER_API_ENDPOINT = 'http://192.168.56.1:8080/api/userapi';
+  static const USER_API_ENDPOINT = 'http://192.168.0.157:8080/api/userapi';
 
   static Future<Response> createUser(User user) async {
     final response = await http.post(
@@ -21,7 +21,8 @@ class UserController {
     return response;
   }
 
-  static Future<void> updateUser(String name, String email, String password) async {
+  static Future<void> updateUser(
+      String name, String email, String password) async {
     // Update user
   }
 

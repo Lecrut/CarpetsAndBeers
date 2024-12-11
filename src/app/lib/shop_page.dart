@@ -1,7 +1,10 @@
+import 'package:app/providers/WishListProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'callouts/item_controller.dart';
 import 'model/Item.dart';
+import '../providers/ItemProvider.dart'; // Ścieżka do UserProvider
 
 class ShopPage extends StatefulWidget {
   @override
@@ -28,8 +31,7 @@ class _ShopPageState extends State<ShopPage> {
       if (allProducts != null) {
         final query = searchController.text.toLowerCase();
         final filtered = allProducts!
-            .where((product) =>
-            product.name.toLowerCase().contains(query))
+            .where((product) => product.name.toLowerCase().contains(query))
             .toList();
         _futureItems = Future.value(filtered); // Update the future
       }
@@ -80,9 +82,12 @@ class _ShopPageState extends State<ShopPage> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ProductTile(
+                          id: item.id,
                           name: item.name,
                           price: item.price,
                           imagePath: item.imageUrl,
+                          category: item.category,
+                          description: item.description,
                         ),
                       );
                     }).toList(),
@@ -97,17 +102,32 @@ class _ShopPageState extends State<ShopPage> {
   }
 }
 
-
 class ProductTile extends StatelessWidget {
+  final String id;
   final String name;
   final double price;
   final String imagePath;
+  final String category;
+  final String description;
 
   ProductTile(
-      {required this.name, required this.price, required this.imagePath});
+      {required this.id,
+      required this.name,
+      required this.price,
+      required this.imagePath,
+      required this.category,
+      required this.description});
 
   void _addToCart(BuildContext context) {
-    // dodanie do koszyka
+    final item = Item(
+        id: id,
+        name: name,
+        price: price,
+        category: category,
+        description: description,
+        imageUrl: imagePath);
+    Provider.of<ItemProvider>(context, listen: false).addItemToCart(item);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Dodano $name do koszyka'),
@@ -118,7 +138,16 @@ class ProductTile extends StatelessWidget {
   }
 
   void _addToFavorite(BuildContext context) {
-    // dodanie do ulubionych
+    final item = Item(
+        id: id,
+        name: name,
+        price: price,
+        category: category,
+        description: description,
+        imageUrl: imagePath);
+    Provider.of<WishListProvider>(context, listen: false)
+        .addItemToWishList(item);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Dodano $name do ulubionych'),
@@ -151,7 +180,6 @@ class ProductTile extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 16),
-
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
               child: Column(

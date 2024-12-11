@@ -32,8 +32,10 @@ class _SummaryPageState extends State<SummaryPage> {
   bool paymentSuccessful = false;
 
   double calculateTotalPrice() {
-    return widget.products.fold(0.0,
-        (total, product) => total + product['price'] * product['quantity']);
+    return widget.products.fold(
+        0.0,
+        (total, product) =>
+            total + product['item'].price * product['quantity']);
   }
 
   Future<int> createCompletedOrder(
@@ -163,11 +165,11 @@ class _SummaryPageState extends State<SummaryPage> {
                             ),
                             ...widget.products.map((product) {
                               return ListTile(
-                                title: Text(product['name']),
+                                title: Text(product['item'].name),
                                 subtitle: Text(
-                                    '${product['quantity']} x ${product['price'].toStringAsFixed(2)} PLN'),
+                                    '${product['quantity']} x ${product['item'].price.toStringAsFixed(2)} PLN'),
                                 trailing: Text(
-                                    '${(product['quantity'] * product['price']).toStringAsFixed(2)} PLN'),
+                                    '${(product['quantity'] * product['item'].price).toStringAsFixed(2)} PLN'),
                               );
                             }).toList(),
                             const Divider(),
