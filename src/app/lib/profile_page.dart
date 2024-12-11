@@ -281,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               const SnackBar(
                                   content: Text('Logowanie się powiodło!')),
                             );
-                            logIn();
+                            logIn(user);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Błąd: ${response.body}')),
