@@ -3,11 +3,14 @@ import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/ordering/order_success_confirmation_page.dart';
 import 'package:app/ordering/paypal/paypal.dart';
 import 'package:app/ordering/step_indicator.dart';
+import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:app/models/order_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -54,6 +57,9 @@ class _SummaryPageState extends State<SummaryPage> {
   Widget build(BuildContext context) {
     final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
 
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final userId = user?.id;
+
     final orderItems = widget.products.map((product) {
       return OrderItem(
         item: product['id'].toString(),
@@ -63,7 +69,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
     final order = Order(
       address: widget.address,
-      userID: 1, // TODO Replace with actual user ID
+      userID: userId,
       items: orderItems,
       totalPrice: calculateTotalPrice(),
     );
