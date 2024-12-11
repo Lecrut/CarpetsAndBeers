@@ -52,6 +52,16 @@ class OrderController(private val repository: OrderRepository) {
         return ResponseEntity.ok(repository.findById(id).orElseThrow { RuntimeException("Order not found") })
     }
 
+    @GetMapping("/user/{user_id}")
+    fun getOrdersByUserId(@PathVariable("user_id") userId: String): ResponseEntity<List<Order>> {
+        val orders = repository.findByUserId(userId)
+        return if (orders.isNotEmpty()) {
+            ResponseEntity.ok(orders)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
     @PostMapping("/add")
     fun createOrder(@RequestBody orderRequest: OrderRequest): ResponseEntity<Order> {
         val order = Order(
