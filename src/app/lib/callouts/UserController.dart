@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../model/User.dart';
 import 'package:http/http.dart' as http;
 
 class UserController {
-  static const USER_API_ENDPOINT = 'http://192.168.0.157:8080/api/userapi';
-
   static Future<Response> createUser(User user) async {
+    final serverIp = dotenv.env['SERVER_IP'];
+
     final response = await http.post(
-      Uri.parse('$USER_API_ENDPOINT/register'),
+      Uri.parse('http://$serverIp/api/userapi/register'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,8 +34,10 @@ class UserController {
   }
 
   static Future<Response> loginUser(User user) async {
+    final serverIp = dotenv.env['SERVER_IP'];
+
     final response = await http.post(
-      Uri.parse('$USER_API_ENDPOINT/login'),
+      Uri.parse('http://$serverIp/api/userapi/login'),
       headers: {
         'Content-Type': 'application/json',
       },
