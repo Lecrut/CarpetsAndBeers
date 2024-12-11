@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool _isLogged = false;
 
-  final _userId = String;
+  String _userId = '';
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -53,6 +53,48 @@ class _ProfilePageState extends State<ProfilePage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const RegisterPage()),
+    );
+  }
+
+  void _showEditDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edytuj profil'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Imię'),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Anuluj'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Zapisz'),
+              onPressed: () async {
+                String name = _nameController.text;
+                String email = _emailController.text;
+
+                await UserController.updateUser(_userId, name, email);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -105,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       TextButton.icon(
                         onPressed: () {
-                          // edycja
+                          _showEditDialog();
                         },
                         icon: const Icon(Icons.edit, color: Colors.white),
                         style: ElevatedButton.styleFrom(
@@ -193,6 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (response.statusCode == 200) {
                             final Map<String, dynamic> userData =
                                 jsonDecode(response.body);
+                            _userId = userData['id'];
                             User userToShow = User(
                                 name: userData['name'],
                                 email: userData['email'],
