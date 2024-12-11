@@ -18,7 +18,8 @@ class SecurityConfig {
                         "/api/orderapi/orders/**",
                         "/api/orderapi/orders",
                         "/api/orderapi/add",
-                        "/api/orderapi/addCompletedOrder/**"
+                        "/api/orderapi/addCompletedOrder/**",
+                        "/api/orderapi/user/**"
                         ).permitAll()
                     .anyRequest().authenticated()
             }
