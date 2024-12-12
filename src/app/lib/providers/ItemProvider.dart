@@ -34,7 +34,7 @@ class ItemProvider extends ChangeNotifier {
     preferences.setStringList('cartItems', jsonList);
   }
 
-  void loadCartItems() async {
+  Future<void> loadCartItems() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<String>? jsonList = preferences.getStringList('cartItems');
     if (jsonList != null) {

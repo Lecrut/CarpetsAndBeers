@@ -19,13 +19,18 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    final itemProvider = Provider.of<ItemProvider>(context, listen: false);
-    _cartProducts = itemProvider.cartItems.map((item) {
-      return {
-        'item': item,
-        'quantity': 1,
-      };
-    }).toList();
+    Future.delayed(Duration.zero, () async {
+      final itemProvider = Provider.of<ItemProvider>(context, listen: false);
+      await itemProvider.loadCartItems();
+      setState(() {
+        _cartProducts = itemProvider.cartItems.map((item) {
+          return {
+            'item': item,
+            'quantity': 1,
+          };
+        }).toList();
+      });
+    });
   }
 
   void removeProduct(int index) {
