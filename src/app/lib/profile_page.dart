@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:app/callouts/order_controller.dart';
 import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
-
 import 'RegisterPage.dart';
 import 'callouts/UserController.dart';
 import 'model/Order.dart';
@@ -184,26 +181,26 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          // Handle edit profile
-                        },
-                        icon: const Icon(Icons.edit, color: Colors.white),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          iconColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 10),
-                        ),
-                        label: const Text(
-                          'Edytuj profil',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 255, 255, 255),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
+                      // TextButton.icon(
+                      //   onPressed: () {
+                      //     // Handle edit profile
+                      //   },
+                      //   icon: const Icon(Icons.edit, color: Colors.white),
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor: Colors.blue,
+                      //     iconColor: Colors.white,
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 25, vertical: 10),
+                      //   ),
+                      //   label: const Text(
+                      //     'Edytuj profil',
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Color.fromARGB(255, 255, 255, 255),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 20),
                       TextButton.icon(
                         onPressed: () {
                           Provider.of<UserProvider>(context, listen: false)
