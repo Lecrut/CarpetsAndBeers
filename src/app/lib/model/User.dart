@@ -4,7 +4,7 @@ class User {
   final String password;
   String? name;
 
-  User({required this.email, required this.password, this.name});
+  User({this.id, required this.email, required this.password, this.name});
 
   Map<String, dynamic> mapToRegister() {
     return {
@@ -23,6 +23,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'email': email,
       'password': password,
@@ -31,6 +32,9 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        name: json['name'], email: json['email'], password: json['password']);
+        id: json['id'],
+        name: json['name'],
+        email: json['email'],
+        password: json['password']);
   }
 }
