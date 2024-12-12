@@ -1,4 +1,3 @@
-import 'package:app/navigation/app_bar.dart';
 import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/ordering/order_success_confirmation_page.dart';
 import 'package:app/ordering/paypal/paypal.dart';
@@ -53,6 +52,11 @@ class _SummaryPageState extends State<SummaryPage> {
       body: jsonEncode(order.toJson()),
     );
     return response.statusCode;
+  }
+
+  Future<void> clearCart() async {
+    final itemsProvider = Provider.of<ItemProvider>(context, listen: false);
+    await itemsProvider.clearCartItems();
   }
 
   @override
@@ -238,9 +242,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                               Duration(seconds: 1));
                                           print("Navigating in $i seconds...");
                                         }
-                                        // await Provider.of<ItemProvider>(context,
-                                        //         listen: false)
-                                        //     .clearCartItems();
+                                        await clearCart();
+
                                         setState(() {
                                           paymentSuccessful = true;
                                         });
