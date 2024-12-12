@@ -3,6 +3,7 @@ import 'package:app/navigation/bottom_navigation.dart';
 import 'package:app/ordering/order_success_confirmation_page.dart';
 import 'package:app/ordering/paypal/paypal.dart';
 import 'package:app/ordering/step_indicator.dart';
+import 'package:app/providers/ItemProvider.dart';
 import 'package:app/providers/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:app/models/order_model.dart';
@@ -51,7 +52,6 @@ class _SummaryPageState extends State<SummaryPage> {
       },
       body: jsonEncode(order.toJson()),
     );
-
     return response.statusCode;
   }
 
@@ -238,6 +238,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                               Duration(seconds: 1));
                                           print("Navigating in $i seconds...");
                                         }
+                                        // await Provider.of<ItemProvider>(context,
+                                        //         listen: false)
+                                        //     .clearCartItems();
                                         setState(() {
                                           paymentSuccessful = true;
                                         });

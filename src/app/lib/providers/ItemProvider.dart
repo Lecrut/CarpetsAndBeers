@@ -27,6 +27,13 @@ class ItemProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearCartItems() async {
+    _cartItems = [];
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setStringList('cartItems', []);
+    notifyListeners();
+  }
+
   void _saveCartItems() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     List<String> jsonList =
